@@ -25,7 +25,7 @@ When you use Mockito's @InjectMocks annotation it will not inject mocks into Col
 
 We end up writing boiler plate code again and again specifically to deal with this scenario. This is laborious and a pain to maintain, especially when injecting many Collections.
 
-The Soloution
+The Solution
 -------------
 
 Inspect the generics of Collection fields and if any mocks exist of suitable types a Collection (of the relevant type) be injected containing those mocks. In an ideal scenario, we would be able to rely on Mockito to deal with all of this for us, however we probably don't always want Mockito to do this. So ideally we would be able to specify an injection strategy for Mockito to use, this is something Mockito does not yet provide. The temporary workaround is to provide something similar to the MockitoAnnotations.injectMocks(). Okay so there is still some boilerplate code, but it is less verbose:
