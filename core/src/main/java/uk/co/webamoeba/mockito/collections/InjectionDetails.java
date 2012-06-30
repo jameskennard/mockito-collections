@@ -1,3 +1,5 @@
+package uk.co.webamoeba.mockito.collections;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;

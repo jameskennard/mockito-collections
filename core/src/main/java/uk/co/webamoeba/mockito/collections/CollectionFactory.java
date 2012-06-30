@@ -1,3 +1,5 @@
+package uk.co.webamoeba.mockito.collections;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,7 +8,7 @@ import java.util.Set;
 
 public class CollectionFactory {
 
-	public <T extends Collection> T createCollection(Class<T> collectionClass) {
+	public <T extends Collection<?>> T createCollection(Class<T> collectionClass) {
 		T collection;
 		if (collectionClass.equals(Set.class) || collectionClass.equals(Collection.class)) {
 			collection = (T)new HashSet();

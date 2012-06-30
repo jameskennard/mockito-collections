@@ -1,3 +1,4 @@
+package uk.co.webamoeba.mockito.collections;
 
 public class MockitoCollectionInjector {
 

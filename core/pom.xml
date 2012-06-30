@@ -1,10 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>123213</groupId>
-  <artifactId>1232354</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>345rt4</name>
-  <description>234234234</description>
+  <groupId>uk.co.webamoeba.mockito.collections.core</groupId>
+  <artifactId>mockito-collections-core</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>Mockito Collections Core</name>
   <dependencies>
   		<dependency>
 			<groupId>junit</groupId>
@@ -17,4 +16,5 @@
             <version>1.9.0</version>
         </dependency>
 	</dependencies>
+  <url>https://github.com/jameskennard/mockito-collections</url>
 </project>

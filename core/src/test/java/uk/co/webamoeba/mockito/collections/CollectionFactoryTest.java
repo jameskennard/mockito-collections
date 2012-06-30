@@ -1,3 +1,5 @@
+package uk.co.webamoeba.mockito.collections;
+
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;

@@ -1,3 +1,5 @@
+package uk.co.webamoeba.mockito.collections;
+
 import static org.mockito.Mockito.verify;
 
 import java.util.Collection;
@@ -10,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MockitoIntegrationTest {
+public class IntegrationTest {
 
 	@InjectMocks
 	private MyDelegate delegate;

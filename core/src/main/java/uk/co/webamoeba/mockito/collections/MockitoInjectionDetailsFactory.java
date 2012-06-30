@@ -1,3 +1,5 @@
+package uk.co.webamoeba.mockito.collections;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashSet;
