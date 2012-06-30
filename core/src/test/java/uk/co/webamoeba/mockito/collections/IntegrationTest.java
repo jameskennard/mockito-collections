@@ -14,42 +14,43 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class IntegrationTest {
 
-	@InjectMocks
-	private MyDelegate delegate;
+    @InjectMocks
+    private MyDelegate delegate;
 
-	@Mock
-	private MyListener listener1;
+    @Mock
+    private MyListener listener1;
 
-	@Mock
-	private MyListener listener2;
+    @Mock
+    private MyListener listener2;
 
-	@Before
-	public void setup() {
-		MockitoCollectionInjector.inject(this);
+    @Before
+    public void setup() {
+	MockitoCollectionInjector.inject(this);
+    }
+
+    @Test
+    public void shouldPerformAction() {
+	// When
+	delegate.performAction();
+
+	// Then
+	verify(listener1).actionPerformed();
+	verify(listener2).actionPerformed();
+    }
+
+    private class MyDelegate {
+
+	private Collection<MyListener> listeners;
+
+	public void performAction() {
+	    for (MyListener listener : listeners) {
+		listener.actionPerformed();
+	    }
 	}
+    }
 
-	@Test
-	public void shouldPerformAction() {
-		// When
-		delegate.performAction();
+    private interface MyListener {
 
-		// Then
-		verify(listener1).actionPerformed();
-		verify(listener2).actionPerformed();
-	}
-
-	private class MyDelegate {
-
-		private Collection<MyListener> listeners;
-
-		public void performAction() {
-			for (MyListener listener : listeners) {
-				listener.actionPerformed();
-			}
-		}
-	}
-
-	private interface MyListener {
-		public void actionPerformed();
-	}
+	public void actionPerformed();
+    }
 }

@@ -16,55 +16,58 @@ import org.mockito.Mock;
 
 public class MockitoInjectionDetailsFactoryTest {
 
-	private MockitoInjectionDetailsFactory factory = new MockitoInjectionDetailsFactory();
+    private MockitoInjectionDetailsFactory factory = new MockitoInjectionDetailsFactory();
 
-	@Test
-	public void shouldCreateInjectionDetails() {
-		// Given
-		ClassWithAnnnotations object = new ClassWithAnnnotations();
+    @Test
+    public void shouldCreateInjectionDetails() {
+	// Given
+	ClassWithAnnnotations object = new ClassWithAnnnotations();
 
-		// When
-		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
+	// When
+	InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
-		// Then
-		assertEquals(1, injectionDetails.getInjectees().size());
-		assertSame(object.injectee, injectionDetails.getInjectees().iterator().next());
-		assertEquals(1, injectionDetails.getInjectables().size());
-		assertSame(object.injectable, injectionDetails.getInjectables().iterator().next());
-	}
+	// Then
+	assertEquals(1, injectionDetails.getInjectees().size());
+	assertSame(object.injectee, injectionDetails.getInjectees().iterator().next());
+	assertEquals(1, injectionDetails.getInjectables().size());
+	assertSame(object.injectable, injectionDetails.getInjectables().iterator().next());
+    }
 
-	@Test
-	public void shouldCreateInjectionDetailsGivenMultipleInjectMocksAnnotations() {
-		// Given
-		ClassWithTwoInjectMocksAnnnotation object = new ClassWithTwoInjectMocksAnnnotation();
+    @Test
+    public void shouldCreateInjectionDetailsGivenMultipleInjectMocksAnnotations() {
+	// Given
+	ClassWithTwoInjectMocksAnnnotation object = new ClassWithTwoInjectMocksAnnnotation();
 
-		// When
-		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
+	// When
+	InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
-		// Then
-		assertEquals(2, injectionDetails.getInjectees().size());
-		assertTrue(injectionDetails.getInjectees().contains(object.injectable1));
-		assertTrue(injectionDetails.getInjectees().contains(object.injectable2));
-	}
+	// Then
+	assertEquals(2, injectionDetails.getInjectees().size());
+	assertTrue(injectionDetails.getInjectees().contains(object.injectable1));
+	assertTrue(injectionDetails.getInjectees().contains(object.injectable2));
+    }
 
-	private class ClassWithAnnnotations {
-		@InjectMocks
-		private OutputStream injectee = new ByteArrayOutputStream();
+    private class ClassWithAnnnotations {
 
-		@Mock
-		private InputStream injectable = mock(InputStream.class);
-	}
+	@InjectMocks
+	private OutputStream injectee = new ByteArrayOutputStream();
 
-	private class ClassWithTwoInjectMocksAnnnotation {
-		@InjectMocks
-		private OutputStream injectable1 = new ByteArrayOutputStream();
+	@Mock
+	private InputStream injectable = mock(InputStream.class);
+    }
 
-		@InjectMocks
-		private InputStream injectable2 = new ByteArrayInputStream("".getBytes());
-	}
+    private class ClassWithTwoInjectMocksAnnnotation {
 
-	private class ClassWithMockAnnnotation {
-		@Mock
-		private OutputStream outputStream = mock(OutputStream.class);
-	}
+	@InjectMocks
+	private OutputStream injectable1 = new ByteArrayOutputStream();
+
+	@InjectMocks
+	private InputStream injectable2 = new ByteArrayInputStream("".getBytes());
+    }
+
+    private class ClassWithMockAnnnotation {
+
+	@Mock
+	private OutputStream outputStream = mock(OutputStream.class);
+    }
 }
