@@ -3,7 +3,7 @@ package uk.co.webamoeba.mockito.collections;
 public class MockitoCollectionInjector {
 
     private static CollectionInjector injector = new CollectionInjector(new CollectionFactory(),
-	    new InjectableSelectionStrategy());
+	    new DefaultInjectableSelectionStrategy());
 
     private static MockitoInjectionDetailsFactory factory = new MockitoInjectionDetailsFactory();
 

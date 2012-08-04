@@ -25,6 +25,7 @@ public class CollectionInjector {
 	}
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void inject(Object injectee, InjectionDetails injectionDetails) {
 	Field[] fields = injectee.getClass().getDeclaredFields();
 	for (Field field : fields) {
@@ -34,26 +35,15 @@ public class CollectionInjector {
 		Class rawType = (Class) type.getRawType();
 
 		if (Collection.class.isAssignableFrom(rawType)) {
-
-		    getCollectionType(rawType);
 		    Collection collection = collectionFactory.createCollection(rawType);
-		    Type[] typeArguments = type.getActualTypeArguments();
-		    Set injectables = strategy.getInjectables(injectionDetails.getInjectables(),
-			    (Class) typeArguments[0]);
+		    Type collectionType = GenericCollectionTypeResolver.getCollectionFieldType(field);
+
+		    Set injectables = strategy
+			    .getInjectables(injectionDetails.getInjectables(), (Class) collectionType);
 		    collection.addAll(injectables);
 		    new FieldSetter(injectee, field).set(collection);
 		}
 	    }
 	}
-    }
-
-    private Type getCollectionType(Class rawType) {
-	for (Type genericInterface : rawType.getGenericInterfaces()) {
-	    if (((ParameterizedType) genericInterface).getRawType().equals(Collection.class)) {
-		return genericInterface;
-	    }
-	}
-	// FIXME
-	throw new RuntimeException("Should not have happened...");
     }
 }

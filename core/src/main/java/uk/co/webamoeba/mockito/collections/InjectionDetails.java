@@ -4,6 +4,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * Describes {@link Object}s that we want to inject into and be injected with {@link Collection}s of {@link Object}s.
+ * <p>
+ * An <i>injectee</i> is an {@link Object} into which we want to inject {@link Collection}s of injectables.<br/>
+ * An <i>injectable</i> is an {@link Object} that can be injected into {@link Collection}s in injectees.
+ * </p>
+ * 
+ * @author James Kennard
+ */
 public class InjectionDetails {
 
     private Set<Object> injectees;

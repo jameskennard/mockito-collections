@@ -13,19 +13,16 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class InjectableSelectionStrategyTest {
+public class DefaultInjectableSelectionStrategyTest {
 
-    private InjectableSelectionStrategy strategy = new InjectableSelectionStrategy();
+    private DefaultInjectableSelectionStrategy strategy = new DefaultInjectableSelectionStrategy();
 
     @Test
     public void shouldGetInjectables() {
 	// Given
-	Set<Object> injectees = mock(Set.class);
 	Object injectable1 = mock(InputStream.class);
 	Object injectable2 = mock(OutputStream.class);
-	;
 	Object injectable3 = mock(FileInputStream.class);
-	;
 	Set<Object> injectables = new HashSet<Object>(Arrays.asList(injectable1, injectable2, injectable3));
 
 	// When
