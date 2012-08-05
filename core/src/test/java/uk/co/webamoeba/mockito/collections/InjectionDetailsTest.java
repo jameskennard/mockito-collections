@@ -9,6 +9,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+/**
+ * @author James Kennard
+ */
 @SuppressWarnings("unchecked")
 public class InjectionDetailsTest {
 

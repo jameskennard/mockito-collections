@@ -13,6 +13,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+/**
+ * @author James Kennard
+ */
 public class DefaultInjectableSelectionStrategyTest {
 
     private DefaultInjectableSelectionStrategy strategy = new DefaultInjectableSelectionStrategy();

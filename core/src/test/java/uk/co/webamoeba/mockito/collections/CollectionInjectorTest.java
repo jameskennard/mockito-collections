@@ -1,15 +1,17 @@
 package uk.co.webamoeba.mockito.collections;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -21,6 +23,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+/**
+ * @author James Kennard
+ */
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class CollectionInjectorTest {
@@ -42,7 +47,47 @@ public class CollectionInjectorTest {
 	// Workaround so as we can mock this correctly in tests, without this will throw ClassCastException when
 	// specifying willReturn (unless returning a LinkedList or parent type) because the default Mockito answer
 	// returns an empty LinkedList. Would be nicer if there were an Answers type that always returned null.
-	given(collectionFactory.createCollection(any(Class.class))).willReturn(null);
+	given(collectionFactory.createCollection(any(Class.class), any(Collection.class))).willReturn(null);
+    }
+
+    @Test
+    public void shouldInjectGivenNullType() throws Exception {
+	// Given
+	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+	ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
+	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+
+	Field field = getField("listeners", injectee);
+	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(null);
+
+	// When
+	injector.inject(injectionDetails);
+
+	// Then
+	assertNull(injectee.listeners);
+	assertNull(injectee.eventListener);
+	assertNull(injectee.iterator);
+    }
+
+    @Test
+    public void shouldInjectGivenNoMatchingInjectables() throws Exception {
+	// Given
+	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+	ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
+	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+
+	Field field = getField("listeners", injectee);
+	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) EventListener.class);
+
+	// When
+	injector.inject(injectionDetails);
+
+	// Then
+	assertNull(injectee.listeners);
+	assertNull(injectee.eventListener);
+	assertNull(injectee.iterator);
     }
 
     @Test
@@ -60,7 +105,7 @@ public class CollectionInjectorTest {
 	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
 	Collection<Object> set = mock(Collection.class);
-	given(collectionFactory.createCollection(Collection.class)).willReturn(set);
+	given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(set);
 
 	Field field = getField("listeners", injectee);
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
@@ -70,7 +115,8 @@ public class CollectionInjectorTest {
 
 	// Then
 	assertSame(set, injectee.listeners);
-	verify(set).addAll(stragtegyInjectables);
+	assertNull(injectee.eventListener);
+	assertNull(injectee.iterator);
     }
 
     @Test
@@ -88,7 +134,7 @@ public class CollectionInjectorTest {
 	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
 	List<Object> list = mock(List.class);
-	given(collectionFactory.createCollection(List.class)).willReturn(list);
+	given(collectionFactory.createCollection(List.class, stragtegyInjectables)).willReturn(list);
 
 	Field field = getField("listeners", injectee);
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
@@ -98,7 +144,6 @@ public class CollectionInjectorTest {
 
 	// Then
 	assertSame(list, injectee.listeners);
-	verify(list).addAll(stragtegyInjectables);
     }
 
     /**
@@ -139,7 +184,7 @@ public class CollectionInjectorTest {
 	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
 	Set<Object> set = mock(Set.class);
-	given(collectionFactory.createCollection(Set.class)).willReturn(set);
+	given(collectionFactory.createCollection(Set.class, stragtegyInjectables)).willReturn(set);
 
 	Field field = getField("listeners", injectee);
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
@@ -149,7 +194,6 @@ public class CollectionInjectorTest {
 
 	// Then
 	assertSame(set, injectee.listeners);
-	verify(set).addAll(stragtegyInjectables);
     }
 
     @Test
@@ -167,7 +211,7 @@ public class CollectionInjectorTest {
 	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
 	Vector<Object> vector = mock(Vector.class);
-	given(collectionFactory.createCollection(Vector.class)).willReturn(vector);
+	given(collectionFactory.createCollection(Vector.class, stragtegyInjectables)).willReturn(vector);
 
 	Field field = getField("listeners", injectee);
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
@@ -177,12 +221,22 @@ public class CollectionInjectorTest {
 
 	// Then
 	assertSame(vector, injectee.listeners);
-	verify(vector).addAll(stragtegyInjectables);
     }
 
     private class ClassWithPublicEventListenerCollection {
 
 	public Collection<EventListener> listeners;
+
+	/**
+	 * A non {@link Collection} based field in order to verify this sort of field is ignored.
+	 */
+	public EventListener eventListener;
+
+	/**
+	 * A non {@link Collection} based {@link ParameterizedType} field in order to verify this sort of field is
+	 * ignored.
+	 */
+	public Iterator<String> iterator;
     }
 
     private class ClassWithPrivateEventListenerCollection {

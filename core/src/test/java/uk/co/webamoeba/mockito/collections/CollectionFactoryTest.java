@@ -2,97 +2,106 @@ package uk.co.webamoeba.mockito.collections;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.junit.Test;
 
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 
+/**
+ * @author James Kennard
+ */
+@SuppressWarnings("unchecked")
 public class CollectionFactoryTest {
 
     private CollectionFactory factory = new CollectionFactory();
 
     @Test
-    @SuppressWarnings("rawtypes")
     public void shouldCreateCollectionGivenCollection() {
-	// Given
-	Class<Collection> collectionClass = Collection.class;
-
-	// When
-	Collection<?> collection = factory.createCollection(collectionClass);
-
-	// Then
-	assertTrue(collection instanceof Set);
+	shouldCreateCollection(Collection.class);
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    public void shouldCreateCollectionGivenCollectionAndContents() {
+	shouldCreateCollectionGivenContents(Collection.class);
+    }
+
+    @Test
     public void shouldCreateCollectionGivenSortedSet() {
-	// Given
-	Class<SortedSet> collectionClass = SortedSet.class;
-
-	// When
-	Collection<?> collection = factory.createCollection(collectionClass);
-
-	// Then
-	assertTrue(collection instanceof TreeSet);
+	shouldCreateCollection(SortedSet.class);
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    public void shouldCreateCollectionGivenSortedSetAndContents() {
+	shouldCreateCollectionGivenContents(SortedSet.class);
+    }
+
+    @Test
     public void shouldCreateCollectionGivenSet() {
-	// Given
-	Class<Set> collectionClass = Set.class;
-
-	// When
-	Collection<?> collection = factory.createCollection(collectionClass);
-
-	// Then
-	assertTrue(collection instanceof Set);
+	shouldCreateCollection(Set.class);
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    public void shouldCreateCollectionGivenSetAndContents() {
+	shouldCreateCollectionGivenContents(Set.class);
+    }
+
+    @Test
     public void shouldCreateCollectionGivenList() {
-	// Given
-	Class<List> collectionClass = List.class;
-
-	// When
-	Collection<?> collection = factory.createCollection(collectionClass);
-
-	// Then
-	assertTrue(collection instanceof List);
+	shouldCreateCollection(List.class);
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    public void shouldCreateCollectionGivenListAndContents() {
+	shouldCreateCollectionGivenContents(List.class);
+    }
+
+    @Test
     public void shouldCreateCollectionGivenSpecificType() {
-	// Given
-	Class<LinkedList> collectionClass = LinkedList.class;
+	shouldCreateCollection(LinkedList.class);
+    }
 
-	// When
-	Collection<?> collection = factory.createCollection(collectionClass);
-
-	// Then
-	assertTrue(collection instanceof LinkedList);
+    @Test
+    public void shouldCreateCollectionGivenSpecificTypeAndContents() {
+	shouldCreateCollectionGivenContents(LinkedList.class);
     }
 
     @Test(expected = MockitoCollectionsException.class)
-    @SuppressWarnings("rawtypes")
     public void shouldFailToCreateCollectionGivenCannotInstantiateSpecificType() {
+	shouldCreateCollection(Queue.class);
+    }
+
+    @Test(expected = MockitoCollectionsException.class)
+    public void shouldFailToCreateCollectionGivenCannotInstantiateSpecificTypeAndContents() {
+	shouldCreateCollectionGivenContents(Queue.class);
+    }
+
+    private <T extends Collection<Object>> void shouldCreateCollection(Class<T> clazz) {
+	shouldCreateCollection(clazz, null);
+    }
+
+    private <T extends Collection<Object>> void shouldCreateCollectionGivenContents(Class<T> clazz) {
+	Collection<Object> contents = Arrays.<Object> asList("Some Contents", 'A', 12L, 3.0f);
+	shouldCreateCollection(clazz, contents);
+    }
+
+    private <T extends Collection<Object>> void shouldCreateCollection(Class<T> clazz, Collection<Object> contents) {
 	// Given
-	Class<Queue> collectionClass = Queue.class;
+	Class<T> collectionClass = clazz;
 
 	// When
-	Collection<?> collection = factory.createCollection(collectionClass);
+	Collection<?> collection = factory.createCollection(collectionClass, contents);
 
 	// Then
-	assertTrue(collection instanceof LinkedList);
+	assertTrue(collectionClass.isAssignableFrom(collection.getClass()));
+	if (contents != null) {
+	    assertTrue(collection.containsAll(contents));
+	}
     }
 }

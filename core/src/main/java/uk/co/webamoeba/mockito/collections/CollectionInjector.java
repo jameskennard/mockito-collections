@@ -6,8 +6,14 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Set;
 
-import org.mockito.internal.util.reflection.FieldSetter;
+import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 
+/**
+ * The {@link CollectionInjector} is responsible for performing the injection of injectees into injectables. The
+ * collaborators are set on instantiation so as to allow different behaviour as required.
+ * 
+ * @author James Kennard
+ */
 public class CollectionInjector {
 
     private CollectionFactory collectionFactory;
@@ -23,29 +29,36 @@ public class CollectionInjector {
 	this.genericCollectionTypeResolver = genericCollectionTypeResolver;
     }
 
+    /**
+     * Injects the {@link InjectionDetails#getInjectees() injectees} into the {@link InjectionDetails#getInjectables()
+     * injectables}.
+     * 
+     * @param injectionDetails
+     */
     public void inject(InjectionDetails injectionDetails) {
 	for (Object injectee : injectionDetails.getInjectees()) {
-	    inject(injectee, injectionDetails);
+	    inject(injectee, injectionDetails.getInjectables());
 	}
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void inject(Object injectee, InjectionDetails injectionDetails) {
+    private void inject(Object injectee, Set<Object> injectables) {
 	Field[] fields = injectee.getClass().getDeclaredFields();
 	for (Field field : fields) {
 	    Type genericType = field.getGenericType();
 	    if (genericType instanceof ParameterizedType) {
 		ParameterizedType type = (ParameterizedType) genericType;
+		// should be safe, ParamerterizedType should only ever return a Class from this method
 		Class rawType = (Class) type.getRawType();
-
 		if (Collection.class.isAssignableFrom(rawType)) {
-		    Collection collection = collectionFactory.createCollection(rawType);
 		    Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field);
-
-		    Set injectables = strategy
-			    .getInjectables(injectionDetails.getInjectables(), (Class) collectionType);
-		    collection.addAll(injectables);
-		    new FieldSetter(injectee, field).set(collection);
+		    if (collectionType != null) {
+			Set strategyInjectables = strategy.getInjectables(injectables, (Class) collectionType);
+			if (!strategyInjectables.isEmpty()) {
+			    Collection collection = collectionFactory.createCollection(rawType, strategyInjectables);
+			    new FieldValueMutator(injectee, field).mutateTo(collection);
+			}
+		    }
 		}
 	    }
 	}

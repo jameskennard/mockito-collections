@@ -13,6 +13,9 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+/**
+ * @author James Kennard
+ */
 public class MockitoCollectionInjectorIntegrationTest {
 
     @Test
