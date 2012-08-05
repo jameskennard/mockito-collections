@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class IntegrationTest {
 
     @InjectMocks
-    private MyDelegate delegate;
+    private MyDelegate delegate = new MyDelegate();
 
     @Mock
     private MyListener listener1;

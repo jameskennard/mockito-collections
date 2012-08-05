@@ -1,6 +1,5 @@
 package uk.co.webamoeba.mockito.collections;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.io.FileInputStream;
@@ -26,130 +25,63 @@ public class GenericCollectionTypeResolverTest {
 
     @Test
     public void shouldGetCollectionFieldTypeGivenCollection() {
-	// Given
-	Field field = getField("collection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(String.class, type);
+	shouldGetCollectionFieldType("collection", String.class);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenRawCollection() {
-	// Given
-	Field field = getField("rawCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertNull(type);
+	shouldGetCollectionFieldType("rawCollection", null);
     }
 
-    /**
-     * TODO do we care about this scenario?
-     */
     @Test
     public void shouldGetCollectionFieldTypeGivenArrayCollection() {
-	// Given
-	Field field = getField("arrayCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(String[].class, type);
+	shouldGetCollectionFieldType("arrayCollection", String[].class);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenWildcardCollection() {
-	// Given
-	Field field = getField("wildcardCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertNull(type);
+	shouldGetCollectionFieldType("wildcardCollection", null);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenWildcardUpperBoundCollection() {
-	// Given
-	Field field = getField("wildcardUpperBoundCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(InputStream.class, type);
+	shouldGetCollectionFieldType("wildcardUpperBoundCollection", InputStream.class);
     }
 
-    /**
-     * TODO is this the behaviour we want when given a lower bound?
-     * 
-     * @see <a href="http://docs.oracle.com/javase/tutorial/extra/generics/morefun.html">Generics, bound wildcards</a>
-     */
     @Test
     public void shouldGetCollectionFieldTypeGivenWildcardLowerBoundCollection() {
-	// Given
-	Field field = getField("wildcardLowerBoundCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(FileInputStream.class, type);
+	shouldGetCollectionFieldType("wildcardLowerBoundCollection", FileInputStream.class);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenHardCodedTypeCollection() {
-	// Given
-	Field field = getField("hardCodedTypeCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(Integer.class, type);
+	shouldGetCollectionFieldType("hardCodedTypeCollection", Integer.class);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenTypeCollection() {
-	// Given
-	Field field = getField("typeCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(Boolean.class, type);
+	shouldGetCollectionFieldType("typeCollection", Boolean.class);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenExtendedHardCodedTypeCollection() {
-	// Given
-	Field field = getField("extendedHardCodedTypeCollection");
-
-	// When
-	Class<?> type = resolver.getCollectionFieldType(field);
-
-	// Then
-	assertSame(Integer.class, type);
+	shouldGetCollectionFieldType("extendedHardCodedTypeCollection", Integer.class);
     }
 
     @Test
     public void shouldGetCollectionFieldTypeGivenDoubleExtendedHardCodedTypeCollection() {
+	shouldGetCollectionFieldType("doubleExtendedHardCodedTypeCollection", Integer.class);
+    }
+
+    private void shouldGetCollectionFieldType(String fieldName, Class<?> expectedType) {
 	// Given
-	Field field = getField("doubleExtendedHardCodedTypeCollection");
+	Field field = getField(fieldName);
 
 	// When
 	Class<?> type = resolver.getCollectionFieldType(field);
 
 	// Then
-	assertSame(Integer.class, type);
+	assertSame(expectedType, type);
     }
 
     private Field getField(String name) {
@@ -171,53 +103,70 @@ public class GenericCollectionTypeResolverTest {
 	/**
 	 * Expect {@link String}
 	 */
+	@SuppressWarnings("unused")
 	public Collection<String> collection;
 
 	/**
 	 * Expect <code>null</code>
 	 */
+	@SuppressWarnings({ "unused", "rawtypes" })
 	public Collection rawCollection;
 
 	/**
 	 * Expect {@link String[]}
+	 * <p>
+	 * TODO do we care about this scenario?
 	 */
+	@SuppressWarnings("unused")
 	public Collection<String[]> arrayCollection;
 
 	/**
 	 * Expect <code>null</code>
 	 */
+	@SuppressWarnings("unused")
 	public Collection<?> wildcardCollection;
 
 	/**
 	 * Expect {@link InputStream}
 	 */
+	@SuppressWarnings("unused")
 	public Collection<? extends InputStream> wildcardUpperBoundCollection;
 
 	/**
 	 * Expect {@link FileInputStream}
+	 * <p>
+	 * TODO is this the behaviour we want when given a lower bound?
+	 * 
+	 * @see <a href="http://docs.oracle.com/javase/tutorial/extra/generics/morefun.html">Generics, bound
+	 *      wildcards</a>
 	 */
+	@SuppressWarnings("unused")
 	public Collection<? super FileInputStream> wildcardLowerBoundCollection;
 
 	/**
 	 * Expect {@link Integer} as per {@link HardCodedTypeCollection}
 	 */
+	@SuppressWarnings("unused")
 	public HardCodedTypeCollection hardCodedTypeCollection;
 
 	/**
 	 * Expect {@link Boolean}
 	 */
+	@SuppressWarnings("unused")
 	public TypeCollection<Boolean> typeCollection;
 
 	/**
 	 * Expect {@link Integer} as per {@link HardCodedTypeCollection} (should ignore {@link String} generic declared
 	 * here)
 	 */
+	@SuppressWarnings("unused")
 	public ExtendedHardCodedTypeCollection<String> extendedHardCodedTypeCollection;
 
 	/**
 	 * Expect {@link Integer} as per {@link HardCodedTypeCollection} (should ignore {@link Reader} generic declared
 	 * as part of {@link DoubleExtendedHardCodedTypeCollection})
 	 */
+	@SuppressWarnings("unused")
 	public DoubleExtendedHardCodedTypeCollection doubleExtendedHardCodedTypeCollection;
 
     }

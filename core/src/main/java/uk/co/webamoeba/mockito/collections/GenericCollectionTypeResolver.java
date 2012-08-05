@@ -24,7 +24,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +34,7 @@ import java.util.Map;
  * /core/GenericCollectionTypeResolver.java
  * <p>
  * Includes modifications, mainly with the intent to reduce the capabilities of the class. We want to deal exclusively
- * with {@link Field}s, and we want to get away from the static nature of the original class.
+ * with {@link Collection} {@link Field}s, and we want to get away from the static nature of the original class.
  * 
  * @author Juergen Hoeller
  * @author James Kennard
@@ -51,110 +50,6 @@ public class GenericCollectionTypeResolver {
      */
     public Class<?> getCollectionFieldType(Field collectionField) {
 	return getGenericFieldType(collectionField, Collection.class, 0, null, 1);
-    }
-
-    /**
-     * Determine the generic element type of the given {@link Collection} {@link Field}.
-     * 
-     * @param collectionField
-     *            the {@link Collection} {@link Field} to introspect
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
-     *            Lists} , 1 would indicate the nested List, whereas 2 would indicate the element of the nested
-     *            {@link List})
-     * @param typeIndexesPerLevel
-     *            Map keyed by nesting level, with each value expressing the type index for traversal at that level
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getCollectionFieldType(Field collectionField, int nestingLevel,
-	    Map<Integer, Integer> typeIndexesPerLevel) {
-	return getGenericFieldType(collectionField, Collection.class, 0, typeIndexesPerLevel, nestingLevel);
-    }
-
-    /**
-     * Determine the generic key type of the given {@link Map} {@link Field}.
-     * 
-     * @param mapField
-     *            the map field to introspect
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getMapKeyFieldType(Field mapField) {
-	return getGenericFieldType(mapField, Map.class, 0, null, 1);
-    }
-
-    /**
-     * Determine the generic key type of the given {@link Map} {@link Field}.
-     * 
-     * @param mapField
-     *            the map field to introspect
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
-     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
-     *            {@link List})
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getMapKeyFieldType(Field mapField, int nestingLevel) {
-	return getGenericFieldType(mapField, Map.class, 0, null, nestingLevel);
-    }
-
-    /**
-     * Determine the generic key type of the given {@link Map} {@link Field}.
-     * 
-     * @param mapField
-     *            the map field to introspect
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
-     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
-     *            {@link List})
-     * @param typeIndexesPerLevel
-     *            Map keyed by nesting level, with each value expressing the type index for traversal at that level
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getMapKeyFieldType(Field mapField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
-	return getGenericFieldType(mapField, Map.class, 0, typeIndexesPerLevel, nestingLevel);
-    }
-
-    /**
-     * Determine the generic value type of the given {@link Map} {@link Field}.
-     * 
-     * @param mapField
-     *            the map field to introspect
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getMapValueFieldType(Field mapField) {
-	return getGenericFieldType(mapField, Map.class, 1, null, 1);
-    }
-
-    /**
-     * Determine the generic value type of the given {@link Map} {@link Field}.
-     * 
-     * @param mapField
-     *            the map field to introspect
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
-     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
-     *            {@link List})
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getMapValueFieldType(Field mapField, int nestingLevel) {
-	return getGenericFieldType(mapField, Map.class, 1, null, nestingLevel);
-    }
-
-    /**
-     * Determine the generic value type of the given {@link Map} {@link Field}.
-     * 
-     * @param mapField
-     *            the map field to introspect
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
-     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
-     *            {@link List})
-     * @param typeIndexesPerLevel
-     *            Map keyed by nesting level, with each value expressing the type index for traversal at that level
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getMapValueFieldType(Field mapField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
-	return getGenericFieldType(mapField, Map.class, 1, typeIndexesPerLevel, nestingLevel);
     }
 
     /**

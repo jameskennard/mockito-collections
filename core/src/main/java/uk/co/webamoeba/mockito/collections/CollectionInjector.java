@@ -14,9 +14,13 @@ public class CollectionInjector {
 
     private InjectableSelectionStrategy strategy;
 
-    public CollectionInjector(CollectionFactory collectionFactory, InjectableSelectionStrategy strategy) {
+    private GenericCollectionTypeResolver genericCollectionTypeResolver;
+
+    public CollectionInjector(CollectionFactory collectionFactory, InjectableSelectionStrategy strategy,
+	    GenericCollectionTypeResolver genericCollectionTypeResolver) {
 	this.collectionFactory = collectionFactory;
 	this.strategy = strategy;
+	this.genericCollectionTypeResolver = genericCollectionTypeResolver;
     }
 
     public void inject(InjectionDetails injectionDetails) {
@@ -36,7 +40,7 @@ public class CollectionInjector {
 
 		if (Collection.class.isAssignableFrom(rawType)) {
 		    Collection collection = collectionFactory.createCollection(rawType);
-		    Type collectionType = GenericCollectionTypeResolver.getCollectionFieldType(field);
+		    Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field);
 
 		    Set injectables = strategy
 			    .getInjectables(injectionDetails.getInjectables(), (Class) collectionType);
