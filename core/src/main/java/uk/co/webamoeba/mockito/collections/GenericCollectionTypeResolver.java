@@ -1,9 +1,3 @@
-/**
- * Ported from Spring Core.
- * https://github.com/SpringSource/spring-framework/blob/master/spring-core/src/main/java/org/springframework/core/GenericCollectionTypeResolver.java
- * 
- * Includes some modifications.
- */
 package uk.co.webamoeba.mockito.collections;
 
 /*
@@ -25,265 +19,142 @@ package uk.co.webamoeba.mockito.collections;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class for determining element types of collections and maps.
+ * Helper class for determining element types of {@link Collection} and {@link Map} {@link Field}s.
  * <p>
- * Mainly intended for usage within the framework, determining the target type of values to be added to a collection or
- * map (to be able to attempt type conversion if appropriate).
+ * Ported from Spring Core.
+ * https://github.com/SpringSource/spring-framework/blob/master/spring-core/src/main/java/org/springframework
+ * /core/GenericCollectionTypeResolver.java
+ * <p>
+ * Includes modifications, mainly with the intent to reduce the capabilities of the class. We want to deal exclusively
+ * with {@link Field}s, and we want to get away from the static nature of the original class.
  * 
  * @author Juergen Hoeller
- * @since 2.0
+ * @author James Kennard
  */
-public abstract class GenericCollectionTypeResolver {
+public class GenericCollectionTypeResolver {
 
     /**
-     * Determine the generic element type of the given Collection class (if it declares one through a generic superclass
-     * or generic interface).
-     * 
-     * @param collectionClass
-     *            the collection class to introspect
-     * @return the generic type, or <code>null</code> if none
-     */
-    @SuppressWarnings("rawtypes")
-    public static Class<?> getCollectionType(Class<? extends Collection> collectionClass) {
-	return extractTypeFromClass(collectionClass, Collection.class, 0);
-    }
-
-    /**
-     * Determine the generic key type of the given Map class (if it declares one through a generic superclass or generic
-     * interface).
-     * 
-     * @param mapClass
-     *            the map class to introspect
-     * @return the generic type, or <code>null</code> if none
-     */
-    @SuppressWarnings("rawtypes")
-    public static Class<?> getMapKeyType(Class<? extends Map> mapClass) {
-	return extractTypeFromClass(mapClass, Map.class, 0);
-    }
-
-    /**
-     * Determine the generic value type of the given Map class (if it declares one through a generic superclass or
-     * generic interface).
-     * 
-     * @param mapClass
-     *            the map class to introspect
-     * @return the generic type, or <code>null</code> if none
-     */
-    @SuppressWarnings("rawtypes")
-    public static Class<?> getMapValueType(Class<? extends Map> mapClass) {
-	return extractTypeFromClass(mapClass, Map.class, 1);
-    }
-
-    /**
-     * Determine the generic element type of the given Collection field.
+     * Determine the generic element type of the given {@link Collection} {@link Field}.
      * 
      * @param collectionField
-     *            the collection field to introspect
+     *            the {@link Collection} {@link Field} to introspect
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getCollectionFieldType(Field collectionField) {
+    public Class<?> getCollectionFieldType(Field collectionField) {
 	return getGenericFieldType(collectionField, Collection.class, 0, null, 1);
     }
 
     /**
-     * Determine the generic element type of the given Collection field.
+     * Determine the generic element type of the given {@link Collection} {@link Field}.
      * 
      * @param collectionField
-     *            the collection field to introspect
+     *            the {@link Collection} {@link Field} to introspect
      * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel) {
-	return getGenericFieldType(collectionField, Collection.class, 0, null, nestingLevel);
-    }
-
-    /**
-     * Determine the generic element type of the given Collection field.
-     * 
-     * @param collectionField
-     *            the collection field to introspect
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
+     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
+     *            Lists} , 1 would indicate the nested List, whereas 2 would indicate the element of the nested
+     *            {@link List})
      * @param typeIndexesPerLevel
      *            Map keyed by nesting level, with each value expressing the type index for traversal at that level
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel,
+    public Class<?> getCollectionFieldType(Field collectionField, int nestingLevel,
 	    Map<Integer, Integer> typeIndexesPerLevel) {
 	return getGenericFieldType(collectionField, Collection.class, 0, typeIndexesPerLevel, nestingLevel);
     }
 
     /**
-     * Determine the generic key type of the given Map field.
+     * Determine the generic key type of the given {@link Map} {@link Field}.
      * 
      * @param mapField
      *            the map field to introspect
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getMapKeyFieldType(Field mapField) {
+    public Class<?> getMapKeyFieldType(Field mapField) {
 	return getGenericFieldType(mapField, Map.class, 0, null, 1);
     }
 
     /**
-     * Determine the generic key type of the given Map field.
+     * Determine the generic key type of the given {@link Map} {@link Field}.
      * 
      * @param mapField
      *            the map field to introspect
      * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
+     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
+     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
+     *            {@link List})
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getMapKeyFieldType(Field mapField, int nestingLevel) {
+    public Class<?> getMapKeyFieldType(Field mapField, int nestingLevel) {
 	return getGenericFieldType(mapField, Map.class, 0, null, nestingLevel);
     }
 
     /**
-     * Determine the generic key type of the given Map field.
+     * Determine the generic key type of the given {@link Map} {@link Field}.
      * 
      * @param mapField
      *            the map field to introspect
      * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
+     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
+     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
+     *            {@link List})
      * @param typeIndexesPerLevel
      *            Map keyed by nesting level, with each value expressing the type index for traversal at that level
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getMapKeyFieldType(Field mapField, int nestingLevel,
-	    Map<Integer, Integer> typeIndexesPerLevel) {
+    public Class<?> getMapKeyFieldType(Field mapField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
 	return getGenericFieldType(mapField, Map.class, 0, typeIndexesPerLevel, nestingLevel);
     }
 
     /**
-     * Determine the generic value type of the given Map field.
+     * Determine the generic value type of the given {@link Map} {@link Field}.
      * 
      * @param mapField
      *            the map field to introspect
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getMapValueFieldType(Field mapField) {
+    public Class<?> getMapValueFieldType(Field mapField) {
 	return getGenericFieldType(mapField, Map.class, 1, null, 1);
     }
 
     /**
-     * Determine the generic value type of the given Map field.
+     * Determine the generic value type of the given {@link Map} {@link Field}.
      * 
      * @param mapField
      *            the map field to introspect
      * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
+     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
+     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
+     *            {@link List})
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getMapValueFieldType(Field mapField, int nestingLevel) {
+    public Class<?> getMapValueFieldType(Field mapField, int nestingLevel) {
 	return getGenericFieldType(mapField, Map.class, 1, null, nestingLevel);
     }
 
     /**
-     * Determine the generic value type of the given Map field.
+     * Determine the generic value type of the given {@link Map} {@link Field}.
      * 
      * @param mapField
      *            the map field to introspect
      * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
+     *            the nesting level of the target type (typically 1; e.g. in case of a {@link List} of {@link List
+     *            Lists}, 1 would indicate the nested List, whereas 2 would indicate the element of the nested
+     *            {@link List})
      * @param typeIndexesPerLevel
      *            Map keyed by nesting level, with each value expressing the type index for traversal at that level
      * @return the generic type, or <code>null</code> if none
      */
-    public static Class<?> getMapValueFieldType(Field mapField, int nestingLevel,
-	    Map<Integer, Integer> typeIndexesPerLevel) {
+    public Class<?> getMapValueFieldType(Field mapField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
 	return getGenericFieldType(mapField, Map.class, 1, typeIndexesPerLevel, nestingLevel);
-    }
-
-    /**
-     * Determine the generic element type of the given Collection return type.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getCollectionReturnType(Method method) {
-	return getGenericReturnType(method, Collection.class, 0, 1);
-    }
-
-    /**
-     * Determine the generic element type of the given Collection return type.
-     * <p>
-     * If the specified nesting level is higher than 1, the element type of a nested Collection/Map will be analyzed.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getCollectionReturnType(Method method, int nestingLevel) {
-	return getGenericReturnType(method, Collection.class, 0, nestingLevel);
-    }
-
-    /**
-     * Determine the generic key type of the given Map return type.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getMapKeyReturnType(Method method) {
-	return getGenericReturnType(method, Map.class, 0, 1);
-    }
-
-    /**
-     * Determine the generic key type of the given Map return type.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getMapKeyReturnType(Method method, int nestingLevel) {
-	return getGenericReturnType(method, Map.class, 0, nestingLevel);
-    }
-
-    /**
-     * Determine the generic value type of the given Map return type.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getMapValueReturnType(Method method) {
-	return getGenericReturnType(method, Map.class, 1, 1);
-    }
-
-    /**
-     * Determine the generic value type of the given Map return type.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @param nestingLevel
-     *            the nesting level of the target type (typically 1; e.g. in case of a List of Lists, 1 would indicate
-     *            the nested List, whereas 2 would indicate the element of the nested List)
-     * @return the generic type, or <code>null</code> if none
-     */
-    public static Class<?> getMapValueReturnType(Method method, int nestingLevel) {
-	return getGenericReturnType(method, Map.class, 1, nestingLevel);
     }
 
     /**
@@ -294,31 +165,15 @@ public abstract class GenericCollectionTypeResolver {
      * @param source
      *            the source class/interface defining the generic parameter types
      * @param typeIndex
-     *            the index of the type (e.g. 0 for Collections, 0 for Map keys, 1 for Map values)
+     *            the index of the type (e.g. 0 for {@link Collection Collections}, 0 for {@link Map} keys, 1 for
+     *            {@link Map} values)
      * @param nestingLevel
      *            the nesting level of the target type
      * @return the generic type, or <code>null</code> if none
      */
-    private static Class<?> getGenericFieldType(Field field, Class<?> source, int typeIndex,
+    private Class<?> getGenericFieldType(Field field, Class<?> source, int typeIndex,
 	    Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel) {
 	return extractType(field.getGenericType(), source, typeIndex, null, typeIndexesPerLevel, nestingLevel, 1);
-    }
-
-    /**
-     * Extract the generic return type from the given method.
-     * 
-     * @param method
-     *            the method to check the return type for
-     * @param source
-     *            the source class/interface defining the generic parameter types
-     * @param typeIndex
-     *            the index of the type (e.g. 0 for Collections, 0 for Map keys, 1 for Map values)
-     * @param nestingLevel
-     *            the nesting level of the target type
-     * @return the generic type, or <code>null</code> if none
-     */
-    private static Class<?> getGenericReturnType(Method method, Class<?> source, int typeIndex, int nestingLevel) {
-	return extractType(method.getGenericReturnType(), source, typeIndex, null, null, nestingLevel, 1);
     }
 
     /**
@@ -327,7 +182,7 @@ public abstract class GenericCollectionTypeResolver {
      * @param type
      *            the Type to check
      * @param source
-     *            the source collection/map Class that we check
+     *            the source {@link Collection}/{@link Map} Class that we check
      * @param typeIndex
      *            the index of the actual type argument
      * @param nestingLevel
@@ -337,9 +192,8 @@ public abstract class GenericCollectionTypeResolver {
      * @return the generic type as Class, or <code>null</code> if none
      */
     @SuppressWarnings("rawtypes")
-    private static Class<?> extractType(Type type, Class<?> source, int typeIndex,
-	    Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
-	    int currentLevel) {
+    private Class<?> extractType(Type type, Class<?> source, int typeIndex, Map<TypeVariable, Type> typeVariableMap,
+	    Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
 
 	Type resolvedType = type;
 	if (type instanceof TypeVariable && typeVariableMap != null) {
@@ -364,10 +218,10 @@ public abstract class GenericCollectionTypeResolver {
     }
 
     /**
-     * Extract the generic type from the given ParameterizedType object.
+     * Extract the generic type from the given {@link ParameterizedType} object.
      * 
      * @param ptype
-     *            the ParameterizedType to check
+     *            the {@link ParameterizedType} to check
      * @param source
      *            the expected raw source type (can be <code>null</code>)
      * @param typeIndex
@@ -376,10 +230,10 @@ public abstract class GenericCollectionTypeResolver {
      *            the nesting level of the target type
      * @param currentLevel
      *            the current nested level
-     * @return the generic type as Class, or <code>null</code> if none
+     * @return the generic type as {@link Class}, or <code>null</code> if none
      */
     @SuppressWarnings("rawtypes")
-    private static Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source, int typeIndex,
+    private Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source, int typeIndex,
 	    Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
 	    int currentLevel) {
 
@@ -444,25 +298,10 @@ public abstract class GenericCollectionTypeResolver {
     }
 
     /**
-     * Extract the generic type from the given Class object.
+     * Extract the generic type from the given {@link Class} object.
      * 
      * @param clazz
-     *            the Class to check
-     * @param source
-     *            the expected raw source type (can be <code>null</code>)
-     * @param typeIndex
-     *            the index of the actual type argument
-     * @return the generic type as Class, or <code>null</code> if none
-     */
-    private static Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex) {
-	return extractTypeFromClass(clazz, source, typeIndex, null, null, 1, 1);
-    }
-
-    /**
-     * Extract the generic type from the given Class object.
-     * 
-     * @param clazz
-     *            the Class to check
+     *            the {@link Class} to check
      * @param source
      *            the expected raw source type (can be <code>null</code>)
      * @param typeIndex
@@ -471,10 +310,10 @@ public abstract class GenericCollectionTypeResolver {
      *            the nesting level of the target type
      * @param currentLevel
      *            the current nested level
-     * @return the generic type as Class, or <code>null</code> if none
+     * @return the generic type as {@link Class}, or <code>null</code> if none
      */
     @SuppressWarnings("rawtypes")
-    private static Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex,
+    private Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex,
 	    Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
 	    int currentLevel) {
 
@@ -509,7 +348,7 @@ public abstract class GenericCollectionTypeResolver {
      * @return whether the given class is assignable to Collection or Map
      */
     @SuppressWarnings("rawtypes")
-    private static boolean isIntrospectionCandidate(Class clazz) {
+    private boolean isIntrospectionCandidate(Class clazz) {
 	return (Collection.class.isAssignableFrom(clazz) || Map.class.isAssignableFrom(clazz));
     }
 
