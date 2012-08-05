@@ -34,6 +34,22 @@ public class MockitoInjectionDetailsFactoryTest {
     }
 
     @Test
+    public void shouldCreateInjectionDetailsGivenInheritance() {
+	// Given
+	ExtendedClassWithAnnnotations object = new ExtendedClassWithAnnnotations();
+
+	// When
+	InjectionDetails injectionDetails = factory.createInjectionDetails(object);
+
+	// Then
+	assertEquals(1, injectionDetails.getInjectees().size());
+	assertSame(((ClassWithAnnnotations) object).injectee, injectionDetails.getInjectees().iterator().next());
+	assertEquals(2, injectionDetails.getInjectables().size());
+	assertTrue(injectionDetails.getInjectables().contains(object.extendedInjectable));
+	assertTrue(injectionDetails.getInjectables().contains(object.injectable));
+    }
+
+    @Test
     public void shouldCreateInjectionDetailsGivenMultipleInjectMocksAnnotations() {
 	// Given
 	ClassWithTwoInjectMocksAnnnotation object = new ClassWithTwoInjectMocksAnnnotation();
@@ -53,21 +69,21 @@ public class MockitoInjectionDetailsFactoryTest {
 	private OutputStream injectee = new ByteArrayOutputStream();
 
 	@Mock
-	private InputStream injectable = mock(InputStream.class);
+	protected InputStream injectable = mock(InputStream.class);
     }
 
     private class ClassWithTwoInjectMocksAnnnotation {
 
 	@InjectMocks
-	private OutputStream injectable1 = new ByteArrayOutputStream();
+	OutputStream injectable1 = new ByteArrayOutputStream();
 
 	@InjectMocks
-	private InputStream injectable2 = new ByteArrayInputStream("".getBytes());
+	public InputStream injectable2 = new ByteArrayInputStream("".getBytes());
     }
 
-    private class ClassWithMockAnnnotation {
+    private class ExtendedClassWithAnnnotations extends ClassWithAnnnotations {
 
 	@Mock
-	private OutputStream outputStream = mock(OutputStream.class);
+	private OutputStream extendedInjectable = mock(OutputStream.class);
     }
 }
