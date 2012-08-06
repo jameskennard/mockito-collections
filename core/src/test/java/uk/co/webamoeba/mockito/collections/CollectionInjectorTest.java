@@ -23,6 +23,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
+
 /**
  * @author James Kennard
  */

@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.util;
 
 /*
  * Copyright 2002-2011 the original author or authors.

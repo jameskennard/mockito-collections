@@ -6,6 +6,8 @@ import java.util.Collection;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
+
 /**
  * Utility class to orchestrate the injection of {@link Collection Collections} of Mockito Mocks. This class will scan
  * an {@link Object}, typically a Mockito style unit test, and inject the values of {@link Field Fields} annotated with

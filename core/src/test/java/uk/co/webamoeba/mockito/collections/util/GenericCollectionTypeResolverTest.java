@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.util;
 
 import static org.junit.Assert.assertSame;
 
@@ -11,6 +11,8 @@ import java.util.Collection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
  * Unit test for {@link GenericCollectionTypeResolver}. Unlike {@link GenericCollectionTypeResolver} this class has not

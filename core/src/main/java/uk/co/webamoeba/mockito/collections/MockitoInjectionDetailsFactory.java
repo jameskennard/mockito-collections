@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.internal.util.reflection.FieldReader;
 
+import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
+import uk.co.webamoeba.mockito.collections.annotation.Injectable;
+
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on the Mockito annotations
  * {@link InjectMocks} and {@link Mock}. Fields with the {@link InjectMocks} annotation are considered injectees. Fields
@@ -25,6 +28,8 @@ public class MockitoInjectionDetailsFactory {
     public InjectionDetails createInjectionDetails(Object object) {
 	Set<Object> injectees = getFieldValues(object, InjectMocks.class);
 	Set<Object> injectables = getFieldValues(object, Mock.class);
+	injectables.addAll(getFieldValues(object, Injectable.class));
+	injectables.removeAll(getFieldValues(object, IgnoreInjectable.class));
 	return new InjectionDetails(injectees, injectables);
     }
 

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
+import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
  * The {@link CollectionInjector} is responsible for performing the injection of injectees into injectables. The
