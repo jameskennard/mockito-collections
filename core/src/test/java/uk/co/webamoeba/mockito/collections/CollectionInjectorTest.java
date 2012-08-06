@@ -223,6 +223,28 @@ public class CollectionInjectorTest {
 	assertSame(vector, injectee.listeners);
     }
 
+    @Test
+    public void shouldInjectIntoPrivateArrayField() throws Exception {
+	// Given
+	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+	ClassWithPrivateEventListenerArray injectee = new ClassWithPrivateEventListenerArray();
+	Set<Object> injectables = mock(Set.class);
+	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+	given(injectionDetails.getInjectables()).willReturn(injectables);
+
+	Set<EventListener> stragtegyInjectables = mock(Set.class);
+	EventListener[] eventListeners = { mock(EventListener.class) };
+	given(strategy.getInjectables(injectables, EventListener.class)).willReturn(stragtegyInjectables);
+	given(stragtegyInjectables.toArray()).willReturn(eventListeners);
+
+	// When
+	injector.inject(injectionDetails);
+
+	// Then
+	assertSame(eventListeners, injectee.listeners);
+    }
+
     private class ClassWithPublicEventListenerCollection {
 
 	public Collection<EventListener> listeners;
@@ -252,5 +274,10 @@ public class CollectionInjectorTest {
     private class ClassWithPrivateEventListenerVector {
 
 	private Vector<EventListener> listeners;
+    }
+
+    private class ClassWithPrivateEventListenerArray {
+
+	private EventListener[] listeners;
     }
 }

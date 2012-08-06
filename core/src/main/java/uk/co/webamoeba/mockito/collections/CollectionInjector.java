@@ -45,11 +45,11 @@ public class CollectionInjector {
     private void inject(Object injectee, Set<Object> injectables) {
 	Field[] fields = injectee.getClass().getDeclaredFields();
 	for (Field field : fields) {
-	    Type genericType = field.getGenericType();
-	    if (genericType instanceof ParameterizedType) {
-		ParameterizedType type = (ParameterizedType) genericType;
+	    Type type = field.getGenericType();
+	    if (type instanceof ParameterizedType) {
+		ParameterizedType parameterizedType = (ParameterizedType) type;
 		// should be safe, ParamerterizedType should only ever return a Class from this method
-		Class rawType = (Class) type.getRawType();
+		Class rawType = (Class) parameterizedType.getRawType();
 		if (Collection.class.isAssignableFrom(rawType)) {
 		    Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field);
 		    if (collectionType != null) {
@@ -58,6 +58,14 @@ public class CollectionInjector {
 			    Collection collection = collectionFactory.createCollection(rawType, strategyInjectables);
 			    new FieldValueMutator(injectee, field).mutateTo(collection);
 			}
+		    }
+		}
+	    } else if (type instanceof Class) {
+		Class clazz = (Class) type;
+		if (clazz.isArray()) {
+		    Set strategyInjectables = strategy.getInjectables(injectables, clazz.getComponentType());
+		    if (!strategyInjectables.isEmpty()) {
+			new FieldValueMutator(injectee, field).mutateTo(strategyInjectables.toArray());
 		    }
 		}
 	    }
