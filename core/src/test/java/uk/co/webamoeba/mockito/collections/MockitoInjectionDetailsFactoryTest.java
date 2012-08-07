@@ -13,7 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
+import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
+import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 
 /**
  * @author James Kennard
@@ -58,15 +60,16 @@ public class MockitoInjectionDetailsFactoryTest {
     @Test
     public void shouldCreateInjectionDetailsGivenMultipleInjectMocksAnnotations() {
 	// Given
-	ClassWithTwoInjectMocksAnnnotation object = new ClassWithTwoInjectMocksAnnnotation();
+	ClassWithMultipleInjectees object = new ClassWithMultipleInjectees();
 
 	// When
 	InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
 	// Then
-	assertEquals(2, injectionDetails.getInjectees().size());
-	assertTrue(injectionDetails.getInjectees().contains(object.injectable1));
-	assertTrue(injectionDetails.getInjectees().contains(object.injectable2));
+	assertEquals(3, injectionDetails.getInjectees().size());
+	assertTrue(injectionDetails.getInjectees().contains(object.injectee1));
+	assertTrue(injectionDetails.getInjectees().contains(object.injectee2));
+	assertTrue(injectionDetails.getInjectees().contains(object.injectee3));
     }
 
     private class ClassWithAnnnotations {
@@ -87,6 +90,14 @@ public class MockitoInjectionDetailsFactoryTest {
 	@Injectable
 	@IgnoreInjectable
 	public InputStream ignoredInjectable2 = mock(InputStream.class);
+
+	@InjectMocks
+	@IgnoreInjectee
+	InputStream ignoredInjectee1 = mock(InputStream.class);
+
+	@Injectee
+	@IgnoreInjectee
+	public InputStream ignoredInjectee2 = mock(InputStream.class);
     }
 
     private class ExtendedClassWithAnnnotations extends ClassWithAnnnotations {
@@ -95,12 +106,15 @@ public class MockitoInjectionDetailsFactoryTest {
 	private OutputStream extendedInjectable = mock(OutputStream.class);
     }
 
-    private class ClassWithTwoInjectMocksAnnnotation {
+    private class ClassWithMultipleInjectees {
 
 	@InjectMocks
-	OutputStream injectable1 = mock(OutputStream.class);
+	OutputStream injectee1 = mock(OutputStream.class);
 
 	@InjectMocks
-	public InputStream injectable2 = mock(InputStream.class);
+	private InputStream injectee2 = mock(InputStream.class);
+
+	@Injectee
+	public InputStream injectee3 = mock(InputStream.class);
     }
 }

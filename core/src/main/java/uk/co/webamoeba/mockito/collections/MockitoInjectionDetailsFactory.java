@@ -10,7 +10,9 @@ import org.mockito.Mock;
 import org.mockito.internal.util.reflection.FieldReader;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
+import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
+import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on the Mockito annotations
@@ -26,11 +28,23 @@ public class MockitoInjectionDetailsFactory {
      * @return {@link InjectionDetails} created based on the Mockito annotations {@link Mock} and {@link InjectMocks}.
      */
     public InjectionDetails createInjectionDetails(Object object) {
+	Set<Object> injectees = getInjectees(object);
+	Set<Object> injectables = getInjectables(object);
+	return new InjectionDetails(injectees, injectables);
+    }
+
+    private Set<Object> getInjectees(Object object) {
 	Set<Object> injectees = getFieldValues(object, InjectMocks.class);
+	injectees.addAll(getFieldValues(object, Injectee.class));
+	injectees.removeAll(getFieldValues(object, IgnoreInjectee.class));
+	return injectees;
+    }
+
+    private Set<Object> getInjectables(Object object) {
 	Set<Object> injectables = getFieldValues(object, Mock.class);
 	injectables.addAll(getFieldValues(object, Injectable.class));
 	injectables.removeAll(getFieldValues(object, IgnoreInjectable.class));
-	return new InjectionDetails(injectees, injectables);
+	return injectables;
     }
 
     private Set<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {
