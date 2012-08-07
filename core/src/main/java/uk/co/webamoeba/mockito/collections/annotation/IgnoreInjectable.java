@@ -5,15 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
-import java.util.Collection;
 
 import org.mockito.Mock;
 
 /**
- * Annotation which when added to a {@link Field} in a test with a Mockito {@link Mock} annotation tells Mockito
- * Collections not to use this mock as an injectable. That is to say, you can prevent Mockito-Collections from using
- * certain fields when injecting {@link Collection Collections}. {@link IgnoreInjectable} always takes precedence, for
- * example a {@link Field} annotated with {@link Injectable} and {@link IgnoreInjectable} will be ignored.
+ * Annotation which when added to a {@link Field} in a test that would otherwise be considered an injectable, tells
+ * Mockito-Collections not to use this as an injectable. {@link IgnoreInjectable} always takes precedence, for example a
+ * {@link Field} annotated with {@link Injectable} or {@link Mock}, and annotated with {@link IgnoreInjectable} will be
+ * ignored.
  * 
  * @see Injectable
  * @author James Kennard
