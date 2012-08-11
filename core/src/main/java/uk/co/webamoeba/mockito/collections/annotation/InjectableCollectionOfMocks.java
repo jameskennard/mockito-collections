@@ -7,13 +7,14 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
+import org.mockito.Mock;
+
 /**
- * Allows Mockito-Collections to instantiate {@link Field Fields} with a {@link Collection} and prepopulate the
- * collection with a {@link #numberOfMocks()}.
+ * Allows Mockito-Collections to instantiate {@link Field Fields} with a {@link Collection} and pre-populate the
+ * collection with a specified {@link #numberOfMocks() number of mocks}. This is similar to using the Mockito
+ * {@link Mock} annotation except that the {@link Collection} itself will not be a mock, but it's contents will be.
  * 
  * <pre>
- * 
- * 
  * 
  * &#064;InjectableCollectionOfMocks(numberOfMocks = 2)
  * private Collection&lt;EventListener&gt; eventListeners;
@@ -32,5 +33,5 @@ import java.util.Collection;
 public @interface InjectableCollectionOfMocks {
 
     // FIXME complete this!
-    int numberOfMocks() default 0;
+    int numberOfMocks() default 1;
 }

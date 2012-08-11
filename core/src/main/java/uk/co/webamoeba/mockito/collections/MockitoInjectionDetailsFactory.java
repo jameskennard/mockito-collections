@@ -1,6 +1,7 @@
 package uk.co.webamoeba.mockito.collections;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,15 +14,30 @@ import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.Injectee;
+import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 
 /**
- * Factory that creates {@link InjectionDetails} from an {@link Object} based on the Mockito annotations
- * {@link InjectMocks} and {@link Mock}. Fields with the {@link InjectMocks} annotation are considered injectees. Fields
- * with the {@link Mock} annotation are considered injectables.
+ * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
+ * annotations. {@link Field Fields} with the {@link InjectMocks} or {@link Injectee} annotation are considered
+ * injectees. {@link Field Fields} with the {@link Mock} or {@link Injectable} annotation are considered injectables. It
+ * is also possible to ignore fields that would other wise be considered injectables or injectees using the
+ * {@link IgnoreInjectable} and {@link IgnoreInjectee} annotations respectively.
  * 
+ * @see Mock
+ * @see InjectMocks
+ * @see Injectable
+ * @see Injectee
+ * @see IgnoreInjectable
+ * @see IgnoreInjectee
  * @author James Kennard
  */
 public class MockitoInjectionDetailsFactory {
+
+    private AnnotatedFieldRetriever annotatedFieldRetriever;
+
+    public MockitoInjectionDetailsFactory(AnnotatedFieldRetriever annotatedFieldRetriever) {
+	this.annotatedFieldRetriever = annotatedFieldRetriever;
+    }
 
     /**
      * @param object
@@ -48,7 +64,7 @@ public class MockitoInjectionDetailsFactory {
     }
 
     private Set<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {
-	Set<Field> fields = getAnnotatedFields(object.getClass(), annotationClass);
+	Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), annotationClass);
 	return getFieldValues(object, fields);
     }
 
@@ -67,28 +83,4 @@ public class MockitoInjectionDetailsFactory {
 	return values;
     }
 
-    /**
-     * @param clazz
-     *            The {@link Class} from which we want to retrieve annotated {@link Field Fields}
-     * @param annotationClass
-     *            The annotation to use to identify the {@link Field Fields} we want to retrieve
-     * @return The {@link Field Fields} from the {@link Class} that are annotated with the {@link Annotation}
-     *         {@link Class}.
-     */
-    private Set<Field> getAnnotatedFields(Class<?> clazz, Class<? extends Annotation> annotationClass) {
-	Set<Field> mockDependentFields = new HashSet<Field>();
-	while (clazz != Object.class) {
-	    // We use getDeclaredFields because we want to get fields that are not otherwise visible. This means we also
-	    // want to look through the inheritance hierarchy because getDeclaredFields will not do
-	    // this for us
-	    Field[] fields = clazz.getDeclaredFields();
-	    for (Field field : fields) {
-		if (null != field.getAnnotation(annotationClass)) {
-		    mockDependentFields.add(field);
-		}
-	    }
-	    clazz = clazz.getSuperclass();
-	}
-	return mockDependentFields;
-    }
 }

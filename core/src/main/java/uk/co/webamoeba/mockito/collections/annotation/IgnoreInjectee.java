@@ -19,5 +19,5 @@ import org.mockito.InjectMocks;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface IgnoreInjectee {
-    // FIXME complete this!
+
 }
