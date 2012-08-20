@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import uk.co.webamoeba.mockito.collections.annotation.InjectableCollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
@@ -17,13 +16,13 @@ import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
- * The {@link MockitoCollectionInitialiser} is responsible for handling the instantiation of {@link Collection
- * Collections} and Mockito {@link Mock}s within those {@link Collection Collections} on {@link Field Fields} annotated
- * with the {@link InjectableCollectionOfMocks} annotation.
+ * The {@link CollectionInitialiser} is responsible for handling the instantiation of {@link Collection Collections} and
+ * Mockito {@link Mock}s within those {@link Collection Collections} on {@link Field Fields} annotated with the
+ * {@link InjectableCollectionOfMocks} annotation.
  * 
  * @author James Kennard
  */
-public class MockitoCollectionInitialiser {
+public class CollectionInitialiser {
 
     private AnnotatedFieldRetriever annotatedFieldRetriever;
 
@@ -31,11 +30,15 @@ public class MockitoCollectionInitialiser {
 
     private CollectionFactory collectionFactory;
 
-    public MockitoCollectionInitialiser(AnnotatedFieldRetriever annotatedFieldRetriever,
-	    GenericCollectionTypeResolver genericCollectionTypeResolver, CollectionFactory collectionFactory) {
+    private MockitoMockStrategy mockitoMockStrategy;
+
+    public CollectionInitialiser(AnnotatedFieldRetriever annotatedFieldRetriever,
+	    GenericCollectionTypeResolver genericCollectionTypeResolver, CollectionFactory collectionFactory,
+	    MockitoMockStrategy mockitoMockStrategy) {
 	this.annotatedFieldRetriever = annotatedFieldRetriever;
 	this.genericCollectionTypeResolver = genericCollectionTypeResolver;
 	this.collectionFactory = collectionFactory;
+	this.mockitoMockStrategy = mockitoMockStrategy;
     }
 
     /**
@@ -56,24 +59,32 @@ public class MockitoCollectionInitialiser {
 	    Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
 	    InjectableCollectionOfMocks annotation = field.getAnnotation(InjectableCollectionOfMocks.class);
 	    assert annotation != null : "Field is missing InjectableCollectionOfMocks annotation, unexpected field retrieved from annotatedFieldRetriever";
-	    int numberOfMocks = annotation.numberOfMocks();
-	    if (numberOfMocks < 0) {
-		throw new MockitoCollectionsException(
-			"Unexpected numberOfMocks, the minimum number of mocks you can specify using the "
-				+ InjectableCollectionOfMocks.class + " is zero.");
-	    }
-	    Collection<?> mocks = createMocks((Class) collectionType, numberOfMocks); // TODO is the cast
-										      // to Class okay?
+	    Collection<?> mocks = createMocks((Class) collectionType, getNumberOfMocks(annotation)); // TODO is the cast
+	    // to Class okay?
 	    Collection collection = collectionFactory.createCollection(rawType, mocks);
 	    new FieldValueMutator(object, field).mutateTo(collection);
 	}
+    }
+
+    /**
+     * @param annotation
+     * @return The {@link InjectableCollectionOfMocks#numberOfMocks() number of mocks} declared on the annotation.
+     */
+    private int getNumberOfMocks(InjectableCollectionOfMocks annotation) {
+	int numberOfMocks = annotation.numberOfMocks();
+	if (numberOfMocks < 0) {
+	    throw new MockitoCollectionsException(
+		    "Unexpected numberOfMocks, the minimum number of mocks you can specify using the "
+			    + InjectableCollectionOfMocks.class + " is zero.");
+	}
+	return numberOfMocks;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private Collection<?> createMocks(Class collectionType, int numberOfMocks) {
 	Set mocks = new HashSet();
 	for (int i = 0; i < numberOfMocks; i++) {
-	    Object mock = Mockito.mock(collectionType);
+	    Object mock = mockitoMockStrategy.createMock(collectionType);
 	    mocks.add(mock);
 	}
 	return mocks;

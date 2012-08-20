@@ -2,25 +2,19 @@ package uk.co.webamoeba.mockito.collections;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.Set;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.util.MockUtil;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.annotation.InjectableCollectionOfMocks;
@@ -29,10 +23,10 @@ import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MockitoCollectionInitialiserTest {
+public class CollectionInitialiserTest {
 
     @InjectMocks
-    private MockitoCollectionInitialiser initialiser;
+    private CollectionInitialiser initialiser;
 
     @Mock
     private AnnotatedFieldRetriever annotatedFieldRetriever;
@@ -43,7 +37,8 @@ public class MockitoCollectionInitialiserTest {
     @Mock
     private CollectionFactory collectionFactory;
 
-    private MockUtil mockUtil = new MockUtil();
+    @Mock
+    private MockitoMockStrategy mockitoMockStrategy;
 
     @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -56,8 +51,10 @@ public class MockitoCollectionInitialiserTest {
 		.willReturn(fields);
 	Class collectionType = EventListener.class;
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
+	EventListener mockEventListener = mock(EventListener.class);
+	given(mockitoMockStrategy.createMock(EventListener.class)).willReturn(mockEventListener);
 	Collection collection = mock(Collection.class);
-	given(collectionFactory.createCollection(eq(Collection.class), mocks(collectionType, 1)))
+	given(collectionFactory.createCollection(eq(Collection.class), eq(Collections.singleton(mockEventListener))))
 		.willReturn(collection);
 
 	// When
@@ -79,8 +76,7 @@ public class MockitoCollectionInitialiserTest {
 	Class collectionType = EventListener.class;
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
 	Collection collection = mock(Collection.class);
-	given(collectionFactory.createCollection(eq(Collection.class), mocks(collectionType, 0)))
-		.willReturn(collection);
+	given(collectionFactory.createCollection(Collection.class, Collections.emptySet())).willReturn(collection);
 
 	// When
 	initialiser.initialise(object);
@@ -100,49 +96,12 @@ public class MockitoCollectionInitialiserTest {
 		.willReturn(fields);
 	Class collectionType = EventListener.class;
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
-	Collection collection = mock(Collection.class);
-	given(collectionFactory.createCollection(eq(Collection.class), mocks(collectionType, 0)))
-		.willReturn(collection);
 
 	// When
 	initialiser.initialise(object);
 
 	// Then
 	// Exception Thrown
-    }
-
-    /**
-     * @param collectionType
-     *            The type of objects that must be in the {@link Collection} in order for the {@link Collection} to
-     *            match
-     * @param size
-     *            Number of objects that must be in the {@link Collection} in order for the {@link Collection} to match
-     * @return {@link Matcher} that will match any {@link Collection} of the specified size containing only {@link Mock}
-     *         objects of the specified {@link Type}.
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private Collection mocks(final Class collectionType, final int size) {
-	return argThat(new BaseMatcher<Collection>() {
-
-	    public boolean matches(Object item) {
-		Collection collection = (Collection) item;
-		if (collection.size() != size) {
-		    return false;
-		}
-		for (Object object : collection) {
-		    if (!mockUtil.isMock(object)) {
-			return false;
-		    }
-		    if (!collectionType.isAssignableFrom(object.getClass())) {
-			return false;
-		    }
-		}
-		return true;
-	    }
-
-	    public void describeTo(Description description) {
-	    }
-	});
     }
 
     private Field getField(Class<?> clazz, String name) {
