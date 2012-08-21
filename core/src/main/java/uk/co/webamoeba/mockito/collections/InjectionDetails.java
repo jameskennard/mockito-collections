@@ -30,21 +30,26 @@ public class InjectionDetails {
      * @param injectables
      *            {@link Object}s that can be injected into {@link Collection}s in the injectees.
      */
-    public InjectionDetails(Set<Object> injectees, Set<Object> injectables) {
+    public InjectionDetails(Set<Object> injectees, Set<Object> injectables,
+	    Set<InjectableCollection<Collection<Object>, Object>> injectableCollections) {
 	if (injectees == null) {
 	    throw new IllegalArgumentException("Injectees must not be null");
 	}
-	this.injectees = injectees;
 	if (injectables == null) {
-	    this.injectables = Collections.emptySet();
-	} else {
-	    this.injectables = injectables;
+	    throw new IllegalArgumentException("Injectables must not be null");
 	}
+	if (injectableCollections == null) {
+	    throw new IllegalArgumentException("InjectableCollections must not be null");
+	}
+	this.injectees = Collections.unmodifiableSet(injectees);
+	this.injectables = Collections.unmodifiableSet(injectables);
+	this.injectableCollections = injectableCollections;
     }
 
     /**
      * @return The {@link Object}s into which we want to inject {@link Collection}s. If there are no injectables this
-     *         method will return an empty {@link Set}, this method will never return <code>null</code>.
+     *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
+     *         {@link Set} is unmodifiable.
      */
     public Set<Object> getInjectees() {
 	return injectees;
@@ -53,9 +58,14 @@ public class InjectionDetails {
     /**
      * @return {@link Set} of {@link Object}s that can be injected into {@link Collection}s. If there are no
      *         injectables, this method will return an empty {@link Set}, this method will never return
-     *         <code>null</code>.
+     *         <code>null</code>. The returned {@link Set} is unmodifiable.
      */
     public Set<Object> getInjectables() {
 	return injectables;
     }
+
+    public Set<InjectableCollection<Collection<Object>, Object>> getInjectableCollections() {
+	return injectableCollections;
+    }
+
 }

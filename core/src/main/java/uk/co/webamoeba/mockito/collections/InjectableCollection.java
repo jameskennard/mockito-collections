@@ -18,6 +18,7 @@ import java.util.Set;
  * 
  * @author James Kennard
  */
+// TODO consider removing generics, they are only really useful from a documentation perspective.
 public class InjectableCollection<C extends Collection<?>, E extends Object> {
 
     /**

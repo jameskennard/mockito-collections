@@ -20,6 +20,7 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * <pre>
  * 
  * 
+ * 
  * &#064;InjectMocks
  * private MyClassWithEventListeners objectUnderTest;
  * 
@@ -41,7 +42,7 @@ public class MockitoCollectionInjector {
 	    new DefaultInjectableSelectionStrategy(), new GenericCollectionTypeResolver());
 
     private static MockitoInjectionDetailsFactory factory = new MockitoInjectionDetailsFactory(
-	    new AnnotatedFieldRetriever());
+	    new AnnotatedFieldRetriever(), new GenericCollectionTypeResolver());
 
     public static void inject(Object object) {
 	injector.inject(factory.createInjectionDetails(object));

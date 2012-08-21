@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.annotation.InjectableCollectionOfMocks;
+import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -47,7 +47,7 @@ public class CollectionInitialiserTest {
 	ClassWithAnnnotations object = new ClassWithAnnnotations();
 	Field field = getField(object.getClass(), "collection");
 	Set<Field> fields = Collections.singleton(field);
-	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectableCollectionOfMocks.class))
+	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
 		.willReturn(fields);
 	Class collectionType = EventListener.class;
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
@@ -71,7 +71,7 @@ public class CollectionInitialiserTest {
 	ClassWithAnnnotations object = new ClassWithAnnnotations();
 	Field field = getField(object.getClass(), "collectionWithZeroMocks");
 	Set<Field> fields = Collections.singleton(field);
-	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectableCollectionOfMocks.class))
+	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
 		.willReturn(fields);
 	Class collectionType = EventListener.class;
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
@@ -92,7 +92,7 @@ public class CollectionInitialiserTest {
 	ClassWithAnnnotations object = new ClassWithAnnnotations();
 	Field field = getField(object.getClass(), "collectionWithNegativeNumberOfMocks");
 	Set<Field> fields = Collections.singleton(field);
-	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectableCollectionOfMocks.class))
+	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
 		.willReturn(fields);
 	Class collectionType = EventListener.class;
 	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
@@ -116,14 +116,14 @@ public class CollectionInitialiserTest {
 
     private class ClassWithAnnnotations {
 
-	@InjectableCollectionOfMocks
+	@CollectionOfMocks
 	private Collection<EventListener> collection;
 
-	@InjectableCollectionOfMocks(numberOfMocks = 0)
+	@CollectionOfMocks(numberOfMocks = 0)
 	private Collection<EventListener> collectionWithZeroMocks;
 
 	@SuppressWarnings("unused")
-	@InjectableCollectionOfMocks(numberOfMocks = -1)
+	@CollectionOfMocks(numberOfMocks = -1)
 	private Collection<EventListener> collectionWithNegativeNumberOfMocks;
     }
 }

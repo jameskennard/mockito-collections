@@ -3,6 +3,8 @@ package uk.co.webamoeba.mockito.collections;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +16,9 @@ import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.Injectee;
+import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
+import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
@@ -35,8 +39,12 @@ public class MockitoInjectionDetailsFactory {
 
     private AnnotatedFieldRetriever annotatedFieldRetriever;
 
-    public MockitoInjectionDetailsFactory(AnnotatedFieldRetriever annotatedFieldRetriever) {
+    private GenericCollectionTypeResolver genericCollectionTypeResolver;
+
+    public MockitoInjectionDetailsFactory(AnnotatedFieldRetriever annotatedFieldRetriever,
+	    GenericCollectionTypeResolver genericCollectionTypeResolver) {
 	this.annotatedFieldRetriever = annotatedFieldRetriever;
+	this.genericCollectionTypeResolver = genericCollectionTypeResolver;
     }
 
     /**
@@ -46,7 +54,8 @@ public class MockitoInjectionDetailsFactory {
     public InjectionDetails createInjectionDetails(Object object) {
 	Set<Object> injectees = getInjectees(object);
 	Set<Object> injectables = getInjectables(object);
-	return new InjectionDetails(injectees, injectables);
+	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = getInjectableCollections(object);
+	return new InjectionDetails(injectees, injectables, injectableCollections);
     }
 
     private Set<Object> getInjectees(Object object) {
@@ -61,6 +70,29 @@ public class MockitoInjectionDetailsFactory {
 	injectables.addAll(getFieldValues(object, Injectable.class));
 	injectables.removeAll(getFieldValues(object, IgnoreInjectable.class));
 	return injectables;
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private Set<InjectableCollection<Collection<Object>, Object>> getInjectableCollections(Object object) {
+	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = new HashSet<InjectableCollection<Collection<Object>, Object>>();
+	Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
+		uk.co.webamoeba.mockito.collections.annotation.InjectableCollection.class);
+	for (Field field : fields) {
+	    Object fieldValue = new FieldReader(object, field).read();
+	    if (!(fieldValue instanceof Collection)) {
+		throw new MockitoCollectionsException(
+			"Found field with InjectableCollection annotation, but the field is not a Collection, field is '"
+				+ field.getName() + "'");
+	    }
+	    Collection<?> value = (Collection<?>) fieldValue;
+	    Class<Collection<?>> typeOfCollection = (Class<Collection<?>>) ((ParameterizedType) field.getGenericType())
+		    .getRawType();
+	    Class typeOfElements = genericCollectionTypeResolver.getCollectionFieldType(field);
+	    InjectableCollection injectableCollection = new InjectableCollection(value, typeOfCollection,
+		    typeOfElements);
+	    injectableCollections.add(injectableCollection);
+	}
+	return injectableCollections;
     }
 
     private Set<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {
