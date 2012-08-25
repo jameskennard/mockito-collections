@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.Field;
@@ -11,6 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -239,6 +241,35 @@ public class CollectionInjectorTest {
 	EventListener[] eventListeners = { mock(EventListener.class) };
 	given(strategy.getInjectables(injectables, EventListener.class)).willReturn(stragtegyInjectables);
 	given(stragtegyInjectables.toArray()).willReturn(eventListeners);
+
+	// When
+	injector.inject(injectionDetails);
+
+	// Then
+	assertSame(eventListeners, injectee.listeners);
+    }
+
+    @Test
+    public void shouldInjectGivenInjectableCollection() throws NoSuchFieldException {
+	// Given
+	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+	ClassWithPrivateEventListenerSet injectee = new ClassWithPrivateEventListenerSet();
+	Set<Object> injectables = mock(Set.class);
+	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+	given(injectionDetails.getInjectables()).willReturn(injectables);
+	given(injectionDetails.getInjectableCollectionSet()).willReturn(injectableCollectionSet);
+
+	Class<EventListener> clazz = EventListener.class;
+	InjectableCollection injectableCollection = mock(InjectableCollection.class, RETURNS_DEEP_STUBS);
+	Set<EventListener> eventListeners = new HashSet<EventListener>();
+	given(injectableCollection.getValue()).willReturn(eventListeners);
+	given(strategy.getInjectableCollection(injectableCollectionSet, Set.class, clazz)).willReturn(
+		injectableCollection);
+
+	Field field = getField("listeners", injectee);
+	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
 
 	// When
 	injector.inject(injectionDetails);

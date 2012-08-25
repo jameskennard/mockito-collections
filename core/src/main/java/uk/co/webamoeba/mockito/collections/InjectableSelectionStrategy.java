@@ -21,4 +21,20 @@ public interface InjectableSelectionStrategy {
      * @return
      */
     public <T> Set<T> getInjectables(Set<Object> injectables, Class<T> injectableClass);
+
+    /**
+     * Gets the {@link InjectableCollection} from the provided {@link InjectableCollectionSet} that matches the
+     * specified typeOfCollection and typeOfElements.
+     * 
+     * @param injectableCollectionSet
+     *            The {@link InjectableCollection InjectableCollections} in which to look for a matching
+     *            {@link InjectableCollection}.
+     * @param typeOfCollection
+     *            The type of {@link Collection} that we are looking for.
+     * @param typeOfElements
+     *            The type of elements within the {@link Collection} that we are looking for.
+     * @return
+     */
+    public <C extends Collection<E>, E extends Object> InjectableCollection<C, E> getInjectableCollection(
+	    InjectableCollectionSet injectableCollectionSet, Class<C> typeOfCollection, Class<E> typeOfElements);
 }

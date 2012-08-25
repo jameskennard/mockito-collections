@@ -30,15 +30,15 @@ public class CollectionInitialiser {
 
     private CollectionFactory collectionFactory;
 
-    private MockitoMockStrategy mockitoMockStrategy;
+    private MockStrategy mockStrategy;
 
     public CollectionInitialiser(AnnotatedFieldRetriever annotatedFieldRetriever,
 	    GenericCollectionTypeResolver genericCollectionTypeResolver, CollectionFactory collectionFactory,
-	    MockitoMockStrategy mockitoMockStrategy) {
+	    MockStrategy mockStrategy) {
 	this.annotatedFieldRetriever = annotatedFieldRetriever;
 	this.genericCollectionTypeResolver = genericCollectionTypeResolver;
 	this.collectionFactory = collectionFactory;
-	this.mockitoMockStrategy = mockitoMockStrategy;
+	this.mockStrategy = mockStrategy;
     }
 
     /**
@@ -48,8 +48,7 @@ public class CollectionInitialiser {
      * @param object
      */
     public void initialise(Object object) {
-	Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
-		CollectionOfMocks.class);
+	Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class);
 	// TODO tidy this up, looks like a nasty big block of code...
 	for (Field field : fields) {
 	    Type type = field.getGenericType();
@@ -84,7 +83,7 @@ public class CollectionInitialiser {
     private Collection<?> createMocks(Class collectionType, int numberOfMocks) {
 	Set mocks = new HashSet();
 	for (int i = 0; i < numberOfMocks; i++) {
-	    Object mock = mockitoMockStrategy.createMock(collectionType);
+	    Object mock = mockStrategy.createMock(collectionType);
 	    mocks.add(mock);
 	}
 	return mocks;

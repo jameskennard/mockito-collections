@@ -1,9 +1,9 @@
 package uk.co.webamoeba.mockito.collections;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
@@ -21,8 +21,8 @@ public class InjectionDetailsTest {
 	Object injectee = "Some Injectee";
 	Set<Object> injectees = Collections.singleton(injectee);
 	Set<Object> injectables = mock(Set.class);
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = Collections.emptySet();
-	InjectionDetails details = new InjectionDetails(injectees, injectables, injectableCollections);
+	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+	InjectionDetails details = new InjectionDetails(injectees, injectables, injectableCollectionSet);
 
 	// When
 	Set<Object> actualInjectees = details.getInjectees();
@@ -37,8 +37,8 @@ public class InjectionDetailsTest {
 	Set<Object> injectees = mock(Set.class);
 	Object injectable = "Some Injectable";
 	Set<Object> injectables = Collections.singleton(injectable);
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = Collections.emptySet();
-	InjectionDetails details = new InjectionDetails(injectees, injectables, injectableCollections);
+	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+	InjectionDetails details = new InjectionDetails(injectees, injectables, injectableCollectionSet);
 
 	// When
 	Set<Object> actualInjectables = details.getInjectables();
@@ -48,21 +48,18 @@ public class InjectionDetailsTest {
     }
 
     @Test
-    public void shouldGetInjectableCollections() {
+    public void shouldGetInjectableCollectionSet() {
 	// Given
 	Set<Object> injectees = mock(Set.class);
 	Set<Object> injectables = Collections.emptySet();
-	InjectableCollection<Collection<Object>, Object> injectableCollection = mock(InjectableCollection.class);
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = Collections
-		.singleton(injectableCollection);
-	InjectionDetails details = new InjectionDetails(injectees, injectables, injectableCollections);
+	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+	InjectionDetails details = new InjectionDetails(injectees, injectables, injectableCollectionSet);
 
 	// When
-	Set<InjectableCollection<Collection<Object>, Object>> actualInjectableCollections = details
-		.getInjectableCollections();
+	InjectableCollectionSet actualInjectableCollectionSet = details.getInjectableCollectionSet();
 
 	// Then
-	assertEquals(injectableCollections, actualInjectableCollections);
+	assertSame(injectableCollectionSet, actualInjectableCollectionSet);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -70,10 +67,10 @@ public class InjectionDetailsTest {
 	// Given
 	Set<Object> injectees = null;
 	Set<Object> injectables = Collections.emptySet();
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = Collections.emptySet();
+	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 
 	// When
-	new InjectionDetails(injectees, injectables, injectableCollections);
+	new InjectionDetails(injectees, injectables, injectableCollectionSet);
 
 	// Then
 	// Exception thrown
@@ -84,10 +81,10 @@ public class InjectionDetailsTest {
 	// Given
 	Set<Object> injectees = Collections.emptySet();
 	Set<Object> injectables = null;
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = Collections.emptySet();
+	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 
 	// When
-	new InjectionDetails(injectees, injectables, injectableCollections);
+	new InjectionDetails(injectees, injectables, injectableCollectionSet);
 
 	// Then
 	// Exception thrown
@@ -98,10 +95,10 @@ public class InjectionDetailsTest {
 	// Given
 	Set<Object> injectees = Collections.emptySet();
 	Set<Object> injectables = Collections.emptySet();
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = null;
+	InjectableCollectionSet injectableCollectionSet = null;
 
 	// When
-	new InjectionDetails(injectees, injectables, injectableCollections);
+	new InjectionDetails(injectees, injectables, injectableCollectionSet);
 
 	// Then
 	// Exception thrown

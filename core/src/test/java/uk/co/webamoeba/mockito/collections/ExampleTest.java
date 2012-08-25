@@ -1,5 +1,6 @@
 package uk.co.webamoeba.mockito.collections;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.util.Collection;
@@ -12,10 +13,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
+ * This test is intended to provide an example of how one might use Mockito-Collections in practice.
+ * 
  * @author James Kennard
  */
+// FIXME This isn't really part of core, this should be in a separate project.
 @RunWith(MockitoJUnitRunner.class)
-public class IntegrationTest {
+public class ExampleTest {
 
     @InjectMocks
     private MyDelegate delegate = new MyDelegate();
@@ -28,32 +32,39 @@ public class IntegrationTest {
 
     @Before
     public void setup() {
-	MockitoCollectionInjector.inject(this);
+	MockitoCollectionAnnotations.inject(this);
     }
 
     @Test
     public void shouldPerformAction() {
+	// Given
+	SomeAction action = mock(SomeAction.class);
+
 	// When
-	delegate.performAction();
+	delegate.performAction(action);
 
 	// Then
-	verify(listener1).actionPerformed();
-	verify(listener2).actionPerformed();
+	verify(listener1).actionPerformed(action);
+	verify(listener2).actionPerformed(action);
     }
 
     private class MyDelegate {
 
 	private Collection<MyListener> listeners;
 
-	public void performAction() {
+	public void performAction(SomeAction action) {
 	    for (MyListener listener : listeners) {
-		listener.actionPerformed();
+		listener.actionPerformed(action);
 	    }
 	}
     }
 
     private interface MyListener {
 
-	public void actionPerformed();
+	public void actionPerformed(SomeAction action);
+    }
+
+    private interface SomeAction {
+
     }
 }

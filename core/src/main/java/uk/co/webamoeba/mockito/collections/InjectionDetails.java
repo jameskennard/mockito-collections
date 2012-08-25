@@ -21,29 +21,32 @@ public class InjectionDetails {
 
     private Set<Object> injectables;
 
-    // TODO
-    private Set<InjectableCollection<Collection<Object>, Object>> injectableCollections;
+    private InjectableCollectionSet injectableCollectionSet;
 
     /**
      * @param injectees
      *            {@link Object}s into which we want to inject {@link Collection}s of injectables.
      * @param injectables
      *            {@link Object}s that can be injected into {@link Collection}s in the injectees.
+     * @param injectableCollectionSet
+     *            {@link InjectableCollectionSet} containing {@link InjectableCollection InjectableCollections} can be
+     *            injected into the injectees.
      */
     public InjectionDetails(Set<Object> injectees, Set<Object> injectables,
-	    Set<InjectableCollection<Collection<Object>, Object>> injectableCollections) {
+	    InjectableCollectionSet injectableCollectionSet) {
 	if (injectees == null) {
 	    throw new IllegalArgumentException("Injectees must not be null");
 	}
 	if (injectables == null) {
 	    throw new IllegalArgumentException("Injectables must not be null");
 	}
-	if (injectableCollections == null) {
-	    throw new IllegalArgumentException("InjectableCollections must not be null");
+	if (injectableCollectionSet == null) {
+	    throw new IllegalArgumentException("injectableCollectionSet must not be null");
 	}
+
 	this.injectees = Collections.unmodifiableSet(injectees);
 	this.injectables = Collections.unmodifiableSet(injectables);
-	this.injectableCollections = injectableCollections;
+	this.injectableCollectionSet = injectableCollectionSet;
     }
 
     /**
@@ -64,8 +67,7 @@ public class InjectionDetails {
 	return injectables;
     }
 
-    public Set<InjectableCollection<Collection<Object>, Object>> getInjectableCollections() {
-	return injectableCollections;
+    public InjectableCollectionSet getInjectableCollectionSet() {
+	return injectableCollectionSet;
     }
-
 }

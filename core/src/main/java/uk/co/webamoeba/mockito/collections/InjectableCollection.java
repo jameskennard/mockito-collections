@@ -18,7 +18,6 @@ import java.util.Set;
  * 
  * @author James Kennard
  */
-// TODO consider removing generics, they are only really useful from a documentation perspective.
 public class InjectableCollection<C extends Collection<?>, E extends Object> {
 
     /**
@@ -47,5 +46,23 @@ public class InjectableCollection<C extends Collection<?>, E extends Object> {
 
     public Class<E> getTypeOfElements() {
 	return typeOfElements;
+    }
+
+    /**
+     * Determines if this {@link InjectableCollection} matches the provided {@link InjectableCollection}. Two
+     * {@link InjectableCollection InjectableCollections} are considered to match if they have the same
+     * {@link #getTypeOfCollection() type of collection} and same {@link #getTypeOfElements() type of elements}. This is
+     * not an {@link #equals(Object)} method, it does not check for equality of the contained {@link #getValue() value}.
+     * 
+     * @param injectableCollection
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public boolean matches(InjectableCollection injectableCollection) {
+	if (this == injectableCollection) {
+	    return true;
+	}
+	return getTypeOfCollection().equals(injectableCollection.getTypeOfCollection())
+		&& getTypeOfElements().equals(injectableCollection.getTypeOfElements());
     }
 }

@@ -54,8 +54,8 @@ public class MockitoInjectionDetailsFactory {
     public InjectionDetails createInjectionDetails(Object object) {
 	Set<Object> injectees = getInjectees(object);
 	Set<Object> injectables = getInjectables(object);
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = getInjectableCollections(object);
-	return new InjectionDetails(injectees, injectables, injectableCollections);
+	InjectableCollectionSet injectableCollectionSet = getInjectableCollectionSet(object);
+	return new InjectionDetails(injectees, injectables, injectableCollectionSet);
     }
 
     private Set<Object> getInjectees(Object object) {
@@ -73,8 +73,8 @@ public class MockitoInjectionDetailsFactory {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private Set<InjectableCollection<Collection<Object>, Object>> getInjectableCollections(Object object) {
-	Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = new HashSet<InjectableCollection<Collection<Object>, Object>>();
+    private InjectableCollectionSet getInjectableCollectionSet(Object object) {
+	InjectableCollectionSet injectableCollectionSet = new InjectableCollectionSet();
 	Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
 		uk.co.webamoeba.mockito.collections.annotation.InjectableCollection.class);
 	for (Field field : fields) {
@@ -90,9 +90,9 @@ public class MockitoInjectionDetailsFactory {
 	    Class typeOfElements = genericCollectionTypeResolver.getCollectionFieldType(field);
 	    InjectableCollection injectableCollection = new InjectableCollection(value, typeOfCollection,
 		    typeOfElements);
-	    injectableCollections.add(injectableCollection);
+	    injectableCollectionSet.add(injectableCollection);
 	}
-	return injectableCollections;
+	return injectableCollectionSet;
     }
 
     private Set<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {

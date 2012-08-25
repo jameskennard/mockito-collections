@@ -55,7 +55,7 @@ public class MockitoInjectionDetailsFactoryTest {
 
 	// Then
 	assertEquals(0, injectionDetails.getInjectables().size());
-	assertEquals(0, injectionDetails.getInjectableCollections().size());
+	assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 	assertEquals(1, injectionDetails.getInjectees().size());
 	assertTrue(injectionDetails.getInjectees().contains(object.injectee1));
     }
@@ -73,7 +73,7 @@ public class MockitoInjectionDetailsFactoryTest {
 
 	// Then
 	assertEquals(0, injectionDetails.getInjectables().size());
-	assertEquals(0, injectionDetails.getInjectableCollections().size());
+	assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 	assertEquals(1, injectionDetails.getInjectees().size());
 	assertTrue(injectionDetails.getInjectees().contains(object.injectee2));
     }
@@ -96,7 +96,7 @@ public class MockitoInjectionDetailsFactoryTest {
 
 	// Then
 	assertEquals(0, injectionDetails.getInjectables().size());
-	assertEquals(0, injectionDetails.getInjectableCollections().size());
+	assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 	assertEquals(1, injectionDetails.getInjectees().size());
 	assertTrue(injectionDetails.getInjectees().contains(object.injectee1));
     }
@@ -114,7 +114,7 @@ public class MockitoInjectionDetailsFactoryTest {
 
 	// Then
 	assertEquals(0, injectionDetails.getInjectees().size());
-	assertEquals(0, injectionDetails.getInjectableCollections().size());
+	assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 	assertEquals(1, injectionDetails.getInjectables().size());
 	assertTrue(injectionDetails.getInjectables().contains(object.injectable1));
     }
@@ -132,7 +132,7 @@ public class MockitoInjectionDetailsFactoryTest {
 
 	// Then
 	assertEquals(0, injectionDetails.getInjectees().size());
-	assertEquals(0, injectionDetails.getInjectableCollections().size());
+	assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 	assertEquals(1, injectionDetails.getInjectables().size());
 	assertTrue(injectionDetails.getInjectables().contains(object.injectable2));
     }
@@ -155,7 +155,7 @@ public class MockitoInjectionDetailsFactoryTest {
 
 	// Then
 	assertEquals(0, injectionDetails.getInjectees().size());
-	assertEquals(0, injectionDetails.getInjectableCollections().size());
+	assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 	assertEquals(1, injectionDetails.getInjectables().size());
 	assertTrue(injectionDetails.getInjectables().contains(object.injectable2));
     }
@@ -180,9 +180,9 @@ public class MockitoInjectionDetailsFactoryTest {
 	// Then
 	assertEquals(0, injectionDetails.getInjectables().size());
 	assertEquals(0, injectionDetails.getInjectees().size());
-	assertEquals(1, injectionDetails.getInjectableCollections().size());
+	assertEquals(1, injectionDetails.getInjectableCollectionSet().size());
 	InjectableCollection<Collection<Object>, Object> injectableCollection = injectionDetails
-		.getInjectableCollections().iterator().next();
+		.getInjectableCollectionSet().iterator().next();
 	assertSame(object.injectableCollection1, injectableCollection.getValue());
 	assertEquals(List.class, injectableCollection.getTypeOfCollection());
 	assertEquals(typeOfElements, injectableCollection.getTypeOfElements());
