@@ -39,7 +39,7 @@ public class CollectionFactoryTest {
 
 	@Test
 	public void shouldCreateCollectionGivenSortedSetAndContents() {
-		shouldCreateCollectionGivenContents(SortedSet.class);
+		shouldCreateCollection(SortedSet.class, Arrays.<Object> asList("ABC", "DEF", "GHI"));
 	}
 
 	@Test
