@@ -16,55 +16,55 @@ import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
  */
 public class FieldValueMutatorTest {
 
-    public String publicString;
+	public String publicString;
 
-    private Collection<?> privateCollection;
+	private Collection<?> privateCollection;
 
-    @Test
-    public void shouldSetGivenPublicField() {
-	// Given
-	FieldValueMutator mutator = new FieldValueMutator(this, getField("publicString"));
-	Object value = "Some New Value";
+	@Test
+	public void shouldSetGivenPublicField() {
+		// Given
+		FieldValueMutator mutator = new FieldValueMutator(this, getField("publicString"));
+		Object value = "Some New Value";
 
-	// When
-	mutator.mutateTo(value);
+		// When
+		mutator.mutateTo(value);
 
-	// Then
-	assertEquals(value, publicString);
-    }
-
-    @Test
-    public void shouldSetGivenPrivateField() {
-	// Given
-	FieldValueMutator mutator = new FieldValueMutator(this, getField("privateCollection"));
-	Object value = mock(Collection.class);
-
-	// When
-	mutator.mutateTo(value);
-
-	// Then
-	assertEquals(value, privateCollection);
-    }
-
-    @Test(expected = MockitoCollectionsException.class)
-    public void shouldFailToSetGivenIncompatibleType() {
-	// Given
-	FieldValueMutator mutator = new FieldValueMutator(this, getField("privateCollection"));
-	Object value = 100L;
-
-	// When
-	mutator.mutateTo(value);
-
-	// Then
-	// Exception thrown
-    }
-
-    private Field getField(String fieldName) {
-	for (Field field : getClass().getDeclaredFields()) {
-	    if (field.getName().equals(fieldName)) {
-		return field;
-	    }
+		// Then
+		assertEquals(value, publicString);
 	}
-	return null;
-    }
+
+	@Test
+	public void shouldSetGivenPrivateField() {
+		// Given
+		FieldValueMutator mutator = new FieldValueMutator(this, getField("privateCollection"));
+		Object value = mock(Collection.class);
+
+		// When
+		mutator.mutateTo(value);
+
+		// Then
+		assertEquals(value, privateCollection);
+	}
+
+	@Test(expected = MockitoCollectionsException.class)
+	public void shouldFailToSetGivenIncompatibleType() {
+		// Given
+		FieldValueMutator mutator = new FieldValueMutator(this, getField("privateCollection"));
+		Object value = 100L;
+
+		// When
+		mutator.mutateTo(value);
+
+		// Then
+		// Exception thrown
+	}
+
+	private Field getField(String fieldName) {
+		for (Field field : getClass().getDeclaredFields()) {
+			if (field.getName().equals(fieldName)) {
+				return field;
+			}
+		}
+		return null;
+	}
 }

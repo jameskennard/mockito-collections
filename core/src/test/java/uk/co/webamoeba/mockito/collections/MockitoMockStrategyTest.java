@@ -16,21 +16,21 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoMockStrategyTest {
 
-    @InjectMocks
-    private MockitoMockStrategy strategy;
+	@InjectMocks
+	private MockitoMockStrategy strategy;
 
-    private MockUtil mockUtil = new MockUtil();
+	private MockUtil mockUtil = new MockUtil();
 
-    @Test
-    @SuppressWarnings("rawtypes")
-    public void shouldCreateMock() {
-	// Given
-	Class<Dictionary> clazz = Dictionary.class;
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void shouldCreateMock() {
+		// Given
+		Class<Dictionary> clazz = Dictionary.class;
 
-	// When
-	Dictionary mock = strategy.createMock(clazz);
+		// When
+		Dictionary mock = strategy.createMock(clazz);
 
-	// Then
-	assertTrue(mockUtil.isMock(mock));
-    }
+		// Then
+		assertTrue(mockUtil.isMock(mock));
+	}
 }

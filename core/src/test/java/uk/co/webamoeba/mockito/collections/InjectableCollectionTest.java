@@ -14,70 +14,70 @@ import org.junit.Test;
  */
 public class InjectableCollectionTest {
 
-    @Test
-    @SuppressWarnings("rawtypes")
-    public void shouldMatchesGivenSelf() {
-	// Given
-	Set<Object> value = Collections.emptySet();
-	Class<Set> typeOfCollection = Set.class;
-	Class<Object> typeOfElements = Object.class;
-	InjectableCollection injectableCollection = new InjectableCollection<Set, Object>(value, typeOfCollection,
-		typeOfElements);
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void shouldMatchesGivenSelf() {
+		// Given
+		Set<Object> value = Collections.emptySet();
+		Class<Set> typeOfCollection = Set.class;
+		Class<Object> typeOfElements = Object.class;
+		InjectableCollection injectableCollection = new InjectableCollection<Set, Object>(value, typeOfCollection,
+				typeOfElements);
 
-	// When
-	boolean matches = injectableCollection.matches(injectableCollection);
+		// When
+		boolean matches = injectableCollection.matches(injectableCollection);
 
-	// Then
-	assertTrue(matches);
-    }
+		// Then
+		assertTrue(matches);
+	}
 
-    @Test
-    @SuppressWarnings("rawtypes")
-    public void shouldMatchesGivenEqualTypeOfCollection() {
-	// Given
-	Set value = Collections.emptySet();
-	InjectableCollection injectableCollection = new InjectableCollection<Set, Object>(value, Set.class,
-		Object.class);
-	InjectableCollection otherInjectableCollection = new InjectableCollection<Set, String>(value, Set.class,
-		String.class);
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void shouldMatchesGivenEqualTypeOfCollection() {
+		// Given
+		Set value = Collections.emptySet();
+		InjectableCollection injectableCollection = new InjectableCollection<Set, Object>(value, Set.class,
+				Object.class);
+		InjectableCollection otherInjectableCollection = new InjectableCollection<Set, String>(value, Set.class,
+				String.class);
 
-	// When
-	boolean matches = injectableCollection.matches(otherInjectableCollection);
+		// When
+		boolean matches = injectableCollection.matches(otherInjectableCollection);
 
-	// Then
-	assertFalse(matches);
-    }
+		// Then
+		assertFalse(matches);
+	}
 
-    @Test
-    @SuppressWarnings("rawtypes")
-    public void shouldMatchesGivenEqualTypeOfElement() {
-	// Given
-	InjectableCollection injectableCollection = new InjectableCollection<Set, Number>(Collections.emptySet(),
-		Set.class, Number.class);
-	InjectableCollection otherInjectableCollection = new InjectableCollection<List, Number>(
-		Collections.emptyList(), List.class, Number.class);
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void shouldMatchesGivenEqualTypeOfElement() {
+		// Given
+		InjectableCollection injectableCollection = new InjectableCollection<Set, Number>(Collections.emptySet(),
+				Set.class, Number.class);
+		InjectableCollection otherInjectableCollection = new InjectableCollection<List, Number>(
+				Collections.emptyList(), List.class, Number.class);
 
-	// When
-	boolean matches = injectableCollection.matches(otherInjectableCollection);
+		// When
+		boolean matches = injectableCollection.matches(otherInjectableCollection);
 
-	// Then
-	assertFalse(matches);
-    }
+		// Then
+		assertFalse(matches);
+	}
 
-    @Test
-    @SuppressWarnings("rawtypes")
-    public void shouldMatchesGivenEqualTypeOfCollectionAndEqualTypeOfElement() {
-	// Given
-	Set<Object> value = Collections.emptySet();
-	InjectableCollection injectableCollection = new InjectableCollection<Set, Number>(value, Set.class,
-		Number.class);
-	InjectableCollection otherInjectableCollection = new InjectableCollection<Set, Number>(value, Set.class,
-		Number.class);
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void shouldMatchesGivenEqualTypeOfCollectionAndEqualTypeOfElement() {
+		// Given
+		Set<Object> value = Collections.emptySet();
+		InjectableCollection injectableCollection = new InjectableCollection<Set, Number>(value, Set.class,
+				Number.class);
+		InjectableCollection otherInjectableCollection = new InjectableCollection<Set, Number>(value, Set.class,
+				Number.class);
 
-	// When
-	boolean matches = injectableCollection.matches(otherInjectableCollection);
+		// When
+		boolean matches = injectableCollection.matches(otherInjectableCollection);
 
-	// Then
-	assertTrue(matches);
-    }
+		// Then
+		assertTrue(matches);
+	}
 }

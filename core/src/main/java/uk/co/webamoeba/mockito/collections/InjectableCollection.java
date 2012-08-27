@@ -20,49 +20,49 @@ import java.util.Set;
  */
 public class InjectableCollection<C extends Collection<?>, E extends Object> {
 
-    /**
-     * The {@link Collection} that is of the specified {@link #typeOfCollection type} and contains elements of the
-     * specified {@link #typeOfElements type}.
-     */
-    private C value;
+	/**
+	 * The {@link Collection} that is of the specified {@link #typeOfCollection type} and contains elements of the
+	 * specified {@link #typeOfElements type}.
+	 */
+	private C value;
 
-    private Class<C> typeOfCollection;
+	private Class<C> typeOfCollection;
 
-    private Class<E> typeOfElements;
+	private Class<E> typeOfElements;
 
-    public InjectableCollection(C value, Class<C> typeOfCollection, Class<E> typeOfElements) {
-	this.value = value;
-	this.typeOfCollection = typeOfCollection;
-	this.typeOfElements = typeOfElements;
-    }
-
-    public C getValue() {
-	return value;
-    }
-
-    public Class<C> getTypeOfCollection() {
-	return typeOfCollection;
-    }
-
-    public Class<E> getTypeOfElements() {
-	return typeOfElements;
-    }
-
-    /**
-     * Determines if this {@link InjectableCollection} matches the provided {@link InjectableCollection}. Two
-     * {@link InjectableCollection InjectableCollections} are considered to match if they have the same
-     * {@link #getTypeOfCollection() type of collection} and same {@link #getTypeOfElements() type of elements}. This is
-     * not an {@link #equals(Object)} method, it does not check for equality of the contained {@link #getValue() value}.
-     * 
-     * @param injectableCollection
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public boolean matches(InjectableCollection injectableCollection) {
-	if (this == injectableCollection) {
-	    return true;
+	public InjectableCollection(C value, Class<C> typeOfCollection, Class<E> typeOfElements) {
+		this.value = value;
+		this.typeOfCollection = typeOfCollection;
+		this.typeOfElements = typeOfElements;
 	}
-	return getTypeOfCollection().equals(injectableCollection.getTypeOfCollection())
-		&& getTypeOfElements().equals(injectableCollection.getTypeOfElements());
-    }
+
+	public C getValue() {
+		return value;
+	}
+
+	public Class<C> getTypeOfCollection() {
+		return typeOfCollection;
+	}
+
+	public Class<E> getTypeOfElements() {
+		return typeOfElements;
+	}
+
+	/**
+	 * Determines if this {@link InjectableCollection} matches the provided {@link InjectableCollection}. Two
+	 * {@link InjectableCollection InjectableCollections} are considered to match if they have the same
+	 * {@link #getTypeOfCollection() type of collection} and same {@link #getTypeOfElements() type of elements}. This is
+	 * not an {@link #equals(Object)} method, it does not check for equality of the contained {@link #getValue() value}.
+	 * 
+	 * @param injectableCollection
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public boolean matches(InjectableCollection injectableCollection) {
+		if (this == injectableCollection) {
+			return true;
+		}
+		return getTypeOfCollection().equals(injectableCollection.getTypeOfCollection())
+				&& getTypeOfElements().equals(injectableCollection.getTypeOfElements());
+	}
 }

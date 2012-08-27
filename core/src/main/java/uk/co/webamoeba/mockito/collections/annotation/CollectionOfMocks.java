@@ -16,13 +16,14 @@ import org.mockito.Mock;
  * 
  * <pre>
  * 
+ * 
  * &#064;CollectionOfMocks(numberOfMocks = 2)
  * private Collection&lt;EventListener&gt; eventListeners;
  * 
  * &#064;Before
  * public void setup() {
- *     MockitoCollectionInjector(this);
- *     assert eventListeners.size() == 2;
+ * 	MockitoCollectionInjector(this);
+ * 	assert eventListeners.size() == 2;
  * }
  * </pre>
  * 
@@ -32,5 +33,5 @@ import org.mockito.Mock;
 @Target(ElementType.FIELD)
 public @interface CollectionOfMocks {
 
-    int numberOfMocks() default 1;
+	int numberOfMocks() default 1;
 }

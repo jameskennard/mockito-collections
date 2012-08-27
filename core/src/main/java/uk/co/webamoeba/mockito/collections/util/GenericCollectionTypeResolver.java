@@ -41,210 +41,210 @@ import java.util.Map;
  */
 public class GenericCollectionTypeResolver {
 
-    /**
-     * Determine the generic element type of the given {@link Collection} {@link Field}.
-     * 
-     * @param collectionField
-     *            the {@link Collection} {@link Field} to introspect
-     * @return the generic type, or <code>null</code> if none
-     */
-    public Class<?> getCollectionFieldType(Field collectionField) {
-	return getGenericFieldType(collectionField, Collection.class, 0, null, 1);
-    }
+	/**
+	 * Determine the generic element type of the given {@link Collection} {@link Field}.
+	 * 
+	 * @param collectionField
+	 *            the {@link Collection} {@link Field} to introspect
+	 * @return the generic type, or <code>null</code> if none
+	 */
+	public Class<?> getCollectionFieldType(Field collectionField) {
+		return getGenericFieldType(collectionField, Collection.class, 0, null, 1);
+	}
 
-    /**
-     * Extract the generic type from the given field.
-     * 
-     * @param field
-     *            the field to check the type for
-     * @param source
-     *            the source class/interface defining the generic parameter types
-     * @param typeIndex
-     *            the index of the type (e.g. 0 for {@link Collection Collections}, 0 for {@link Map} keys, 1 for
-     *            {@link Map} values)
-     * @param nestingLevel
-     *            the nesting level of the target type
-     * @return the generic type, or <code>null</code> if none
-     */
-    private Class<?> getGenericFieldType(Field field, Class<?> source, int typeIndex,
-	    Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel) {
-	return extractType(field.getGenericType(), source, typeIndex, null, typeIndexesPerLevel, nestingLevel, 1);
-    }
+	/**
+	 * Extract the generic type from the given field.
+	 * 
+	 * @param field
+	 *            the field to check the type for
+	 * @param source
+	 *            the source class/interface defining the generic parameter types
+	 * @param typeIndex
+	 *            the index of the type (e.g. 0 for {@link Collection Collections}, 0 for {@link Map} keys, 1 for
+	 *            {@link Map} values)
+	 * @param nestingLevel
+	 *            the nesting level of the target type
+	 * @return the generic type, or <code>null</code> if none
+	 */
+	private Class<?> getGenericFieldType(Field field, Class<?> source, int typeIndex,
+			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel) {
+		return extractType(field.getGenericType(), source, typeIndex, null, typeIndexesPerLevel, nestingLevel, 1);
+	}
 
-    /**
-     * Extract the generic type from the given Type object.
-     * 
-     * @param type
-     *            the Type to check
-     * @param source
-     *            the source {@link Collection}/{@link Map} Class that we check
-     * @param typeIndex
-     *            the index of the actual type argument
-     * @param nestingLevel
-     *            the nesting level of the target type
-     * @param currentLevel
-     *            the current nested level
-     * @return the generic type as Class, or <code>null</code> if none
-     */
-    @SuppressWarnings("rawtypes")
-    private Class<?> extractType(Type type, Class<?> source, int typeIndex, Map<TypeVariable, Type> typeVariableMap,
-	    Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
+	/**
+	 * Extract the generic type from the given Type object.
+	 * 
+	 * @param type
+	 *            the Type to check
+	 * @param source
+	 *            the source {@link Collection}/{@link Map} Class that we check
+	 * @param typeIndex
+	 *            the index of the actual type argument
+	 * @param nestingLevel
+	 *            the nesting level of the target type
+	 * @param currentLevel
+	 *            the current nested level
+	 * @return the generic type as Class, or <code>null</code> if none
+	 */
+	@SuppressWarnings("rawtypes")
+	private Class<?> extractType(Type type, Class<?> source, int typeIndex, Map<TypeVariable, Type> typeVariableMap,
+			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
 
-	Type resolvedType = type;
-	if (type instanceof TypeVariable && typeVariableMap != null) {
-	    Type mappedType = typeVariableMap.get(type);
-	    if (mappedType != null) {
-		resolvedType = mappedType;
-	    }
-	}
-	if (resolvedType instanceof ParameterizedType) {
-	    return extractTypeFromParameterizedType((ParameterizedType) resolvedType, source, typeIndex,
-		    typeVariableMap, typeIndexesPerLevel, nestingLevel, currentLevel);
-	} else if (resolvedType instanceof Class) {
-	    return extractTypeFromClass((Class) resolvedType, source, typeIndex, typeVariableMap, typeIndexesPerLevel,
-		    nestingLevel, currentLevel);
-	} else if (resolvedType instanceof GenericArrayType) {
-	    Type compType = ((GenericArrayType) resolvedType).getGenericComponentType();
-	    return extractType(compType, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
-		    currentLevel + 1);
-	} else {
-	    return null;
-	}
-    }
-
-    /**
-     * Extract the generic type from the given {@link ParameterizedType} object.
-     * 
-     * @param ptype
-     *            the {@link ParameterizedType} to check
-     * @param source
-     *            the expected raw source type (can be <code>null</code>)
-     * @param typeIndex
-     *            the index of the actual type argument
-     * @param nestingLevel
-     *            the nesting level of the target type
-     * @param currentLevel
-     *            the current nested level
-     * @return the generic type as {@link Class}, or <code>null</code> if none
-     */
-    @SuppressWarnings("rawtypes")
-    private Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source, int typeIndex,
-	    Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
-	    int currentLevel) {
-
-	if (!(ptype.getRawType() instanceof Class)) {
-	    return null;
-	}
-	Class rawType = (Class) ptype.getRawType();
-	Type[] paramTypes = ptype.getActualTypeArguments();
-	if (nestingLevel - currentLevel > 0) {
-	    int nextLevel = currentLevel + 1;
-	    Integer currentTypeIndex = (typeIndexesPerLevel != null ? typeIndexesPerLevel.get(nextLevel) : null);
-	    // Default is last parameter type: Collection element or Map value.
-	    int indexToUse = (currentTypeIndex != null ? currentTypeIndex : paramTypes.length - 1);
-	    Type paramType = paramTypes[indexToUse];
-	    return extractType(paramType, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
-		    nextLevel);
-	}
-	if (source != null && !source.isAssignableFrom(rawType)) {
-	    return null;
-	}
-	Class fromSuperclassOrInterface = extractTypeFromClass(rawType, source, typeIndex, typeVariableMap,
-		typeIndexesPerLevel, nestingLevel, currentLevel);
-	if (fromSuperclassOrInterface != null) {
-	    return fromSuperclassOrInterface;
-	}
-	if (paramTypes == null || typeIndex >= paramTypes.length) {
-	    return null;
-	}
-	Type paramType = paramTypes[typeIndex];
-	if (paramType instanceof TypeVariable && typeVariableMap != null) {
-	    Type mappedType = typeVariableMap.get(paramType);
-	    if (mappedType != null) {
-		paramType = mappedType;
-	    }
-	}
-	if (paramType instanceof WildcardType) {
-	    WildcardType wildcardType = (WildcardType) paramType;
-	    Type[] upperBounds = wildcardType.getUpperBounds();
-	    if (upperBounds != null && upperBounds.length > 0 && !Object.class.equals(upperBounds[0])) {
-		paramType = upperBounds[0];
-	    } else {
-		Type[] lowerBounds = wildcardType.getLowerBounds();
-		if (lowerBounds != null && lowerBounds.length > 0 && !Object.class.equals(lowerBounds[0])) {
-		    paramType = lowerBounds[0];
+		Type resolvedType = type;
+		if (type instanceof TypeVariable && typeVariableMap != null) {
+			Type mappedType = typeVariableMap.get(type);
+			if (mappedType != null) {
+				resolvedType = mappedType;
+			}
 		}
-	    }
-	}
-	if (paramType instanceof ParameterizedType) {
-	    paramType = ((ParameterizedType) paramType).getRawType();
-	}
-	if (paramType instanceof GenericArrayType) {
-	    // A generic array type... Let's turn it into a straight array type if possible.
-	    Type compType = ((GenericArrayType) paramType).getGenericComponentType();
-	    if (compType instanceof Class) {
-		return Array.newInstance((Class) compType, 0).getClass();
-	    }
-	} else if (paramType instanceof Class) {
-	    // We finally got a straight Class...
-	    return (Class) paramType;
-	}
-	return null;
-    }
-
-    /**
-     * Extract the generic type from the given {@link Class} object.
-     * 
-     * @param clazz
-     *            the {@link Class} to check
-     * @param source
-     *            the expected raw source type (can be <code>null</code>)
-     * @param typeIndex
-     *            the index of the actual type argument
-     * @param nestingLevel
-     *            the nesting level of the target type
-     * @param currentLevel
-     *            the current nested level
-     * @return the generic type as {@link Class}, or <code>null</code> if none
-     */
-    @SuppressWarnings("rawtypes")
-    private Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex,
-	    Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
-	    int currentLevel) {
-
-	if (clazz.getName().startsWith("java.util.")) {
-	    return null;
-	}
-	if (clazz.getSuperclass() != null && isIntrospectionCandidate(clazz.getSuperclass())) {
-	    return extractType(clazz.getGenericSuperclass(), source, typeIndex, typeVariableMap, typeIndexesPerLevel,
-		    nestingLevel, currentLevel);
-	}
-	Type[] ifcs = clazz.getGenericInterfaces();
-	if (ifcs != null) {
-	    for (Type ifc : ifcs) {
-		Type rawType = ifc;
-		if (ifc instanceof ParameterizedType) {
-		    rawType = ((ParameterizedType) ifc).getRawType();
+		if (resolvedType instanceof ParameterizedType) {
+			return extractTypeFromParameterizedType((ParameterizedType) resolvedType, source, typeIndex,
+					typeVariableMap, typeIndexesPerLevel, nestingLevel, currentLevel);
+		} else if (resolvedType instanceof Class) {
+			return extractTypeFromClass((Class) resolvedType, source, typeIndex, typeVariableMap, typeIndexesPerLevel,
+					nestingLevel, currentLevel);
+		} else if (resolvedType instanceof GenericArrayType) {
+			Type compType = ((GenericArrayType) resolvedType).getGenericComponentType();
+			return extractType(compType, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
+					currentLevel + 1);
+		} else {
+			return null;
 		}
-		if (rawType instanceof Class && isIntrospectionCandidate((Class) rawType)) {
-		    return extractType(ifc, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
-			    currentLevel);
-		}
-	    }
 	}
-	return null;
-    }
 
-    /**
-     * Determine whether the given class is a potential candidate that defines generic collection or map types.
-     * 
-     * @param clazz
-     *            the class to check
-     * @return whether the given class is assignable to Collection or Map
-     */
-    @SuppressWarnings("rawtypes")
-    private boolean isIntrospectionCandidate(Class clazz) {
-	return (Collection.class.isAssignableFrom(clazz) || Map.class.isAssignableFrom(clazz));
-    }
+	/**
+	 * Extract the generic type from the given {@link ParameterizedType} object.
+	 * 
+	 * @param ptype
+	 *            the {@link ParameterizedType} to check
+	 * @param source
+	 *            the expected raw source type (can be <code>null</code>)
+	 * @param typeIndex
+	 *            the index of the actual type argument
+	 * @param nestingLevel
+	 *            the nesting level of the target type
+	 * @param currentLevel
+	 *            the current nested level
+	 * @return the generic type as {@link Class}, or <code>null</code> if none
+	 */
+	@SuppressWarnings("rawtypes")
+	private Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source, int typeIndex,
+			Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
+			int currentLevel) {
+
+		if (!(ptype.getRawType() instanceof Class)) {
+			return null;
+		}
+		Class rawType = (Class) ptype.getRawType();
+		Type[] paramTypes = ptype.getActualTypeArguments();
+		if (nestingLevel - currentLevel > 0) {
+			int nextLevel = currentLevel + 1;
+			Integer currentTypeIndex = (typeIndexesPerLevel != null ? typeIndexesPerLevel.get(nextLevel) : null);
+			// Default is last parameter type: Collection element or Map value.
+			int indexToUse = (currentTypeIndex != null ? currentTypeIndex : paramTypes.length - 1);
+			Type paramType = paramTypes[indexToUse];
+			return extractType(paramType, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
+					nextLevel);
+		}
+		if (source != null && !source.isAssignableFrom(rawType)) {
+			return null;
+		}
+		Class fromSuperclassOrInterface = extractTypeFromClass(rawType, source, typeIndex, typeVariableMap,
+				typeIndexesPerLevel, nestingLevel, currentLevel);
+		if (fromSuperclassOrInterface != null) {
+			return fromSuperclassOrInterface;
+		}
+		if (paramTypes == null || typeIndex >= paramTypes.length) {
+			return null;
+		}
+		Type paramType = paramTypes[typeIndex];
+		if (paramType instanceof TypeVariable && typeVariableMap != null) {
+			Type mappedType = typeVariableMap.get(paramType);
+			if (mappedType != null) {
+				paramType = mappedType;
+			}
+		}
+		if (paramType instanceof WildcardType) {
+			WildcardType wildcardType = (WildcardType) paramType;
+			Type[] upperBounds = wildcardType.getUpperBounds();
+			if (upperBounds != null && upperBounds.length > 0 && !Object.class.equals(upperBounds[0])) {
+				paramType = upperBounds[0];
+			} else {
+				Type[] lowerBounds = wildcardType.getLowerBounds();
+				if (lowerBounds != null && lowerBounds.length > 0 && !Object.class.equals(lowerBounds[0])) {
+					paramType = lowerBounds[0];
+				}
+			}
+		}
+		if (paramType instanceof ParameterizedType) {
+			paramType = ((ParameterizedType) paramType).getRawType();
+		}
+		if (paramType instanceof GenericArrayType) {
+			// A generic array type... Let's turn it into a straight array type if possible.
+			Type compType = ((GenericArrayType) paramType).getGenericComponentType();
+			if (compType instanceof Class) {
+				return Array.newInstance((Class) compType, 0).getClass();
+			}
+		} else if (paramType instanceof Class) {
+			// We finally got a straight Class...
+			return (Class) paramType;
+		}
+		return null;
+	}
+
+	/**
+	 * Extract the generic type from the given {@link Class} object.
+	 * 
+	 * @param clazz
+	 *            the {@link Class} to check
+	 * @param source
+	 *            the expected raw source type (can be <code>null</code>)
+	 * @param typeIndex
+	 *            the index of the actual type argument
+	 * @param nestingLevel
+	 *            the nesting level of the target type
+	 * @param currentLevel
+	 *            the current nested level
+	 * @return the generic type as {@link Class}, or <code>null</code> if none
+	 */
+	@SuppressWarnings("rawtypes")
+	private Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex,
+			Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
+			int currentLevel) {
+
+		if (clazz.getName().startsWith("java.util.")) {
+			return null;
+		}
+		if (clazz.getSuperclass() != null && isIntrospectionCandidate(clazz.getSuperclass())) {
+			return extractType(clazz.getGenericSuperclass(), source, typeIndex, typeVariableMap, typeIndexesPerLevel,
+					nestingLevel, currentLevel);
+		}
+		Type[] ifcs = clazz.getGenericInterfaces();
+		if (ifcs != null) {
+			for (Type ifc : ifcs) {
+				Type rawType = ifc;
+				if (ifc instanceof ParameterizedType) {
+					rawType = ((ParameterizedType) ifc).getRawType();
+				}
+				if (rawType instanceof Class && isIntrospectionCandidate((Class) rawType)) {
+					return extractType(ifc, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
+							currentLevel);
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Determine whether the given class is a potential candidate that defines generic collection or map types.
+	 * 
+	 * @param clazz
+	 *            the class to check
+	 * @return whether the given class is assignable to Collection or Map
+	 */
+	@SuppressWarnings("rawtypes")
+	private boolean isIntrospectionCandidate(Class clazz) {
+		return (Collection.class.isAssignableFrom(clazz) || Map.class.isAssignableFrom(clazz));
+	}
 
 }

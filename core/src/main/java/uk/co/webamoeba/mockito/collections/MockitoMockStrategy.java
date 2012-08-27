@@ -9,8 +9,8 @@ import static org.mockito.Mockito.mock;
  */
 public class MockitoMockStrategy implements MockStrategy {
 
-    public <T> T createMock(Class<T> clazz) {
-	return mock(clazz);
-    }
+	public <T> T createMock(Class<T> clazz) {
+		return mock(clazz);
+	}
 
 }

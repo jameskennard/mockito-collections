@@ -21,50 +21,50 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ExampleTest {
 
-    @InjectMocks
-    private MyDelegate delegate = new MyDelegate();
+	@InjectMocks
+	private MyDelegate delegate = new MyDelegate();
 
-    @Mock
-    private MyListener listener1;
+	@Mock
+	private MyListener listener1;
 
-    @Mock
-    private MyListener listener2;
+	@Mock
+	private MyListener listener2;
 
-    @Before
-    public void setup() {
-	MockitoCollectionAnnotations.inject(this);
-    }
-
-    @Test
-    public void shouldPerformAction() {
-	// Given
-	SomeAction action = mock(SomeAction.class);
-
-	// When
-	delegate.performAction(action);
-
-	// Then
-	verify(listener1).actionPerformed(action);
-	verify(listener2).actionPerformed(action);
-    }
-
-    private class MyDelegate {
-
-	private Collection<MyListener> listeners;
-
-	public void performAction(SomeAction action) {
-	    for (MyListener listener : listeners) {
-		listener.actionPerformed(action);
-	    }
+	@Before
+	public void setup() {
+		MockitoCollectionAnnotations.inject(this);
 	}
-    }
 
-    private interface MyListener {
+	@Test
+	public void shouldPerformAction() {
+		// Given
+		SomeAction action = mock(SomeAction.class);
 
-	public void actionPerformed(SomeAction action);
-    }
+		// When
+		delegate.performAction(action);
 
-    private interface SomeAction {
+		// Then
+		verify(listener1).actionPerformed(action);
+		verify(listener2).actionPerformed(action);
+	}
 
-    }
+	private class MyDelegate {
+
+		private Collection<MyListener> listeners;
+
+		public void performAction(SomeAction action) {
+			for (MyListener listener : listeners) {
+				listener.actionPerformed(action);
+			}
+		}
+	}
+
+	private interface MyListener {
+
+		public void actionPerformed(SomeAction action);
+	}
+
+	private interface SomeAction {
+
+	}
 }

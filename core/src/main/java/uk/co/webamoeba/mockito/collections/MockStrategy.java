@@ -8,10 +8,10 @@ package uk.co.webamoeba.mockito.collections;
  */
 public interface MockStrategy {
 
-    /**
-     * @param clazz
-     * @return A new mock in place of the specified type.
-     */
-    public <T extends Object> T createMock(Class<T> clazz);
+	/**
+	 * @param clazz
+	 * @return A new mock in place of the specified type.
+	 */
+	public <T extends Object> T createMock(Class<T> clazz);
 
 }

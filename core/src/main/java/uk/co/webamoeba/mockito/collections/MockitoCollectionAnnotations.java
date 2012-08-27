@@ -28,6 +28,7 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * 
  * 
  * 
+ * 
  * &#064;InjectMocks
  * private MyClassWithEventListeners objectUnderTest;
  * 
@@ -36,8 +37,8 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * 
  * &#064;Before
  * public void setup() {
- *     MockitoCollectionAnnotations.inject(this);
- *     assert objectUnderTest.getEventListeners().contains(eventListener);
+ * 	MockitoCollectionAnnotations.inject(this);
+ * 	assert objectUnderTest.getEventListeners().contains(eventListener);
  * }
  * </pre>
  * 
@@ -45,32 +46,32 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  */
 public class MockitoCollectionAnnotations {
 
-    private static CollectionInjector injector;
+	private static CollectionInjector injector;
 
-    private static MockitoInjectionDetailsFactory factory;
+	private static MockitoInjectionDetailsFactory factory;
 
-    private static CollectionInitialiser collectionInitialiser;
+	private static CollectionInitialiser collectionInitialiser;
 
-    {
-	GenericCollectionTypeResolver genericCollectionTypeResolver = new GenericCollectionTypeResolver();
-	DefaultInjectableSelectionStrategy injectableSelectionStrategy = new DefaultInjectableSelectionStrategy();
-	CollectionFactory collectionFactory = new CollectionFactory();
-	AnnotatedFieldRetriever annotatedFieldRetriever = new AnnotatedFieldRetriever();
-	MockStrategy mockStrategy = new MockitoMockStrategy();
+	{
+		GenericCollectionTypeResolver genericCollectionTypeResolver = new GenericCollectionTypeResolver();
+		DefaultInjectableSelectionStrategy injectableSelectionStrategy = new DefaultInjectableSelectionStrategy();
+		CollectionFactory collectionFactory = new CollectionFactory();
+		AnnotatedFieldRetriever annotatedFieldRetriever = new AnnotatedFieldRetriever();
+		MockStrategy mockStrategy = new MockitoMockStrategy();
 
-	injector = new CollectionInjector(collectionFactory, injectableSelectionStrategy, genericCollectionTypeResolver);
-	factory = new MockitoInjectionDetailsFactory(annotatedFieldRetriever, genericCollectionTypeResolver);
-	collectionInitialiser = new CollectionInitialiser(annotatedFieldRetriever, genericCollectionTypeResolver,
-		collectionFactory, mockStrategy);
-    }
-
-    public static void inject(Object object) {
-	if (collectionInitialiser == null) {
-	    // Force the execution of the static block.
-	    new MockitoCollectionAnnotations();
+		injector = new CollectionInjector(collectionFactory, injectableSelectionStrategy, genericCollectionTypeResolver);
+		factory = new MockitoInjectionDetailsFactory(annotatedFieldRetriever, genericCollectionTypeResolver);
+		collectionInitialiser = new CollectionInitialiser(annotatedFieldRetriever, genericCollectionTypeResolver,
+				collectionFactory, mockStrategy);
 	}
-	collectionInitialiser.initialise(object);
-	injector.inject(factory.createInjectionDetails(object));
-    }
+
+	public static void inject(Object object) {
+		if (collectionInitialiser == null) {
+			// Force the execution of the static block.
+			new MockitoCollectionAnnotations();
+		}
+		collectionInitialiser.initialise(object);
+		injector.inject(factory.createInjectionDetails(object));
+	}
 
 }

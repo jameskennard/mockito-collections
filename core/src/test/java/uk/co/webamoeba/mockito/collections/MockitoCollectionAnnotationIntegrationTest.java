@@ -30,78 +30,78 @@ import uk.co.webamoeba.mockito.collections.annotation.InjectableCollection;
  */
 public class MockitoCollectionAnnotationIntegrationTest {
 
-    private MockUtil mockUtil = new MockUtil();
+	private MockUtil mockUtil = new MockUtil();
 
-    @Test
-    public void shouldInject() {
-	// Given
-	MockitoAnnotatedClass object = new MockitoAnnotatedClass();
+	@Test
+	public void shouldInject() {
+		// Given
+		MockitoAnnotatedClass object = new MockitoAnnotatedClass();
 
-	// When
-	MockitoCollectionAnnotations.inject(object);
+		// When
+		MockitoCollectionAnnotations.inject(object);
 
-	// Then
-	assertNotNull(object.injecteeClass.outputStreams);
-	assertNotNull(object.injecteeClass.inputStreams);
-	assertEquals(2, object.injecteeClass.outputStreams.size());
-	assertEquals(1, object.injecteeClass.inputStreams.size());
-	assertTrue(object.injecteeClass.outputStreams.contains(object.outputStream1));
-	assertTrue(object.injecteeClass.outputStreams.contains(object.outputStream2));
-	assertTrue(object.injecteeClass.inputStreams.contains(object.inputStream1));
-	assertCollectionOfMocks(object.eventListeners1, 2);
-	assertSame(object.eventListeners1, object.injecteeClass.eventListeners);
-	assertCollectionOfMocks(object.eventListeners2, 4);
+		// Then
+		assertNotNull(object.injecteeClass.outputStreams);
+		assertNotNull(object.injecteeClass.inputStreams);
+		assertEquals(2, object.injecteeClass.outputStreams.size());
+		assertEquals(1, object.injecteeClass.inputStreams.size());
+		assertTrue(object.injecteeClass.outputStreams.contains(object.outputStream1));
+		assertTrue(object.injecteeClass.outputStreams.contains(object.outputStream2));
+		assertTrue(object.injecteeClass.inputStreams.contains(object.inputStream1));
+		assertCollectionOfMocks(object.eventListeners1, 2);
+		assertSame(object.eventListeners1, object.injecteeClass.eventListeners);
+		assertCollectionOfMocks(object.eventListeners2, 4);
 
-	assertNull(object.injecteeClass2.outputStreams);
-	assertNull(object.injecteeClass2.inputStreams);
-	assertNull(object.injecteeClass2.eventListeners);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private void assertCollectionOfMocks(Collection collection, int expectedNumberOfMocks) {
-	assertEquals(expectedNumberOfMocks, collection.size());
-	for (Object object : collection) {
-	    assertTrue(mockUtil.isMock(object));
+		assertNull(object.injecteeClass2.outputStreams);
+		assertNull(object.injecteeClass2.inputStreams);
+		assertNull(object.injecteeClass2.eventListeners);
 	}
-    }
 
-    private class MockitoAnnotatedClass {
+	@SuppressWarnings("rawtypes")
+	private void assertCollectionOfMocks(Collection collection, int expectedNumberOfMocks) {
+		assertEquals(expectedNumberOfMocks, collection.size());
+		for (Object object : collection) {
+			assertTrue(mockUtil.isMock(object));
+		}
+	}
 
-	@InjectMocks
-	private InjecteeClass injecteeClass = new InjecteeClass();
+	private class MockitoAnnotatedClass {
 
-	@InjectMocks
-	@IgnoreInjectee
-	private InjecteeClass injecteeClass2 = new InjecteeClass();
+		@InjectMocks
+		private InjecteeClass injecteeClass = new InjecteeClass();
 
-	@Mock
-	private OutputStream outputStream1 = mock(OutputStream.class);
+		@InjectMocks
+		@IgnoreInjectee
+		private InjecteeClass injecteeClass2 = new InjecteeClass();
 
-	@Mock
-	private OutputStream outputStream2 = mock(OutputStream.class);
+		@Mock
+		private OutputStream outputStream1 = mock(OutputStream.class);
 
-	@Injectable
-	private InputStream inputStream1 = mock(InputStream.class);
+		@Mock
+		private OutputStream outputStream2 = mock(OutputStream.class);
 
-	@Injectable
-	@IgnoreInjectable
-	@SuppressWarnings("unused")
-	private InputStream inputStream2 = mock(InputStream.class);
+		@Injectable
+		private InputStream inputStream1 = mock(InputStream.class);
 
-	@CollectionOfMocks(numberOfMocks = 2)
-	@InjectableCollection
-	private List<EventListener> eventListeners1;
+		@Injectable
+		@IgnoreInjectable
+		@SuppressWarnings("unused")
+		private InputStream inputStream2 = mock(InputStream.class);
 
-	@CollectionOfMocks(numberOfMocks = 4)
-	private List<EventListener> eventListeners2;
-    }
+		@CollectionOfMocks(numberOfMocks = 2)
+		@InjectableCollection
+		private List<EventListener> eventListeners1;
 
-    private class InjecteeClass {
+		@CollectionOfMocks(numberOfMocks = 4)
+		private List<EventListener> eventListeners2;
+	}
 
-	private Set<OutputStream> outputStreams;
+	private class InjecteeClass {
 
-	private Set<InputStream> inputStreams;
+		private Set<OutputStream> outputStreams;
 
-	private List<EventListener> eventListeners;
-    }
+		private Set<InputStream> inputStreams;
+
+		private List<EventListener> eventListeners;
+	}
 }

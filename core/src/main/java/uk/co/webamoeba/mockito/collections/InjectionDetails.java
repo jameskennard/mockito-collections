@@ -17,57 +17,57 @@ import java.util.Set;
  */
 public class InjectionDetails {
 
-    private Set<Object> injectees;
+	private Set<Object> injectees;
 
-    private Set<Object> injectables;
+	private Set<Object> injectables;
 
-    private InjectableCollectionSet injectableCollectionSet;
+	private InjectableCollectionSet injectableCollectionSet;
 
-    /**
-     * @param injectees
-     *            {@link Object}s into which we want to inject {@link Collection}s of injectables.
-     * @param injectables
-     *            {@link Object}s that can be injected into {@link Collection}s in the injectees.
-     * @param injectableCollectionSet
-     *            {@link InjectableCollectionSet} containing {@link InjectableCollection InjectableCollections} can be
-     *            injected into the injectees.
-     */
-    public InjectionDetails(Set<Object> injectees, Set<Object> injectables,
-	    InjectableCollectionSet injectableCollectionSet) {
-	if (injectees == null) {
-	    throw new IllegalArgumentException("Injectees must not be null");
+	/**
+	 * @param injectees
+	 *            {@link Object}s into which we want to inject {@link Collection}s of injectables.
+	 * @param injectables
+	 *            {@link Object}s that can be injected into {@link Collection}s in the injectees.
+	 * @param injectableCollectionSet
+	 *            {@link InjectableCollectionSet} containing {@link InjectableCollection InjectableCollections} can be
+	 *            injected into the injectees.
+	 */
+	public InjectionDetails(Set<Object> injectees, Set<Object> injectables,
+			InjectableCollectionSet injectableCollectionSet) {
+		if (injectees == null) {
+			throw new IllegalArgumentException("Injectees must not be null");
+		}
+		if (injectables == null) {
+			throw new IllegalArgumentException("Injectables must not be null");
+		}
+		if (injectableCollectionSet == null) {
+			throw new IllegalArgumentException("injectableCollectionSet must not be null");
+		}
+
+		this.injectees = Collections.unmodifiableSet(injectees);
+		this.injectables = Collections.unmodifiableSet(injectables);
+		this.injectableCollectionSet = injectableCollectionSet;
 	}
-	if (injectables == null) {
-	    throw new IllegalArgumentException("Injectables must not be null");
+
+	/**
+	 * @return The {@link Object}s into which we want to inject {@link Collection}s. If there are no injectables this
+	 *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
+	 *         {@link Set} is unmodifiable.
+	 */
+	public Set<Object> getInjectees() {
+		return injectees;
 	}
-	if (injectableCollectionSet == null) {
-	    throw new IllegalArgumentException("injectableCollectionSet must not be null");
+
+	/**
+	 * @return {@link Set} of {@link Object}s that can be injected into {@link Collection}s. If there are no
+	 *         injectables, this method will return an empty {@link Set}, this method will never return
+	 *         <code>null</code>. The returned {@link Set} is unmodifiable.
+	 */
+	public Set<Object> getInjectables() {
+		return injectables;
 	}
 
-	this.injectees = Collections.unmodifiableSet(injectees);
-	this.injectables = Collections.unmodifiableSet(injectables);
-	this.injectableCollectionSet = injectableCollectionSet;
-    }
-
-    /**
-     * @return The {@link Object}s into which we want to inject {@link Collection}s. If there are no injectables this
-     *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
-     *         {@link Set} is unmodifiable.
-     */
-    public Set<Object> getInjectees() {
-	return injectees;
-    }
-
-    /**
-     * @return {@link Set} of {@link Object}s that can be injected into {@link Collection}s. If there are no
-     *         injectables, this method will return an empty {@link Set}, this method will never return
-     *         <code>null</code>. The returned {@link Set} is unmodifiable.
-     */
-    public Set<Object> getInjectables() {
-	return injectables;
-    }
-
-    public InjectableCollectionSet getInjectableCollectionSet() {
-	return injectableCollectionSet;
-    }
+	public InjectableCollectionSet getInjectableCollectionSet() {
+		return injectableCollectionSet;
+	}
 }

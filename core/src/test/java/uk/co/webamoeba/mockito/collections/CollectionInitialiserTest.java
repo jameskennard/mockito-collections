@@ -25,105 +25,105 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionInitialiserTest {
 
-    @InjectMocks
-    private CollectionInitialiser initialiser;
+	@InjectMocks
+	private CollectionInitialiser initialiser;
 
-    @Mock
-    private AnnotatedFieldRetriever annotatedFieldRetriever;
+	@Mock
+	private AnnotatedFieldRetriever annotatedFieldRetriever;
 
-    @Mock
-    private GenericCollectionTypeResolver genericCollectionTypeResolver;
+	@Mock
+	private GenericCollectionTypeResolver genericCollectionTypeResolver;
 
-    @Mock
-    private CollectionFactory collectionFactory;
+	@Mock
+	private CollectionFactory collectionFactory;
 
-    @Mock
-    private MockitoMockStrategy mockitoMockStrategy;
+	@Mock
+	private MockitoMockStrategy mockitoMockStrategy;
 
-    @Test
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void shouldInitialise() {
-	// Given
-	ClassWithAnnnotations object = new ClassWithAnnnotations();
-	Field field = getField(object.getClass(), "collection");
-	Set<Field> fields = Collections.singleton(field);
-	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
-		.willReturn(fields);
-	Class collectionType = EventListener.class;
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
-	EventListener mockEventListener = mock(EventListener.class);
-	given(mockitoMockStrategy.createMock(EventListener.class)).willReturn(mockEventListener);
-	Collection collection = mock(Collection.class);
-	given(collectionFactory.createCollection(eq(Collection.class), eq(Collections.singleton(mockEventListener))))
-		.willReturn(collection);
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void shouldInitialise() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field field = getField(object.getClass(), "collection");
+		Set<Field> fields = Collections.singleton(field);
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
+				.willReturn(fields);
+		Class collectionType = EventListener.class;
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
+		EventListener mockEventListener = mock(EventListener.class);
+		given(mockitoMockStrategy.createMock(EventListener.class)).willReturn(mockEventListener);
+		Collection collection = mock(Collection.class);
+		given(collectionFactory.createCollection(eq(Collection.class), eq(Collections.singleton(mockEventListener))))
+				.willReturn(collection);
 
-	// When
-	initialiser.initialise(object);
+		// When
+		initialiser.initialise(object);
 
-	// Then
-	assertSame(collection, object.collection);
-    }
-
-    @Test
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void shouldInitialiseGivenAnnotationWithZeroMocks() {
-	// Given
-	ClassWithAnnnotations object = new ClassWithAnnnotations();
-	Field field = getField(object.getClass(), "collectionWithZeroMocks");
-	Set<Field> fields = Collections.singleton(field);
-	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
-		.willReturn(fields);
-	Class collectionType = EventListener.class;
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
-	Collection collection = mock(Collection.class);
-	given(collectionFactory.createCollection(Collection.class, Collections.emptySet())).willReturn(collection);
-
-	// When
-	initialiser.initialise(object);
-
-	// Then
-	assertSame(collection, object.collectionWithZeroMocks);
-    }
-
-    @Test(expected = MockitoCollectionsException.class)
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void shouldFailToInitialiseGivenAnnotationWithNegativeNumberOfMocks() {
-	// Given
-	ClassWithAnnnotations object = new ClassWithAnnnotations();
-	Field field = getField(object.getClass(), "collectionWithNegativeNumberOfMocks");
-	Set<Field> fields = Collections.singleton(field);
-	given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
-		.willReturn(fields);
-	Class collectionType = EventListener.class;
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
-
-	// When
-	initialiser.initialise(object);
-
-	// Then
-	// Exception Thrown
-    }
-
-    private Field getField(Class<?> clazz, String name) {
-	Field field;
-	try {
-	    field = clazz.getDeclaredField(name);
-	} catch (Exception e) {
-	    throw new IllegalArgumentException("No such field exists");
+		// Then
+		assertSame(collection, object.collection);
 	}
-	return field;
-    }
 
-    private class ClassWithAnnnotations {
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void shouldInitialiseGivenAnnotationWithZeroMocks() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field field = getField(object.getClass(), "collectionWithZeroMocks");
+		Set<Field> fields = Collections.singleton(field);
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
+				.willReturn(fields);
+		Class collectionType = EventListener.class;
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
+		Collection collection = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, Collections.emptySet())).willReturn(collection);
 
-	@CollectionOfMocks
-	private Collection<EventListener> collection;
+		// When
+		initialiser.initialise(object);
 
-	@CollectionOfMocks(numberOfMocks = 0)
-	private Collection<EventListener> collectionWithZeroMocks;
+		// Then
+		assertSame(collection, object.collectionWithZeroMocks);
+	}
 
-	@SuppressWarnings("unused")
-	@CollectionOfMocks(numberOfMocks = -1)
-	private Collection<EventListener> collectionWithNegativeNumberOfMocks;
-    }
+	@Test(expected = MockitoCollectionsException.class)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void shouldFailToInitialiseGivenAnnotationWithNegativeNumberOfMocks() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field field = getField(object.getClass(), "collectionWithNegativeNumberOfMocks");
+		Set<Field> fields = Collections.singleton(field);
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
+				.willReturn(fields);
+		Class collectionType = EventListener.class;
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
+
+		// When
+		initialiser.initialise(object);
+
+		// Then
+		// Exception Thrown
+	}
+
+	private Field getField(Class<?> clazz, String name) {
+		Field field;
+		try {
+			field = clazz.getDeclaredField(name);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("No such field exists");
+		}
+		return field;
+	}
+
+	private class ClassWithAnnnotations {
+
+		@CollectionOfMocks
+		private Collection<EventListener> collection;
+
+		@CollectionOfMocks(numberOfMocks = 0)
+		private Collection<EventListener> collectionWithZeroMocks;
+
+		@SuppressWarnings("unused")
+		@CollectionOfMocks(numberOfMocks = -1)
+		private Collection<EventListener> collectionWithNegativeNumberOfMocks;
+	}
 }

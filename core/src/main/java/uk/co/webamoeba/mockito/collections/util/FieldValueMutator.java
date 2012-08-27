@@ -11,37 +11,37 @@ import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException
  */
 public class FieldValueMutator {
 
-    private Object object;
+	private Object object;
 
-    private Field field;
+	private Field field;
 
-    public FieldValueMutator(Object object, Field field) {
-	this.object = object;
-	this.field = field;
-    }
-
-    public void mutateTo(Object value) {
-	boolean wasAccessible = field.isAccessible();
-	if (!wasAccessible) {
-	    field.setAccessible(true);
+	public FieldValueMutator(Object object, Field field) {
+		this.object = object;
+		this.field = field;
 	}
 
-	try {
-	    field.set(object, value);
-	} catch (IllegalAccessException e) {
-	    throw new MockitoCollectionsException("Could not set field '" + field + "' on object '" + object
-		    + "' with value: '" + value + "'", e);
-	} catch (IllegalArgumentException e) {
-	    throw new MockitoCollectionsException("Could not set field '" + field + "' on object '" + object
-		    + "' with value '" + value + "' because value was of an incompatible type", e);
-	}
+	public void mutateTo(Object value) {
+		boolean wasAccessible = field.isAccessible();
+		if (!wasAccessible) {
+			field.setAccessible(true);
+		}
 
-	if (!wasAccessible) {
-	    try {
-		field.setAccessible(false);
-	    } catch (Throwable t) {
-		// Swallow it, we've down what we need to do
-	    }
+		try {
+			field.set(object, value);
+		} catch (IllegalAccessException e) {
+			throw new MockitoCollectionsException("Could not set field '" + field + "' on object '" + object
+					+ "' with value: '" + value + "'", e);
+		} catch (IllegalArgumentException e) {
+			throw new MockitoCollectionsException("Could not set field '" + field + "' on object '" + object
+					+ "' with value '" + value + "' because value was of an incompatible type", e);
+		}
+
+		if (!wasAccessible) {
+			try {
+				field.setAccessible(false);
+			} catch (Throwable t) {
+				// Swallow it, we've down what we need to do
+			}
+		}
 	}
-    }
 }

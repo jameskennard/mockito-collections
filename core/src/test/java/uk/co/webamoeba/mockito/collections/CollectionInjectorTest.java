@@ -34,283 +34,283 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class CollectionInjectorTest {
 
-    @InjectMocks
-    private CollectionInjector injector;
+	@InjectMocks
+	private CollectionInjector injector;
 
-    @Mock
-    private CollectionFactory collectionFactory;
+	@Mock
+	private CollectionFactory collectionFactory;
 
-    @Mock
-    private InjectableSelectionStrategy strategy;
+	@Mock
+	private InjectableSelectionStrategy strategy;
 
-    @Mock
-    private GenericCollectionTypeResolver genericCollectionTypeResolver;
+	@Mock
+	private GenericCollectionTypeResolver genericCollectionTypeResolver;
 
-    @Before
-    public void setup() {
-	// Workaround so as we can mock this correctly in tests, without this will throw ClassCastException when
-	// specifying willReturn (unless returning a LinkedList or parent type) because the default Mockito answer
-	// returns an empty LinkedList. Would be nicer if there were an Answers type that always returned null.
-	given(collectionFactory.createCollection(any(Class.class), any(Collection.class))).willReturn(null);
-    }
-
-    @Test
-    public void shouldInjectGivenNullType() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
-
-	ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(null);
-
-	// When
-	injector.inject(injectionDetails);
-
-	// Then
-	assertNull(injectee.listeners);
-	assertNull(injectee.eventListener);
-	assertNull(injectee.iterator);
-    }
-
-    @Test
-    public void shouldInjectGivenNoMatchingInjectables() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
-
-	ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) EventListener.class);
-
-	// When
-	injector.inject(injectionDetails);
-
-	// Then
-	assertNull(injectee.listeners);
-	assertNull(injectee.eventListener);
-	assertNull(injectee.iterator);
-    }
-
-    @Test
-    public void shouldInjectIntoPublicField() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
-
-	ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
-	Set<Object> injectables = mock(Set.class);
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-	given(injectionDetails.getInjectables()).willReturn(injectables);
-
-	Set<EventListener> stragtegyInjectables = mock(Set.class);
-	Class<EventListener> clazz = EventListener.class;
-	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
-
-	Collection<Object> set = mock(Collection.class);
-	given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(set);
-
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
-
-	// When
-	injector.inject(injectionDetails);
-
-	// Then
-	assertSame(set, injectee.listeners);
-	assertNull(injectee.eventListener);
-	assertNull(injectee.iterator);
-    }
-
-    @Test
-    public void shouldInjectIntoPrivateField() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
-
-	ClassWithPrivateEventListenerCollection injectee = new ClassWithPrivateEventListenerCollection();
-	Set<Object> injectables = mock(Set.class);
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-	given(injectionDetails.getInjectables()).willReturn(injectables);
-
-	Set<EventListener> stragtegyInjectables = mock(Set.class);
-	Class<EventListener> clazz = EventListener.class;
-	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
-
-	List<Object> list = mock(List.class);
-	given(collectionFactory.createCollection(List.class, stragtegyInjectables)).willReturn(list);
-
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
-
-	// When
-	injector.inject(injectionDetails);
-
-	// Then
-	assertSame(list, injectee.listeners);
-    }
-
-    /**
-     * Gets the {@link Field} of the specified name from the injectee. This method will only look for {@link Field
-     * Fields} that are declared in the class represented by this injectee. This includes public, protected, default
-     * (package) access, and private fields, but excludes inherited fields.
-     * 
-     * @param fieldName
-     *            Name of the field we want to retrieve
-     * @param injectee
-     *            Object from which we want to retrieve the {@link Field}.
-     * @return
-     * @throws NoSuchFieldException
-     *             Thrown when no matching {@link Field} can be found
-     */
-    private Field getField(String fieldName, Object injectee) throws NoSuchFieldException {
-	for (Field field : injectee.getClass().getDeclaredFields()) {
-	    if (field.getName().equals(fieldName)) {
-		return field;
-	    }
+	@Before
+	public void setup() {
+		// Workaround so as we can mock this correctly in tests, without this will throw ClassCastException when
+		// specifying willReturn (unless returning a LinkedList or parent type) because the default Mockito answer
+		// returns an empty LinkedList. Would be nicer if there were an Answers type that always returned null.
+		given(collectionFactory.createCollection(any(Class.class), any(Collection.class))).willReturn(null);
 	}
-	throw new NoSuchFieldException("No such field " + fieldName + " exists on object of type "
-		+ injectee.getClass());
-    }
 
-    @Test
-    public void shouldInjectIntoPrivateSetField() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+	@Test
+	public void shouldInjectGivenNullType() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
-	ClassWithPrivateEventListenerSet injectee = new ClassWithPrivateEventListenerSet();
-	Set<Object> injectables = mock(Set.class);
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-	given(injectionDetails.getInjectables()).willReturn(injectables);
+		ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
 
-	Set<EventListener> stragtegyInjectables = mock(Set.class);
-	Class<EventListener> clazz = EventListener.class;
-	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(null);
 
-	Set<Object> set = mock(Set.class);
-	given(collectionFactory.createCollection(Set.class, stragtegyInjectables)).willReturn(set);
+		// When
+		injector.inject(injectionDetails);
 
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+		// Then
+		assertNull(injectee.listeners);
+		assertNull(injectee.eventListener);
+		assertNull(injectee.iterator);
+	}
 
-	// When
-	injector.inject(injectionDetails);
+	@Test
+	public void shouldInjectGivenNoMatchingInjectables() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
-	// Then
-	assertSame(set, injectee.listeners);
-    }
+		ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
 
-    @Test
-    public void shouldInjectIntoPrivateVectorField() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) EventListener.class);
 
-	ClassWithPrivateEventListenerVector injectee = new ClassWithPrivateEventListenerVector();
-	Set<Object> injectables = mock(Set.class);
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-	given(injectionDetails.getInjectables()).willReturn(injectables);
+		// When
+		injector.inject(injectionDetails);
 
-	Set<EventListener> stragtegyInjectables = mock(Set.class);
-	Class<EventListener> clazz = EventListener.class;
-	given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		// Then
+		assertNull(injectee.listeners);
+		assertNull(injectee.eventListener);
+		assertNull(injectee.iterator);
+	}
 
-	Vector<Object> vector = mock(Vector.class);
-	given(collectionFactory.createCollection(Vector.class, stragtegyInjectables)).willReturn(vector);
+	@Test
+	public void shouldInjectIntoPublicField() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+		ClassWithPublicEventListenerCollection injectee = new ClassWithPublicEventListenerCollection();
+		Set<Object> injectables = mock(Set.class);
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
 
-	// When
-	injector.inject(injectionDetails);
+		Set<EventListener> stragtegyInjectables = mock(Set.class);
+		Class<EventListener> clazz = EventListener.class;
+		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
-	// Then
-	assertSame(vector, injectee.listeners);
-    }
+		Collection<Object> set = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(set);
 
-    @Test
-    public void shouldInjectIntoPrivateArrayField() throws Exception {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
 
-	ClassWithPrivateEventListenerArray injectee = new ClassWithPrivateEventListenerArray();
-	Set<Object> injectables = mock(Set.class);
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-	given(injectionDetails.getInjectables()).willReturn(injectables);
+		// When
+		injector.inject(injectionDetails);
 
-	Set<EventListener> stragtegyInjectables = mock(Set.class);
-	EventListener[] eventListeners = { mock(EventListener.class) };
-	given(strategy.getInjectables(injectables, EventListener.class)).willReturn(stragtegyInjectables);
-	given(stragtegyInjectables.toArray()).willReturn(eventListeners);
+		// Then
+		assertSame(set, injectee.listeners);
+		assertNull(injectee.eventListener);
+		assertNull(injectee.iterator);
+	}
 
-	// When
-	injector.inject(injectionDetails);
+	@Test
+	public void shouldInjectIntoPrivateField() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
-	// Then
-	assertSame(eventListeners, injectee.listeners);
-    }
+		ClassWithPrivateEventListenerCollection injectee = new ClassWithPrivateEventListenerCollection();
+		Set<Object> injectables = mock(Set.class);
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
 
-    @Test
-    public void shouldInjectGivenInjectableCollection() throws NoSuchFieldException {
-	// Given
-	InjectionDetails injectionDetails = mock(InjectionDetails.class);
+		Set<EventListener> stragtegyInjectables = mock(Set.class);
+		Class<EventListener> clazz = EventListener.class;
+		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
-	ClassWithPrivateEventListenerSet injectee = new ClassWithPrivateEventListenerSet();
-	Set<Object> injectables = mock(Set.class);
-	InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
-	given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
-	given(injectionDetails.getInjectables()).willReturn(injectables);
-	given(injectionDetails.getInjectableCollectionSet()).willReturn(injectableCollectionSet);
+		List<Object> list = mock(List.class);
+		given(collectionFactory.createCollection(List.class, stragtegyInjectables)).willReturn(list);
 
-	Class<EventListener> clazz = EventListener.class;
-	InjectableCollection injectableCollection = mock(InjectableCollection.class, RETURNS_DEEP_STUBS);
-	Set<EventListener> eventListeners = new HashSet<EventListener>();
-	given(injectableCollection.getValue()).willReturn(eventListeners);
-	given(strategy.getInjectableCollection(injectableCollectionSet, Set.class, clazz)).willReturn(
-		injectableCollection);
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
 
-	Field field = getField("listeners", injectee);
-	given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+		// When
+		injector.inject(injectionDetails);
 
-	// When
-	injector.inject(injectionDetails);
-
-	// Then
-	assertSame(eventListeners, injectee.listeners);
-    }
-
-    private class ClassWithPublicEventListenerCollection {
-
-	public Collection<EventListener> listeners;
+		// Then
+		assertSame(list, injectee.listeners);
+	}
 
 	/**
-	 * A non {@link Collection} based field in order to verify this sort of field is ignored.
+	 * Gets the {@link Field} of the specified name from the injectee. This method will only look for {@link Field
+	 * Fields} that are declared in the class represented by this injectee. This includes public, protected, default
+	 * (package) access, and private fields, but excludes inherited fields.
+	 * 
+	 * @param fieldName
+	 *            Name of the field we want to retrieve
+	 * @param injectee
+	 *            Object from which we want to retrieve the {@link Field}.
+	 * @return
+	 * @throws NoSuchFieldException
+	 *             Thrown when no matching {@link Field} can be found
 	 */
-	public EventListener eventListener;
+	private Field getField(String fieldName, Object injectee) throws NoSuchFieldException {
+		for (Field field : injectee.getClass().getDeclaredFields()) {
+			if (field.getName().equals(fieldName)) {
+				return field;
+			}
+		}
+		throw new NoSuchFieldException("No such field " + fieldName + " exists on object of type "
+				+ injectee.getClass());
+	}
 
-	/**
-	 * A non {@link Collection} based {@link ParameterizedType} field in order to verify this sort of field is
-	 * ignored.
-	 */
-	public Iterator<String> iterator;
-    }
+	@Test
+	public void shouldInjectIntoPrivateSetField() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
-    private class ClassWithPrivateEventListenerCollection {
+		ClassWithPrivateEventListenerSet injectee = new ClassWithPrivateEventListenerSet();
+		Set<Object> injectables = mock(Set.class);
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
 
-	private List<EventListener> listeners;
-    }
+		Set<EventListener> stragtegyInjectables = mock(Set.class);
+		Class<EventListener> clazz = EventListener.class;
+		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
-    private class ClassWithPrivateEventListenerSet {
+		Set<Object> set = mock(Set.class);
+		given(collectionFactory.createCollection(Set.class, stragtegyInjectables)).willReturn(set);
 
-	private Set<EventListener> listeners;
-    }
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
 
-    private class ClassWithPrivateEventListenerVector {
+		// When
+		injector.inject(injectionDetails);
 
-	private Vector<EventListener> listeners;
-    }
+		// Then
+		assertSame(set, injectee.listeners);
+	}
 
-    private class ClassWithPrivateEventListenerArray {
+	@Test
+	public void shouldInjectIntoPrivateVectorField() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
-	private EventListener[] listeners;
-    }
+		ClassWithPrivateEventListenerVector injectee = new ClassWithPrivateEventListenerVector();
+		Set<Object> injectables = mock(Set.class);
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
+
+		Set<EventListener> stragtegyInjectables = mock(Set.class);
+		Class<EventListener> clazz = EventListener.class;
+		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+
+		Vector<Object> vector = mock(Vector.class);
+		given(collectionFactory.createCollection(Vector.class, stragtegyInjectables)).willReturn(vector);
+
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+
+		// When
+		injector.inject(injectionDetails);
+
+		// Then
+		assertSame(vector, injectee.listeners);
+	}
+
+	@Test
+	public void shouldInjectIntoPrivateArrayField() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+		ClassWithPrivateEventListenerArray injectee = new ClassWithPrivateEventListenerArray();
+		Set<Object> injectables = mock(Set.class);
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
+
+		Set<EventListener> stragtegyInjectables = mock(Set.class);
+		EventListener[] eventListeners = { mock(EventListener.class) };
+		given(strategy.getInjectables(injectables, EventListener.class)).willReturn(stragtegyInjectables);
+		given(stragtegyInjectables.toArray()).willReturn(eventListeners);
+
+		// When
+		injector.inject(injectionDetails);
+
+		// Then
+		assertSame(eventListeners, injectee.listeners);
+	}
+
+	@Test
+	public void shouldInjectGivenInjectableCollection() throws NoSuchFieldException {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+		ClassWithPrivateEventListenerSet injectee = new ClassWithPrivateEventListenerSet();
+		Set<Object> injectables = mock(Set.class);
+		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+		given(injectionDetails.getInjectees()).willReturn(Collections.<Object> singleton(injectee));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getInjectableCollectionSet()).willReturn(injectableCollectionSet);
+
+		Class<EventListener> clazz = EventListener.class;
+		InjectableCollection injectableCollection = mock(InjectableCollection.class, RETURNS_DEEP_STUBS);
+		Set<EventListener> eventListeners = new HashSet<EventListener>();
+		given(injectableCollection.getValue()).willReturn(eventListeners);
+		given(strategy.getInjectableCollection(injectableCollectionSet, Set.class, clazz)).willReturn(
+				injectableCollection);
+
+		Field field = getField("listeners", injectee);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+
+		// When
+		injector.inject(injectionDetails);
+
+		// Then
+		assertSame(eventListeners, injectee.listeners);
+	}
+
+	private class ClassWithPublicEventListenerCollection {
+
+		public Collection<EventListener> listeners;
+
+		/**
+		 * A non {@link Collection} based field in order to verify this sort of field is ignored.
+		 */
+		public EventListener eventListener;
+
+		/**
+		 * A non {@link Collection} based {@link ParameterizedType} field in order to verify this sort of field is
+		 * ignored.
+		 */
+		public Iterator<String> iterator;
+	}
+
+	private class ClassWithPrivateEventListenerCollection {
+
+		private List<EventListener> listeners;
+	}
+
+	private class ClassWithPrivateEventListenerSet {
+
+		private Set<EventListener> listeners;
+	}
+
+	private class ClassWithPrivateEventListenerVector {
+
+		private Vector<EventListener> listeners;
+	}
+
+	private class ClassWithPrivateEventListenerArray {
+
+		private EventListener[] listeners;
+	}
 }
