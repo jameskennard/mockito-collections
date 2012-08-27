@@ -3,6 +3,8 @@ mockito-collections
 
 Project to investigate the possibility of injecting objects into Collections using generics to determine which objects can be placed into the Collections. See https://groups.google.com/forum/#!topic/mockito/CfxbGNOewuI for details. Whilst this project is primarily led by a desire to add such functionality to Mockito, it would be nice to think that the solution would not need to be so tightly coupled to Mockito that it would be Mockito specific.
 
+[![Build Status](https://buildhive.cloudbees.com/job/jameskennard/job/mockito-collections/badge/icon)](https://buildhive.cloudbees.com/job/jameskennard/job/mockito-collections/)
+
 The Problem
 -----------
 
