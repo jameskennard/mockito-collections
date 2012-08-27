@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>uk.co.webamoeba.mockito.collections.core</groupId>
-	<artifactId>mockito-collections-core</artifactId>
+	<groupId>uk.co.webamoeba.mockito.collections</groupId>
+	<artifactId>mockito-collections</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>Mockito Collections Core</name>
+	<name>Mockito Collections</name>
 	<packaging>jar</packaging>
 	<description>
-		Mockito Collections Core allows injection of Mockito mocks into Collection fields where the @InjectMocks annotation is being used.
+		Mockito Collections allows injection of Mockito mocks into Collection fields where the @InjectMocks annotation is being used.
 	</description>
 	<developers>
 		<developer>
@@ -28,7 +28,7 @@
 	</dependencies>
 	<url>https://github.com/jameskennard/mockito-collections</url>
 	<scm>
-		<url>https://github.com/jameskennard/mockito-collections/core</url>
+		<url>https://github.com/jameskennard/mockito-collections</url>
 		<connection>git://github.com/jameskennard/mockito-collections.git</connection>
 	</scm>
 </project>

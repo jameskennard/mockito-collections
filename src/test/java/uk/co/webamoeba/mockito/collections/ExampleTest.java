@@ -17,7 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * 
  * @author James Kennard
  */
-// FIXME This isn't really part of core, this should be in a separate project.
+// FIXME This isn't really part of mockito-collections, this should be in a separate project.
 @RunWith(MockitoJUnitRunner.class)
 public class ExampleTest {
 
