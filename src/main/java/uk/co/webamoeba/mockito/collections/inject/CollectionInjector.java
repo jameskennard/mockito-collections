@@ -10,7 +10,7 @@ import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
- * The {@link CollectionInjector} is responsible for performing the injection of injectees into injectables. The
+ * The {@link CollectionInjector} is responsible for performing the injection of {@link Collection Collections}. The
  * collaborators are set on instantiation so as to allow different behaviour as required.
  * 
  * @author James Kennard
@@ -31,20 +31,19 @@ public class CollectionInjector {
 	}
 
 	/**
-	 * Injects the {@link InjectionDetails#getInjectees() injectees} into the {@link InjectionDetails#getInjectables()
-	 * injectables}.
+	 * Injects {@link Collection Collections} into the {@link InjectionDetails#getInjectCollections()}.
 	 * 
 	 * @param injectionDetails
 	 */
 	public void inject(InjectionDetails injectionDetails) {
-		for (Object injectee : injectionDetails.getInjectees()) {
-			inject(injectee, injectionDetails.getInjectables(), injectionDetails.getInjectableCollectionSet());
+		for (Object injectCollections : injectionDetails.getInjectCollections()) {
+			inject(injectCollections, injectionDetails.getInjectables(), injectionDetails.getInjectableCollectionSet());
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void inject(Object injectee, Set<Object> injectables, InjectableCollectionSet injectableCollectionSet) {
-		Field[] fields = injectee.getClass().getDeclaredFields();
+	private void inject(Object injectCollections, Set<Object> injectables, InjectableCollectionSet injectableCollectionSet) {
+		Field[] fields = injectCollections.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Type type = field.getGenericType();
 			if (type instanceof ParameterizedType) {
@@ -57,7 +56,7 @@ public class CollectionInjector {
 						Collection collection = getCollection(injectables, injectableCollectionSet, rawType,
 								collectionType);
 						if (collection != null) {
-							new FieldValueMutator(injectee, field).mutateTo(collection);
+							new FieldValueMutator(injectCollections, field).mutateTo(collection);
 						}
 					}
 				}
@@ -66,7 +65,7 @@ public class CollectionInjector {
 				if (clazz.isArray()) {
 					Set strategyInjectables = strategy.getInjectables(injectables, clazz.getComponentType());
 					if (!strategyInjectables.isEmpty()) {
-						new FieldValueMutator(injectee, field).mutateTo(strategyInjectables.toArray());
+						new FieldValueMutator(injectCollections, field).mutateTo(strategyInjectables.toArray());
 					}
 				}
 			}

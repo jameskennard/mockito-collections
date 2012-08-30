@@ -53,17 +53,17 @@ Beyond the Basics
 
 In addition to the basic usage described above, mockito-collections provides a number of its own annotations that can provide further support for dealing with Collections in tests. There are three key concepts:
 
-* An <i>injectee</i> is an Object into which we want to inject Collections of injectables.
-* An <i>injectable</i> is an Object that can be injected into Collections in injectees.
-* An <i>injectableCollection</i> is a {@link Collection} that can be injected verbatim into Collections in injectees.
+* An <i>injectCollections</i> is an Object into which we want to inject Collections of injectables.
+* An <i>injectable</i> is an Object that can be injected into Collections in injectCollections.
+* An <i>injectableCollection</i> is a {@link Collection} that can be injected verbatim into Collections in injectCollections.
 
-Fields annotated with the @InjectMocks annotation are considered to be injectees. It is possible to prevent a field annotated with @InjectMocks being considered an injectee using the @IgnoreInjectee annotation. And it is also possible to make fields that are not annotated with @InjectMocks considered to be injectees using the @Injectee annotation.
+Fields annotated with the @InjectMocks annotation are considered to be injectCollections. It is possible to prevent a field annotated with @InjectMocks being considered an injectCollections using the @IgnoreInjectee annotation. And it is also possible to make fields that are not annotated with @InjectMocks considered to be injectCollections using the @InjectCollections annotation.
 
     @InjectMocks
     @IgnoreInjectee
     private MyDelegate delegate;
     
-    @Injectee
+    @InjectCollections
     private MyDelegate otherDelegate = new MyDelegate;
 
 Fields annotated with the @Mock annotation are considered to be injectables. Like fields annotated with @InjectMocks, it is possible to prevent a field annotated with @Mock being considered an injectable using the @IgnoreInjectable annotation. And again, it is possible to make fields that are not annotated with @Mock considered to be injectables using the @Injectable annotation.
@@ -75,7 +75,7 @@ Fields annotated with the @Mock annotation are considered to be injectables. Lik
     @Injectable
     private MyListener listener2 = new MyListener();
 
-The @InjectableCollection takes a different slant on the approach shown so far. Rather that injecting elements into a Collection field, it can be used to inject a Collection verbatim into a Collection field. The obvious consequence of this is that fields annotated with @InjectableCollection must be Collection fields. These Collections will be injected when the generics and raw type are equal to that of an injectee’s field. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
+The @InjectableCollection takes a different slant on the approach shown so far. Rather that injecting elements into a Collection field, it can be used to inject a Collection verbatim into a Collection field. The obvious consequence of this is that fields annotated with @InjectableCollection must be Collection fields. These Collections will be injected when the generics and raw type are equal to that of an injectCollections field. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
 
     @InjectableCollection
     private Collection<MyListener> listeners = Collections.emptyList();

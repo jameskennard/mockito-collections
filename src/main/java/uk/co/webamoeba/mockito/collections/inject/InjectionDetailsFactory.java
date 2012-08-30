@@ -14,23 +14,24 @@ import org.mockito.internal.util.reflection.FieldReader;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
+import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
-import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
- * annotations. {@link Field Fields} with the {@link InjectMocks} or {@link Injectee} annotation are considered
- * injectees. {@link Field Fields} with the {@link Mock} or {@link Injectable} annotation are considered injectables. It
- * is also possible to ignore fields that would other wise be considered injectables or injectees using the
- * {@link IgnoreInjectable} and {@link IgnoreInjectee} annotations respectively.
+ * annotations. {@link Field Fields} with the {@link InjectMocks} or {@link InjectCollections} annotation are considered
+ * for injection of {@link Collection Collections}. {@link Field Fields} with the {@link Mock} or {@link Injectable}
+ * annotation are considered injectables. It is also possible to ignore fields that would other wise be considered
+ * injectables or for injecting {@link Collection Collections} using the {@link IgnoreInjectable} and
+ * {@link IgnoreInjectee} annotations respectively.
  * 
  * @see Mock
  * @see InjectMocks
  * @see Injectable
- * @see Injectee
+ * @see InjectCollections
  * @see IgnoreInjectable
  * @see IgnoreInjectee
  * @author James Kennard
@@ -52,17 +53,17 @@ public class InjectionDetailsFactory {
 	 * @return {@link InjectionDetails} created based on the Mockito annotations {@link Mock} and {@link InjectMocks}.
 	 */
 	public InjectionDetails createInjectionDetails(Object object) {
-		Set<Object> injectees = getInjectees(object);
+		Set<Object> injectCollections = getInjectCollections(object);
 		Set<Object> injectables = getInjectables(object);
 		InjectableCollectionSet injectableCollectionSet = getInjectableCollectionSet(object);
-		return new InjectionDetails(injectees, injectables, injectableCollectionSet);
+		return new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
 	}
 
-	private Set<Object> getInjectees(Object object) {
-		Set<Object> injectees = getFieldValues(object, InjectMocks.class);
-		injectees.addAll(getFieldValues(object, Injectee.class));
-		injectees.removeAll(getFieldValues(object, IgnoreInjectee.class));
-		return injectees;
+	private Set<Object> getInjectCollections(Object object) {
+		Set<Object> injectCollections = getFieldValues(object, InjectMocks.class);
+		injectCollections.addAll(getFieldValues(object, InjectCollections.class));
+		injectCollections.removeAll(getFieldValues(object, IgnoreInjectee.class));
+		return injectCollections;
 	}
 
 	private Set<Object> getInjectables(Object object) {

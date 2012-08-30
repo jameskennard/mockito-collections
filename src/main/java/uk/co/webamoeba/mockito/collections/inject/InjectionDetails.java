@@ -7,44 +7,44 @@ import java.util.Set;
 /**
  * Describes {@link Object}s that we want to inject into and be injected with {@link Collection}s of {@link Object}s.
  * <p>
- * An <i>injectee</i> is an {@link Object} into which we want to inject {@link Collection}s of injectables.<br/>
- * An <i>injectable</i> is an {@link Object} that can be injected into {@link Collection}s in injectees.<br />
+ * An <i>injectCollections</i> is an {@link Object} into which we want to inject {@link Collection}s of injectables.<br/>
+ * An <i>injectable</i> is an {@link Object} that can be injected into {@link Collection}s in injectCollections.<br />
  * An <i>injectableCollection</i> is a {@link Collection} that can be injected verbatim into {@link Collection}s in
- * injectees.<br />
+ * injectCollections.<br />
  * </p>
  * 
  * @author James Kennard
  */
 public class InjectionDetails {
 
-	private Set<Object> injectees;
+	private Set<Object> injectCollections;
 
 	private Set<Object> injectables;
 
 	private InjectableCollectionSet injectableCollectionSet;
 
 	/**
-	 * @param injectees
+	 * @param injectCollections
 	 *            {@link Object}s into which we want to inject {@link Collection}s of injectables.
 	 * @param injectables
-	 *            {@link Object}s that can be injected into {@link Collection}s in the injectees.
+	 *            {@link Object}s that can be injected into {@link Collection}s in the injectCollections.
 	 * @param injectableCollectionSet
 	 *            {@link InjectableCollectionSet} containing {@link InjectableCollection InjectableCollections} can be
-	 *            injected into the injectees.
+	 *            injected into the injectCollections.
 	 */
-	public InjectionDetails(Set<Object> injectees, Set<Object> injectables,
+	public InjectionDetails(Set<Object> injectCollections, Set<Object> injectables,
 			InjectableCollectionSet injectableCollectionSet) {
-		if (injectees == null) {
-			throw new IllegalArgumentException("Injectees must not be null");
+		if (injectCollections == null) {
+			throw new IllegalArgumentException("injectCollections must not be null");
 		}
 		if (injectables == null) {
-			throw new IllegalArgumentException("Injectables must not be null");
+			throw new IllegalArgumentException("injectables must not be null");
 		}
 		if (injectableCollectionSet == null) {
 			throw new IllegalArgumentException("injectableCollectionSet must not be null");
 		}
 
-		this.injectees = Collections.unmodifiableSet(injectees);
+		this.injectCollections = Collections.unmodifiableSet(injectCollections);
 		this.injectables = Collections.unmodifiableSet(injectables);
 		this.injectableCollectionSet = injectableCollectionSet;
 	}
@@ -54,8 +54,8 @@ public class InjectionDetails {
 	 *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
 	 *         {@link Set} is unmodifiable.
 	 */
-	public Set<Object> getInjectees() {
-		return injectees;
+	public Set<Object> getInjectCollections() {
+		return injectCollections;
 	}
 
 	/**

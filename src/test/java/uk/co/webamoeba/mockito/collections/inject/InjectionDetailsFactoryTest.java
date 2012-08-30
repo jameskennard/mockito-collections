@@ -21,8 +21,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
+import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
-import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -46,9 +46,9 @@ public class InjectionDetailsFactoryTest {
 	public void shouldCreateInjectionDetailsGivenInjectMocks() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injecteeField = getField(object.getClass(), "injectee1");
+		Field injectCollectionsField = getField(object.getClass(), "injectCollections1");
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectMocks.class)).willReturn(
-				Collections.singleton(injecteeField));
+				Collections.singleton(injectCollectionsField));
 
 		// When
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
@@ -56,17 +56,17 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectables().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getInjectees().size());
-		assertTrue(injectionDetails.getInjectees().contains(object.injectee1));
+		assertEquals(1, injectionDetails.getInjectCollections().size());
+		assertTrue(injectionDetails.getInjectCollections().contains(object.injectCollections1));
 	}
 
 	@Test
-	public void shouldCreateInjectionDetailsGivenInjectee() {
+	public void shouldCreateInjectionDetailsGivenInjectCollections() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injecteeField = getField(object.getClass(), "injectee2");
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectee.class)).willReturn(
-				Collections.singleton(injecteeField));
+		Field injectCollectionsField = getField(object.getClass(), "injectCollections2");
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectCollections.class)).willReturn(
+				Collections.singleton(injectCollectionsField));
 
 		// When
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
@@ -74,22 +74,22 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectables().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getInjectees().size());
-		assertTrue(injectionDetails.getInjectees().contains(object.injectee2));
+		assertEquals(1, injectionDetails.getInjectCollections().size());
+		assertTrue(injectionDetails.getInjectCollections().contains(object.injectCollections2));
 	}
 
 	@Test
 	public void shouldCreateInjectionDetailsGivenIgnoredInjectees() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injecteeField1 = getField(object.getClass(), "injectee1");
-		Field injecteeField2 = getField(object.getClass(), "injectee2");
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectee.class)).willReturn(
-				Collections.singleton(injecteeField1));
+		Field injectCollectionsField1 = getField(object.getClass(), "injectCollections1");
+		Field injectCollectionsField2 = getField(object.getClass(), "injectCollections2");
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectCollections.class)).willReturn(
+				Collections.singleton(injectCollectionsField1));
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectMocks.class)).willReturn(
-				Collections.singleton(injecteeField2));
+				Collections.singleton(injectCollectionsField2));
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreInjectee.class)).willReturn(
-				Collections.singleton(injecteeField2));
+				Collections.singleton(injectCollectionsField2));
 
 		// When
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
@@ -97,8 +97,8 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectables().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getInjectees().size());
-		assertTrue(injectionDetails.getInjectees().contains(object.injectee1));
+		assertEquals(1, injectionDetails.getInjectCollections().size());
+		assertTrue(injectionDetails.getInjectCollections().contains(object.injectCollections1));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class InjectionDetailsFactoryTest {
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
 		// Then
-		assertEquals(0, injectionDetails.getInjectees().size());
+		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 		assertEquals(1, injectionDetails.getInjectables().size());
 		assertTrue(injectionDetails.getInjectables().contains(object.injectable1));
@@ -131,7 +131,7 @@ public class InjectionDetailsFactoryTest {
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
 		// Then
-		assertEquals(0, injectionDetails.getInjectees().size());
+		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 		assertEquals(1, injectionDetails.getInjectables().size());
 		assertTrue(injectionDetails.getInjectables().contains(object.injectable2));
@@ -154,7 +154,7 @@ public class InjectionDetailsFactoryTest {
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
 		// Then
-		assertEquals(0, injectionDetails.getInjectees().size());
+		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 		assertEquals(1, injectionDetails.getInjectables().size());
 		assertTrue(injectionDetails.getInjectables().contains(object.injectable2));
@@ -179,7 +179,7 @@ public class InjectionDetailsFactoryTest {
 
 		// Then
 		assertEquals(0, injectionDetails.getInjectables().size());
-		assertEquals(0, injectionDetails.getInjectees().size());
+		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(1, injectionDetails.getInjectableCollectionSet().size());
 		InjectableCollection<Collection<Object>, Object> injectableCollection = injectionDetails
 				.getInjectableCollectionSet().iterator().next();
@@ -192,11 +192,11 @@ public class InjectionDetailsFactoryTest {
 	public void shouldFailToCreateInjectionDetailsGivenInjectableCollectionOnNonCollection() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injecteeField = getField(object.getClass(), "injectable1");
+		Field injectableCollectionField = getField(object.getClass(), "injectable1");
 		given(
 				annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
 						uk.co.webamoeba.mockito.collections.annotation.InjectableCollection.class)).willReturn(
-				Collections.singleton(injecteeField));
+				Collections.singleton(injectableCollectionField));
 
 		// When
 		factory.createInjectionDetails(object);
@@ -219,9 +219,9 @@ public class InjectionDetailsFactoryTest {
 
 	private class ClassWithAnnnotations {
 
-		Object injectee1 = mock(Object.class);
+		Object injectCollections1 = mock(Object.class);
 
-		private Object injectee2 = mock(Object.class);
+		private Object injectCollections2 = mock(Object.class);
 
 		protected Object injectable1 = mock(InputStream.class);
 

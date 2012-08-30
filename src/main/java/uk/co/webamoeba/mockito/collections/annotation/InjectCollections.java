@@ -12,14 +12,13 @@ import org.mockito.Mock;
 
 /**
  * Mockito-Collections primarily identifies {@link Field Fields} with the {@link InjectMocks} annotation as being
- * injectees. In the event that you want Mockito-Collections to inject {@link Collection Collections} into a
- * {@link Field} that you don't want Mockito to inject {@link Mock Mocks} into, you can use this annotation to identify
- * the {@link Field} as an injectee.
+ * suitable to inject {@link Collection Collections}. In the event that you want Mockito-Collections to inject
+ * {@link Collection Collections} into a {@link Field} that you don't want Mockito to inject {@link Mock Mocks} into,
+ * you can use this annotation to identify the {@link Field}.
  * 
  * @author James Kennard
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Injectee {
-	// FIXME complete this!
+public @interface InjectCollections {
 }

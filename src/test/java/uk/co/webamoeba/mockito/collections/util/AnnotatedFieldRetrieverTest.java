@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
-import uk.co.webamoeba.mockito.collections.annotation.Injectee;
+import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 
 /**
  * @author James Kennard
@@ -71,14 +71,14 @@ public class AnnotatedFieldRetrieverTest {
 	public void shouldGetAnnotatedFieldsGivenPackageField() {
 		// Given
 		Class<ClassWithAnnnotations> clazz = ClassWithAnnnotations.class;
-		Class<? extends Annotation> annotationClass = Injectee.class;
+		Class<? extends Annotation> annotationClass = InjectCollections.class;
 
 		// When
 		Set<Field> fields = retriever.getAnnotatedFields(clazz, annotationClass);
 
 		// Then
 		assertEquals(1, fields.size());
-		assertTrue(fields.contains(getField(clazz, "injecteeAnnotatedField")));
+		assertTrue(fields.contains(getField(clazz, "injectCollectionsAnnotatedField")));
 	}
 
 	@Test
@@ -119,8 +119,8 @@ public class AnnotatedFieldRetrieverTest {
 		@Injectable
 		public Object injectableAnnotatedField;
 
-		@Injectee
-		Object injecteeAnnotatedField;
+		@InjectCollections
+		Object injectCollectionsAnnotatedField;
 	}
 
 	// suppressing unused warnings, in practice all fields are used via reflection

@@ -41,20 +41,20 @@ public class MockitoCollectionAnnotationIntegrationTest {
 		MockitoCollectionAnnotations.inject(object);
 
 		// Then
-		assertNotNull(object.injecteeClass.outputStreams);
-		assertNotNull(object.injecteeClass.inputStreams);
-		assertEquals(2, object.injecteeClass.outputStreams.size());
-		assertEquals(1, object.injecteeClass.inputStreams.size());
-		assertTrue(object.injecteeClass.outputStreams.contains(object.outputStream1));
-		assertTrue(object.injecteeClass.outputStreams.contains(object.outputStream2));
-		assertTrue(object.injecteeClass.inputStreams.contains(object.inputStream1));
+		assertNotNull(object.injectCollectionsClass.outputStreams);
+		assertNotNull(object.injectCollectionsClass.inputStreams);
+		assertEquals(2, object.injectCollectionsClass.outputStreams.size());
+		assertEquals(1, object.injectCollectionsClass.inputStreams.size());
+		assertTrue(object.injectCollectionsClass.outputStreams.contains(object.outputStream1));
+		assertTrue(object.injectCollectionsClass.outputStreams.contains(object.outputStream2));
+		assertTrue(object.injectCollectionsClass.inputStreams.contains(object.inputStream1));
 		assertCollectionOfMocks(object.eventListeners1, 2);
-		assertSame(object.eventListeners1, object.injecteeClass.eventListeners);
+		assertSame(object.eventListeners1, object.injectCollectionsClass.eventListeners);
 		assertCollectionOfMocks(object.eventListeners2, 4);
 
-		assertNull(object.injecteeClass2.outputStreams);
-		assertNull(object.injecteeClass2.inputStreams);
-		assertNull(object.injecteeClass2.eventListeners);
+		assertNull(object.injectCollectionsClass2.outputStreams);
+		assertNull(object.injectCollectionsClass2.inputStreams);
+		assertNull(object.injectCollectionsClass2.eventListeners);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -68,11 +68,11 @@ public class MockitoCollectionAnnotationIntegrationTest {
 	private class MockitoAnnotatedClass {
 
 		@InjectMocks
-		private InjecteeClass injecteeClass = new InjecteeClass();
+		private InjectCollectionsClass injectCollectionsClass = new InjectCollectionsClass();
 
 		@InjectMocks
 		@IgnoreInjectee
-		private InjecteeClass injecteeClass2 = new InjecteeClass();
+		private InjectCollectionsClass injectCollectionsClass2 = new InjectCollectionsClass();
 
 		@Mock
 		private OutputStream outputStream1 = mock(OutputStream.class);
@@ -96,7 +96,7 @@ public class MockitoCollectionAnnotationIntegrationTest {
 		private List<EventListener> eventListeners2;
 	}
 
-	private class InjecteeClass {
+	private class InjectCollectionsClass {
 
 		private Set<OutputStream> outputStreams;
 
