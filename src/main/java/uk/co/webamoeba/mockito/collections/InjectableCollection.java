@@ -26,6 +26,7 @@ public class InjectableCollection<C extends Collection, E extends Object> {
 	 */
 	private C value;
 
+	// TODO may be able to simplify, not sure we need to hold typeOfCollection and typeOfElements separately.
 	private Class<C> typeOfCollection;
 
 	private Class<E> typeOfElements;
