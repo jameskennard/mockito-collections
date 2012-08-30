@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import uk.co.webamoeba.mockito.collections.MockitoMockStrategy;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;

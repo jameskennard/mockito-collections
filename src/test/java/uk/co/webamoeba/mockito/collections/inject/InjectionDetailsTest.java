@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;

@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;

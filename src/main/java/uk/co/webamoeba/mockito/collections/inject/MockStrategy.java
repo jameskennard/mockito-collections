@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 /**
  * Strategy that can be used to create mocks, the idea is that not only should you be able to instantiate Mockito style

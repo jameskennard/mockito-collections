@@ -1,6 +1,7 @@
 package uk.co.webamoeba.mockito.collections;
 
 import static org.mockito.Mockito.mock;
+import uk.co.webamoeba.mockito.collections.inject.MockStrategy;
 
 /**
  * {@link MockStrategy} that creates Mockito style mocks.

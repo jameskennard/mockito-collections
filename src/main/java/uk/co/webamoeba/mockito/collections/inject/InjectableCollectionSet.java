@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import java.util.Collection;
 import java.util.HashSet;

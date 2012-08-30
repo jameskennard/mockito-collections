@@ -9,6 +9,11 @@ import org.mockito.MockitoAnnotations;
 
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.Injectee;
+import uk.co.webamoeba.mockito.collections.inject.CollectionFactory;
+import uk.co.webamoeba.mockito.collections.inject.CollectionInitialiser;
+import uk.co.webamoeba.mockito.collections.inject.CollectionInjector;
+import uk.co.webamoeba.mockito.collections.inject.DefaultInjectableSelectionStrategy;
+import uk.co.webamoeba.mockito.collections.inject.MockStrategy;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
@@ -20,12 +25,6 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * or {@link Injectee}.
  * 
  * <pre>
- * 
- * 
- * 
- * 
- * 
- * 
  * 
  * 
  * 

@@ -24,6 +24,8 @@ import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
+import uk.co.webamoeba.mockito.collections.inject.InjectableCollection;
+import uk.co.webamoeba.mockito.collections.inject.InjectionDetails;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
