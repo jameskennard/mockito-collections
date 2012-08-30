@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -24,8 +24,6 @@ import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
-import uk.co.webamoeba.mockito.collections.inject.InjectableCollection;
-import uk.co.webamoeba.mockito.collections.inject.InjectionDetails;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
@@ -33,10 +31,10 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * @author James Kennard
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MockitoInjectionDetailsFactoryTest {
+public class InjectionDetailsFactoryTest {
 
 	@InjectMocks
-	private MockitoInjectionDetailsFactory factory;
+	private InjectionDetailsFactory factory;
 
 	@Mock
 	private AnnotatedFieldRetriever annotatedFieldRetriever;

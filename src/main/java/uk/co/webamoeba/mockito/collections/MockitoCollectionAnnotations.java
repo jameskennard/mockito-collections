@@ -13,6 +13,8 @@ import uk.co.webamoeba.mockito.collections.inject.CollectionFactory;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInitialiser;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInjector;
 import uk.co.webamoeba.mockito.collections.inject.DefaultInjectableSelectionStrategy;
+import uk.co.webamoeba.mockito.collections.inject.DefaultMockStrategy;
+import uk.co.webamoeba.mockito.collections.inject.InjectionDetailsFactory;
 import uk.co.webamoeba.mockito.collections.inject.MockStrategy;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -25,8 +27,6 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * or {@link Injectee}.
  * 
  * <pre>
- * 
- * 
  * 
  * &#064;InjectMocks
  * private MyClassWithEventListeners objectUnderTest;
@@ -47,7 +47,7 @@ public class MockitoCollectionAnnotations {
 
 	private static CollectionInjector injector;
 
-	private static MockitoInjectionDetailsFactory factory;
+	private static InjectionDetailsFactory factory;
 
 	private static CollectionInitialiser collectionInitialiser;
 
@@ -56,10 +56,10 @@ public class MockitoCollectionAnnotations {
 		DefaultInjectableSelectionStrategy injectableSelectionStrategy = new DefaultInjectableSelectionStrategy();
 		CollectionFactory collectionFactory = new CollectionFactory();
 		AnnotatedFieldRetriever annotatedFieldRetriever = new AnnotatedFieldRetriever();
-		MockStrategy mockStrategy = new MockitoMockStrategy();
+		MockStrategy mockStrategy = new DefaultMockStrategy();
 
 		injector = new CollectionInjector(collectionFactory, injectableSelectionStrategy, genericCollectionTypeResolver);
-		factory = new MockitoInjectionDetailsFactory(annotatedFieldRetriever, genericCollectionTypeResolver);
+		factory = new InjectionDetailsFactory(annotatedFieldRetriever, genericCollectionTypeResolver);
 		collectionInitialiser = new CollectionInitialiser(annotatedFieldRetriever, genericCollectionTypeResolver,
 				collectionFactory, mockStrategy);
 	}

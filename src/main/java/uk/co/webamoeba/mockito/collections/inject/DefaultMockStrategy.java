@@ -1,14 +1,13 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.mockito.Mockito.mock;
-import uk.co.webamoeba.mockito.collections.inject.MockStrategy;
 
 /**
  * {@link MockStrategy} that creates Mockito style mocks.
  * 
  * @author James Kennard
  */
-public class MockitoMockStrategy implements MockStrategy {
+public class DefaultMockStrategy implements MockStrategy {
 
 	public <T> T createMock(Class<T> clazz) {
 		return mock(clazz);

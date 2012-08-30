@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -17,9 +17,6 @@ import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.Injectee;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
-import uk.co.webamoeba.mockito.collections.inject.InjectableCollection;
-import uk.co.webamoeba.mockito.collections.inject.InjectableCollectionSet;
-import uk.co.webamoeba.mockito.collections.inject.InjectionDetails;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
@@ -38,13 +35,13 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * @see IgnoreInjectee
  * @author James Kennard
  */
-public class MockitoInjectionDetailsFactory {
+public class InjectionDetailsFactory {
 
 	private AnnotatedFieldRetriever annotatedFieldRetriever;
 
 	private GenericCollectionTypeResolver genericCollectionTypeResolver;
 
-	public MockitoInjectionDetailsFactory(AnnotatedFieldRetriever annotatedFieldRetriever,
+	public InjectionDetailsFactory(AnnotatedFieldRetriever annotatedFieldRetriever,
 			GenericCollectionTypeResolver genericCollectionTypeResolver) {
 		this.annotatedFieldRetriever = annotatedFieldRetriever;
 		this.genericCollectionTypeResolver = genericCollectionTypeResolver;

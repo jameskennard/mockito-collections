@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,10 +14,10 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @author James Kennard
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MockitoMockStrategyTest {
+public class DefaultMockStrategyTest {
 
 	@InjectMocks
-	private MockitoMockStrategy strategy;
+	private DefaultMockStrategy strategy;
 
 	private MockUtil mockUtil = new MockUtil();
 

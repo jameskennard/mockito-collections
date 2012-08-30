@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.MockitoMockStrategy;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
@@ -39,7 +38,7 @@ public class CollectionInitialiserTest {
 	private CollectionFactory collectionFactory;
 
 	@Mock
-	private MockitoMockStrategy mockitoMockStrategy;
+	private MockStrategy mockStrategy;
 
 	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -53,7 +52,7 @@ public class CollectionInitialiserTest {
 		Class collectionType = EventListener.class;
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
 		EventListener mockEventListener = mock(EventListener.class);
-		given(mockitoMockStrategy.createMock(EventListener.class)).willReturn(mockEventListener);
+		given(mockStrategy.createMock(EventListener.class)).willReturn(mockEventListener);
 		Collection collection = mock(Collection.class);
 		given(collectionFactory.createCollection(eq(Collection.class), eq(Collections.singleton(mockEventListener))))
 				.willReturn(collection);
