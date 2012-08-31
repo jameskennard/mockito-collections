@@ -89,7 +89,7 @@ In this form this annotation could be useful when you want to check the internal
     private Collection<MyListener> listeners = Collections.emptyList();
     
     @Test
-    public void shuoldAdd() {
+    public void shouldAdd() {
         // Given
         MyListener listener = mock(MyListener.class);
         
