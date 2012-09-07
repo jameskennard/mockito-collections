@@ -69,8 +69,4 @@ public class AssertTest {
 		// Exception thrown
 	}
 
-	@Test
-	public void shouldAlwaysPass() {
-		thrown.expect(new ThrowableCausedByMatcher(WantedButNotInvoked.class));
-	}
 }
