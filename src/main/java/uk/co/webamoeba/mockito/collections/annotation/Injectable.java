@@ -12,7 +12,7 @@ import org.mockito.Mock;
 /**
  * Mockito-Collections is intended primarily to inject Mockito {@link Mock Mocks} into {@link Collection Collections},
  * but using this annotation allows Mockito-Collections to inject other {@link Field Fields}. <i>Use of this annotation
- * is not expected to common</i>.
+ * is not expected to be common</i>.
  * 
  * @see IgnoreInjectable
  * @author James Kennard

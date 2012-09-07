@@ -4,13 +4,16 @@ import static org.mockito.Mockito.mock;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.CharBuffer;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.exceptions.verification.NoInteractionsWanted;
 import org.mockito.exceptions.verification.WantedButNotInvoked;
 import org.mockito.exceptions.verification.junit.ArgumentsAreDifferent;
 
@@ -48,7 +51,7 @@ public class AssertTest {
 		Assert.verify(collection).run();
 
 		// Then
-		// Exception thrown
+		// No Exception thrown
 	}
 
 	@Test
@@ -64,6 +67,35 @@ public class AssertTest {
 
 		// When
 		Assert.verify(collection).read(cb2);
+
+		// Then
+		// Exception thrown
+	}
+
+	@Test
+	public void shouldVerifyNoMoreInteractions() {
+		// Given
+		Object aMock = mock(Object.class);
+		Collection<Object> collection = Arrays.asList(aMock);
+
+		// When
+		Assert.verifyNoMoreInteractions(collection);
+
+		// Then
+		// No Exception thrown
+	}
+
+	@Test
+	public void shouldVerifyNoMoreInteractionsGivenMoreInteractionsArePresent() throws IOException {
+		// Given
+		InputStream aMock = mock(InputStream.class);
+		aMock.read();
+		Collection<Object> collection = Arrays.<Object> asList(aMock);
+
+		thrown.expect(NoInteractionsWanted.class);
+
+		// When
+		Assert.verifyNoMoreInteractions(collection);
 
 		// Then
 		// Exception thrown
