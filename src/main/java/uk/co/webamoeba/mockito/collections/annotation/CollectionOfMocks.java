@@ -16,7 +16,6 @@ import org.mockito.Mock;
  * 
  * <pre>
  * 
- * 
  * &#064;CollectionOfMocks(numberOfMocks = 2)
  * private Collection&lt;EventListener&gt; eventListeners;
  * 
