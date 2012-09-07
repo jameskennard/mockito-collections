@@ -165,13 +165,13 @@ public class InjectionDetailsFactoryTest {
 	public void shouldCreateInjectionDetailsGivenInjectableCollection() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injectableCollectionField = getField(object.getClass(), "injectableCollection1");
+		Field collectionOfMocksField = getField(object.getClass(), "injectableCollection1");
 		given(
 				annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
-						uk.co.webamoeba.mockito.collections.annotation.InjectableCollection.class)).willReturn(
-				Collections.singleton(injectableCollectionField));
+						uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks.class)).willReturn(
+				Collections.singleton(collectionOfMocksField));
 		Class typeOfElements = EventListener.class;
-		given(genericCollectionTypeResolver.getCollectionFieldType(injectableCollectionField)).willReturn(
+		given(genericCollectionTypeResolver.getCollectionFieldType(collectionOfMocksField)).willReturn(
 				typeOfElements);
 
 		// When
@@ -192,11 +192,11 @@ public class InjectionDetailsFactoryTest {
 	public void shouldFailToCreateInjectionDetailsGivenInjectableCollectionOnNonCollection() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injectableCollectionField = getField(object.getClass(), "injectable1");
+		Field collectionOfMocksField = getField(object.getClass(), "injectable1");
 		given(
 				annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
-						uk.co.webamoeba.mockito.collections.annotation.InjectableCollection.class)).willReturn(
-				Collections.singleton(injectableCollectionField));
+						uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks.class)).willReturn(
+				Collections.singleton(collectionOfMocksField));
 
 		// When
 		factory.createInjectionDetails(object);

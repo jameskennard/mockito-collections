@@ -77,7 +77,7 @@ public class InjectionDetailsFactory {
 	private InjectableCollectionSet getInjectableCollectionSet(Object object) {
 		InjectableCollectionSet injectableCollectionSet = new InjectableCollectionSet();
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
-				uk.co.webamoeba.mockito.collections.annotation.InjectableCollection.class);
+				uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks.class);
 		for (Field field : fields) {
 			Object fieldValue = new FieldReader(object, field).read();
 			if (!(fieldValue instanceof Collection)) {

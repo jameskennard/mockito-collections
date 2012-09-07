@@ -19,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
-import uk.co.webamoeba.mockito.collections.annotation.InjectableCollection;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleClassUnderTest;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleData;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleDataProvider;
@@ -79,7 +78,6 @@ public class MockReturnValuesOfCollectionOfMocksStory {
 		private SampleClassUnderTest sampleClassUnderTest;
 
 		@CollectionOfMocks(numberOfMocks = 2)
-		@InjectableCollection
 		private List<SampleDataProvider> sampleDataProviders;
 
 		@Before

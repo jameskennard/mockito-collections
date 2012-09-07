@@ -12,7 +12,7 @@ import org.mockito.Mock;
 /**
  * Allows Mockito-Collections to instantiate {@link Field Fields} with a {@link Collection} and pre-populate the
  * {@link Collection} with a specified {@link #numberOfMocks() number of mocks}. This is similar to using the Mockito
- * {@link Mock} annotation except that the {@link Collection} itself will not be a mock, but it's contents will be.
+ * {@link Mock} annotation except that the {@link Collection} itself will not be a mock, it's contents will be.
  * 
  * <pre>
  * 
@@ -26,6 +26,10 @@ import org.mockito.Mock;
  * }
  * </pre>
  * 
+ * A {@link Field} annotated with {@link CollectionOfMocks} is considered for injection verbatim. That is to say, unlike
+ * {@link Injectable}, a {@link CollectionOfMocks} will be injected as a whole not as an element in a {@link Collection}
+ * .
+ * 
  * @author James Kennard
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,4 +37,7 @@ import org.mockito.Mock;
 public @interface CollectionOfMocks {
 
 	int numberOfMocks() default 1;
+
+	// TODO consider adding 'ignore when injecting' to prevent from being injected
+
 }

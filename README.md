@@ -75,34 +75,8 @@ Fields annotated with the @Mock annotation are considered to be injectables. Lik
     @Injectable
     private MyListener listener2 = new MyListener();
 
-The @InjectableCollection takes a different slant on the approach shown so far. Rather that injecting elements into a Collection field, it can be used to inject a Collection verbatim into a Collection field. The obvious consequence of this is that fields annotated with @InjectableCollection must be Collection fields. These Collections will be injected when the generics and raw type are equal to that of an injectCollections field. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
-
-    @InjectableCollection
-    private Collection<MyListener> listeners = Collections.emptyList();
-
-In this form this annotation could be useful when you want to check the internal state of an object that would otherwise require reflection or use of getters. For example, testing an add method:
-
-    @InjectMocks
-    private MyDelegate delegate;
-
-    @InjectableCollection
-    private Collection<MyListener> listeners = Collections.emptyList();
-    
-    @Test
-    public void shuoldAdd() {
-        // Given
-        MyListener listener = mock(MyListener.class);
-        
-        // When
-        delegate.add(listener);
-        
-        // Then
-        assertTrue(listeners.contains(listener));
-    }
-
-The last annotation is intended to compliment the @InjectableCollection annotation. It is different from all the other annotations in that it is not related to injection, but setup of mocks. The @CollectionOfMocks annotation can be used to create a Collection containing a specified number of mocks (by default this is one).
+The last annotation is similar to the Mockito @Mock annotation. The @CollectionOfMocks annotation can be used to create a Collection containing a specified number of mocks (by default this is one). In addition to creating a Collection of Mocks, the Collection will be considered for injection into Collection fields verbatim. The obvious consequence of this is that fields annotated with @CollectionOfMocks must be Collection fields. These Collections will be injected when the generics and raw type are equal to that of an injectCollections field. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
     
     @CollectionOfMocks(numberOfMocks = 2)
-    @InjectableCollection
     private Set<MyListener> listeners;
 

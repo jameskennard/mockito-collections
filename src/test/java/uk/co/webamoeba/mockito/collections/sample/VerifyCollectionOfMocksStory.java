@@ -20,7 +20,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import uk.co.webamoeba.mockito.collections.Assert;
 import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
-import uk.co.webamoeba.mockito.collections.annotation.InjectableCollection;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleClassUnderTest;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleCollaborator;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleData;
@@ -80,7 +79,6 @@ public class VerifyCollectionOfMocksStory {
 		private SampleCollaborator sampleCollaborator;
 
 		@CollectionOfMocks
-		@InjectableCollection
 		private Collection<SampleListener> sampleListeners;
 
 		@Before

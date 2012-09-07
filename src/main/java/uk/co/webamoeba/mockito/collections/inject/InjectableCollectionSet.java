@@ -38,7 +38,7 @@ public class InjectableCollectionSet implements Iterable<InjectableCollection<Co
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void add(InjectableCollection injectableCollection) {
 		if (hasMatchingInjectableCollection(injectableCollection)) {
-			throw new IllegalArgumentException("There is more than one InjectableCollection of type of collection "
+			throw new IllegalArgumentException("There is more than one CollectionOfMocks of type of collection "
 					+ injectableCollection.getTypeOfCollection() + " and type of element "
 					+ injectableCollection.getTypeOfElements());
 		}

@@ -14,7 +14,6 @@ import org.mockito.Mock;
  * but using this annotation allows Mockito-Collections to inject other {@link Field Fields}. <i>Use of this annotation
  * is not expected to common</i>.
  * 
- * @see InjectableCollection
  * @see IgnoreInjectable
  * @author James Kennard
  */

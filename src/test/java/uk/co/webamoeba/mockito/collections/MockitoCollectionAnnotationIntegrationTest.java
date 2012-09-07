@@ -23,7 +23,6 @@ import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;
 import uk.co.webamoeba.mockito.collections.annotation.Injectable;
-import uk.co.webamoeba.mockito.collections.annotation.InjectableCollection;
 
 /**
  * @author James Kennard
@@ -50,7 +49,6 @@ public class MockitoCollectionAnnotationIntegrationTest {
 		assertTrue(object.injectCollectionsClass.inputStreams.contains(object.inputStream1));
 		assertCollectionOfMocks(object.eventListeners1, 2);
 		assertSame(object.eventListeners1, object.injectCollectionsClass.eventListeners);
-		assertCollectionOfMocks(object.eventListeners2, 4);
 
 		assertNull(object.injectCollectionsClass2.outputStreams);
 		assertNull(object.injectCollectionsClass2.inputStreams);
@@ -89,11 +87,7 @@ public class MockitoCollectionAnnotationIntegrationTest {
 		private InputStream inputStream2 = mock(InputStream.class);
 
 		@CollectionOfMocks(numberOfMocks = 2)
-		@InjectableCollection
 		private List<EventListener> eventListeners1;
-
-		@CollectionOfMocks(numberOfMocks = 4)
-		private List<EventListener> eventListeners2;
 	}
 
 	private class InjectCollectionsClass {
