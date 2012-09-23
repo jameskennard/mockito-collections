@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
+import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.inject.CollectionFactory;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInitialiser;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInjector;
@@ -51,7 +51,7 @@ public class MockitoCollectionAnnotations {
 
 	private static CollectionInitialiser collectionInitialiser;
 
-	{
+	static {
 		GenericCollectionTypeResolver genericCollectionTypeResolver = new GenericCollectionTypeResolver();
 		DefaultInjectableSelectionStrategy injectableSelectionStrategy = new DefaultInjectableSelectionStrategy();
 		CollectionFactory collectionFactory = new CollectionFactory();
@@ -65,10 +65,6 @@ public class MockitoCollectionAnnotations {
 	}
 
 	public static void inject(Object object) {
-		if (collectionInitialiser == null) {
-			// Force the execution of the static block.
-			new MockitoCollectionAnnotations();
-		}
 		collectionInitialiser.initialise(object);
 		injector.inject(factory.createInjectionDetails(object));
 	}
