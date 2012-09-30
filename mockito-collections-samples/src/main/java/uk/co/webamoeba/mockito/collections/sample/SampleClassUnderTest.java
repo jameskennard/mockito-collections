@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections.sample.support;
+package uk.co.webamoeba.mockito.collections.sample;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections.sample.support;
+package uk.co.webamoeba.mockito.collections.sample;
 
 public interface SampleCollaborator {
 

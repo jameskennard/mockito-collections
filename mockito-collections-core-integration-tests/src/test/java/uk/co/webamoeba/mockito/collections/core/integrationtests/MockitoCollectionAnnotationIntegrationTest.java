@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.core.integrationtests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.internal.util.MockUtil;
 
+import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectee;

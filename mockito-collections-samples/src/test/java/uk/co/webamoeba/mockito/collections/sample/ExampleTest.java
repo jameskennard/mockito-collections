@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.sample;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -6,18 +6,22 @@ import static org.mockito.Mockito.verify;
 import java.util.Collection;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+
 /**
  * This test is intended to provide an example of how one might use Mockito-Collections in practice.
  * 
  * @author James Kennard
  */
-// FIXME This isn't really part of mockito-collections, this should be in a separate project.
+// FIXME This needs a lot of work
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class ExampleTest {
 

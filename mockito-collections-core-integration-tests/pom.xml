@@ -12,4 +12,12 @@
 	<description>
 		Integration tests for mockito-collections-core
 	</description>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mockito-collections-core</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

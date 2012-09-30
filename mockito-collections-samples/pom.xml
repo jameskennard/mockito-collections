@@ -12,4 +12,12 @@
 	<description>
 		Samples showing how to use Mockito Collections to inject Mockito mocks into Collection fields
 	</description>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mockito-collections-core</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

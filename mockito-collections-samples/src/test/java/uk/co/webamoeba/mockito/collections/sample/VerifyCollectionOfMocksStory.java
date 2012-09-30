@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -23,10 +24,6 @@ import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.MockitoCollectionsGivenCollectionOfMocksAnnotation;
 import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.PlainMockito;
-import uk.co.webamoeba.mockito.collections.sample.support.SampleClassUnderTest;
-import uk.co.webamoeba.mockito.collections.sample.support.SampleCollaborator;
-import uk.co.webamoeba.mockito.collections.sample.support.SampleData;
-import uk.co.webamoeba.mockito.collections.sample.support.SampleListener;
 
 /**
  * <b>As a</b> developer<br />
@@ -35,6 +32,8 @@ import uk.co.webamoeba.mockito.collections.sample.support.SampleListener;
  * 
  * @author James Kennard
  */
+// FIXME this is a mishmash of a sample and a BDD acceptance test for mockito-collections-core
+@Ignore
 @RunWith(Suite.class)
 @SuiteClasses({ PlainMockito.class, MockitoCollections.class, MockitoCollectionsGivenCollectionOfMocksAnnotation.class })
 public class VerifyCollectionOfMocksStory {
