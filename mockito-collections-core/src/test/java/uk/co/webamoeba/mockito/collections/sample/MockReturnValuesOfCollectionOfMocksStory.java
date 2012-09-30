@@ -19,6 +19,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
+import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOfMocksStory.MockitoCollections;
+import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOfMocksStory.PlainMockito;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleClassUnderTest;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleData;
 import uk.co.webamoeba.mockito.collections.sample.support.SampleDataProvider;
@@ -32,8 +34,7 @@ import uk.co.webamoeba.mockito.collections.sample.support.SampleDataProvider;
  * @author James Kennard
  */
 @RunWith(Suite.class)
-@SuiteClasses({ MockReturnValuesOfCollectionOfMocksStory.PlainMockito.class,
-		MockReturnValuesOfCollectionOfMocksStory.MockitoCollections.class })
+@SuiteClasses({ PlainMockito.class, MockitoCollections.class })
 public class MockReturnValuesOfCollectionOfMocksStory {
 
 	@RunWith(MockitoJUnitRunner.class)
@@ -73,6 +74,41 @@ public class MockReturnValuesOfCollectionOfMocksStory {
 
 	@RunWith(MockitoJUnitRunner.class)
 	public static class MockitoCollections {
+
+		@InjectMocks
+		private SampleClassUnderTest sampleClassUnderTest;
+
+		@Mock
+		private SampleDataProvider sampleDataProvider1;
+
+		@Mock
+		private SampleDataProvider sampleDataProvider2;
+
+		@Before
+		public void before() {
+			MockitoCollectionAnnotations.inject(this);
+		}
+
+		@Test
+		public void shouldCallCollaboratorAndSampleListeners() {
+			// Given
+			SampleData sampleData1 = mock(SampleData.class);
+			SampleData sampleData2 = mock(SampleData.class);
+			given(sampleDataProvider1.getSampleData()).willReturn(sampleData1);
+			given(sampleDataProvider2.getSampleData()).willReturn(sampleData2);
+
+			// When
+			List<SampleData> sampleData = sampleClassUnderTest.callSampleDataProvidersAndGetSampleData();
+
+			// Then
+			assertEquals(2, sampleData.size());
+			assertSame(sampleData1, sampleData.get(0));
+			assertSame(sampleData2, sampleData.get(1));
+		}
+	}
+
+	@RunWith(MockitoJUnitRunner.class)
+	public static class MockitoCollectionsGivenCollectionOfMocksAnnotation {
 
 		@InjectMocks
 		private SampleClassUnderTest sampleClassUnderTest;

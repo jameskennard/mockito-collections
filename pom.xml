@@ -4,10 +4,10 @@
 	<groupId>uk.co.webamoeba.mockito.collections</groupId>
 	<artifactId>mockito-collections</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>Mockito Collections</name>
-	<packaging>jar</packaging>
+	<name>Mockito Collections (Build)</name>
+	<packaging>pom</packaging>
 	<description>
-		Mockito Collections allows injection of Mockito mocks into Collection fields where the @InjectMocks annotation is being used.
+		Mockito Collections (Build) is the parent POM in a multi-module (Maven reactor) project that allows injection of Mockito mocks into Collection fields
 	</description>
 	<developers>
 		<developer>
@@ -15,18 +15,25 @@
 			<url>http://www.webamoeba.co.uk</url>
 		</developer>
 	</developers>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.0</version>
-		</dependency>
-	</dependencies>
+	<modules>
+		<module>mockito-collections-core</module>
+		<module>mockito-collections-core-integration-tests</module>
+		<module>mockito-collections-samples</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.9.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<url>https://github.com/jameskennard/mockito-collections</url>
 	<scm>
 		<url>https://github.com/jameskennard/mockito-collections</url>
