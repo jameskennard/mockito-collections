@@ -148,14 +148,17 @@ public class HashOrderedSet<E> extends AbstractSet<E> implements OrderedSet<E> {
 		}
 
 		public void remove() {
+			Bucket orignialFirstBucket = firstBucket;
+			Bucket orignialLastBucket = lastBucket;
+
 			if (last.hasPrevious()) {
 				last.getPrevious().next = last.next;
 			} else {
-				assert last == firstBucket;
+				assert last == orignialFirstBucket;
 				if (last.hasNext()) {
 					firstBucket = last.getNext();
 				} else {
-					assert last == lastBucket;
+					assert last == orignialLastBucket;
 					firstBucket = null;
 				}
 			}
@@ -163,11 +166,11 @@ public class HashOrderedSet<E> extends AbstractSet<E> implements OrderedSet<E> {
 			if (last.hasNext()) {
 				last.getNext().previous = last.previous;
 			} else {
-				assert last == lastBucket;
+				assert last == orignialLastBucket;
 				if (last.hasPrevious()) {
 					lastBucket = last.getPrevious();
 				} else {
-					assert last == firstBucket;
+					assert last == orignialFirstBucket;
 					lastBucket = null;
 				}
 			}
