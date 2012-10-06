@@ -6,8 +6,8 @@ public @interface InjectOutOf {
 	// @InjectMocks
 	// private MyDelegate delegate;
 	//
-	// @InjectableCollection
-	// private Collection<MyListener> listeners = Collections.emptyList();
+	// @InjectOutOf
+	// private Collection<MyListener> listeners;
 	//
 	// @Test
 	// public void shuoldAdd() {
