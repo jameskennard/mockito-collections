@@ -105,23 +105,6 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	}
 
 	/**
-	 * <b>Scenario:</b> Test class inherits some mocks from a parent test class
-	 * <p>
-	 * <b>Given</b> a test Class with an object under test denoted by an {@link InjectMocks} annotation<br />
-	 * <b>And</b> the Class of the {@link Object} under test has one {@link Collection} of collaborators with generics<br />
-	 * <b>And</b> the test Class extends another test Class<br />
-	 * <b>And</b> the test Class defines a number of mocks suitable for the {@link Collection}<br />
-	 * <b>And</b> the parent test Class defines a number of mocks suitable for the {@link Collection}<br />
-	 * <b>When</b> I setup the test<br />
-	 * <b>Then</b> the mocks are injected as a {@link Collection} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link Collection} are in the order they are defined where the parent mocks take
-	 * precedence<br />
-	 */
-	public void testClassInheritsSomeMocksFromAParentTestClass() {
-
-	}
-
-	/**
 	 * <b>Scenario:</b> Class of object under test has no {@link Collection Collections} of collaborators
 	 * <p>
 	 * <b>Given</b> a test Class with an object under test denoted by an {@link InjectMocks} annotation<br />
