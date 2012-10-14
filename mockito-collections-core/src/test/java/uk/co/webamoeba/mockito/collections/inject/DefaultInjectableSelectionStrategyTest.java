@@ -1,6 +1,5 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +21,9 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
+
 /**
  * @author James Kennard
  */
@@ -32,18 +34,18 @@ public class DefaultInjectableSelectionStrategyTest {
 	@Test
 	public void shouldGetInjectables() {
 		// Given
-		Object injectable1 = mock(InputStream.class);
-		Object injectable2 = mock(OutputStream.class);
-		Object injectable3 = mock(FileInputStream.class);
-		Set<Object> injectables = new HashSet<Object>(Arrays.asList(injectable1, injectable2, injectable3));
+		InputStream injectable1 = mock(InputStream.class);
+		OutputStream injectable2 = mock(OutputStream.class);
+		InputStream injectable3 = mock(FileInputStream.class);
+		OrderedSet<Object> injectables = new HashOrderedSet<Object>(Arrays.<Object> asList(injectable1, injectable2,
+				injectable3));
 
 		// When
-		Set<InputStream> actualInjectables = strategy.getInjectables(injectables, InputStream.class);
+		OrderedSet<InputStream> actualInjectables = strategy.getInjectables(injectables, InputStream.class);
 
 		// Then
-		assertEquals(2, actualInjectables.size());
-		assertTrue(actualInjectables.contains(injectable1));
-		assertTrue(actualInjectables.contains(injectable3));
+		assertTrue(actualInjectables.equals(new HashOrderedSet<InputStream>(Arrays.<InputStream> asList(injectable1,
+				injectable3))));
 	}
 
 	@Test
@@ -51,10 +53,10 @@ public class DefaultInjectableSelectionStrategyTest {
 		// Given
 		Object injectable1 = mock(InputStream.class);
 		Object injectable2 = mock(OutputStream.class);
-		Set<Object> injectables = new HashSet<Object>(Arrays.asList(injectable1, injectable2));
+		OrderedSet<Object> injectables = new HashOrderedSet<Object>(Arrays.asList(injectable1, injectable2));
 
 		// When
-		Set<FileOutputStream> actualInjectables = strategy.getInjectables(injectables, FileOutputStream.class);
+		OrderedSet<FileOutputStream> actualInjectables = strategy.getInjectables(injectables, FileOutputStream.class);
 
 		// Then
 		assertTrue(actualInjectables.isEmpty());

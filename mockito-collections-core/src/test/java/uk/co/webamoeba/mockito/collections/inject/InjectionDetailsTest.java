@@ -2,12 +2,16 @@ package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.util.Collections;
 import java.util.Set;
 
 import org.junit.Test;
+
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * @author James Kennard
@@ -20,7 +24,7 @@ public class InjectionDetailsTest {
 		// Given
 		Object injectCollections = "Some InjectCollections";
 		Set<Object> setOfInjectCollections = Collections.singleton(injectCollections);
-		Set<Object> injectables = mock(Set.class);
+		OrderedSet<Object> injectables = new HashOrderedSet<Object>();
 		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 		InjectionDetails details = new InjectionDetails(setOfInjectCollections, injectables, injectableCollectionSet);
 
@@ -36,14 +40,20 @@ public class InjectionDetailsTest {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
 		Object injectable = "Some Injectable";
-		Set<Object> injectables = Collections.singleton(injectable);
+		OrderedSet<Object> injectables = new HashOrderedSet<Object>(Collections.singleton(injectable)); // FIXME
+																										// remember that
+																										// order is
+																										// important
+																										// when
+		// making assertions
 		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 		InjectionDetails details = new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
 
 		// When
-		Set<Object> actualInjectables = details.getInjectables();
+		OrderedSet<Object> actualInjectables = details.getInjectables();
 
 		// Then
+		assertTrue(injectables != actualInjectables);
 		assertEquals(injectables, actualInjectables);
 	}
 
@@ -51,7 +61,7 @@ public class InjectionDetailsTest {
 	public void shouldGetInjectableCollectionSet() {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
-		Set<Object> injectables = Collections.emptySet();
+		OrderedSet<Object> injectables = new HashOrderedSet<Object>();
 		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 		InjectionDetails details = new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
 
@@ -66,7 +76,7 @@ public class InjectionDetailsTest {
 	public void shouldFailToConstructGivenNullInjectCollections() {
 		// Given
 		Set<Object> injectCollections = null;
-		Set<Object> injectables = Collections.emptySet();
+		OrderedSet<Object> injectables = mock(OrderedSet.class);
 		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 
 		// When
@@ -80,7 +90,7 @@ public class InjectionDetailsTest {
 	public void shouldFailToConstructGivenNullInjectables() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
-		Set<Object> injectables = null;
+		OrderedSet<Object> injectables = null;
 		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
 
 		// When
@@ -94,7 +104,7 @@ public class InjectionDetailsTest {
 	public void shouldFailToConstructGivenNullInjectableCollections() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
-		Set<Object> injectables = Collections.emptySet();
+		OrderedSet<Object> injectables = mock(OrderedSet.class);
 		InjectableCollectionSet injectableCollectionSet = null;
 
 		// When

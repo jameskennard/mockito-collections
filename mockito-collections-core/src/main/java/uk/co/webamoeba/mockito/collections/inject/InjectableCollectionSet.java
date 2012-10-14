@@ -12,6 +12,7 @@ import java.util.Set;
  */
 public class InjectableCollectionSet implements Iterable<InjectableCollection<Collection<Object>, Object>> {
 
+	// TODO should this set be ordered?
 	private Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = new HashSet<InjectableCollection<Collection<Object>, Object>>();
 
 	@SuppressWarnings("rawtypes")

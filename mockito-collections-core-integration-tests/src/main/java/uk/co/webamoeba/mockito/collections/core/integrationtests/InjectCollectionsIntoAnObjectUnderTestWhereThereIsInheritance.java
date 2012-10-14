@@ -17,7 +17,7 @@ import org.mockito.Mock;
  * 
  * @author James Kennard
  */
-public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritance {
+public interface InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritance {
 
 	/**
 	 * <b>Scenario:</b> Test Class inherits some mocks from a parent test class
@@ -32,9 +32,7 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritance {
 	 * <b>And</b> the mocks in the {@link Collection} are in the order they are defined where the parent mocks take
 	 * precedence
 	 */
-	public void testClassInheritsSomeMocksFromAParentTestClass() {
-
-	}
+	public void testClassInheritsSomeMocksFromAParentTestClass();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test inherits {@link Collection} of collaborators from parent class
@@ -47,7 +45,5 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritance {
 	 * <b>Then</b> the mocks are injected as a {@link Collection} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link Collection} are in the order they are defined
 	 */
-	public void classOfObjectUnderTestInheritsCollectionOfCollaboratorsFromParentClass() {
-
-	}
+	public void classOfObjectUnderTestInheritsCollectionOfCollaboratorsFromParentClass();
 }

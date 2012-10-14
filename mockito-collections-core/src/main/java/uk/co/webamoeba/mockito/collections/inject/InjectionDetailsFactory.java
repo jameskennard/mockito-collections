@@ -5,8 +5,9 @@ import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,6 +20,8 @@ import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
@@ -54,7 +57,7 @@ public class InjectionDetailsFactory {
 	 */
 	public InjectionDetails createInjectionDetails(Object object) {
 		Set<Object> injectCollections = getInjectCollections(object);
-		Set<Object> injectables = getInjectables(object);
+		OrderedSet<Object> injectables = getInjectables(object);
 		InjectableCollectionSet injectableCollectionSet = getInjectableCollectionSet(object);
 		return new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
 	}
@@ -66,8 +69,8 @@ public class InjectionDetailsFactory {
 		return injectCollections;
 	}
 
-	private Set<Object> getInjectables(Object object) {
-		Set<Object> injectables = getFieldValues(object, Mock.class);
+	private OrderedSet<Object> getInjectables(Object object) {
+		OrderedSet<Object> injectables = getFieldValues(object, Mock.class);
 		injectables.addAll(getFieldValues(object, Injectable.class));
 		injectables.removeAll(getFieldValues(object, IgnoreInjectable.class));
 		return injectables;
@@ -96,7 +99,7 @@ public class InjectionDetailsFactory {
 		return injectableCollectionSet;
 	}
 
-	private Set<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {
+	private OrderedSet<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), annotationClass);
 		return getFieldValues(object, fields);
 	}
@@ -108,12 +111,19 @@ public class InjectionDetailsFactory {
 	 *            The {@link Field Fields} from which to retrieve values
 	 * @return Values of the {@link Field Fields} retrieved from the object
 	 */
-	private Set<Object> getFieldValues(Object object, Set<Field> fields) {
-		Set<Object> values = new HashSet<Object>();
-		for (Field field : fields) {
+	private OrderedSet<Object> getFieldValues(Object object, Set<Field> fields) {
+		TreeSet<Field> sortedFields = new TreeSet<Field>(new Comparator<Field>() {
+
+			public int compare(Field o1, Field o2) {
+				return o1.getName().compareToIgnoreCase(o2.getName());
+			}
+		});
+		sortedFields.addAll(fields);
+
+		OrderedSet<Object> values = new HashOrderedSet<Object>();
+		for (Field field : sortedFields) {
 			values.add(new FieldReader(object, field).read());
 		}
 		return values;
 	}
-
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,6 +16,18 @@ import org.junit.Test;
  * @author James Kennard
  */
 public class HashOrderedSetTest {
+
+	@Test
+	public void shouldConstructGivenExistingCollection() {
+		// Given
+		Collection<String> orginalCollection = Arrays.asList("ABC", "GHI", "DEF", "JKL");
+
+		// When
+		HashOrderedSet<String> set = new HashOrderedSet<String>(orginalCollection);
+
+		// Then
+		assertTrue(orginalCollection.equals(Arrays.asList(set.toArray())));
+	}
 
 	@Test
 	public void shouldAddGivenGivenElementAlreadyInSet() {

@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
+
 /**
  * Describes {@link Object}s that we want to inject into and be injected with {@link Collection}s of {@link Object}s.
  * <p>
@@ -19,7 +22,7 @@ public class InjectionDetails {
 
 	private Set<Object> injectCollections;
 
-	private Set<Object> injectables;
+	private OrderedSet<Object> injectables;
 
 	private InjectableCollectionSet injectableCollectionSet;
 
@@ -32,7 +35,7 @@ public class InjectionDetails {
 	 *            {@link InjectableCollectionSet} containing {@link InjectableCollection InjectableCollections} can be
 	 *            injected into the injectCollections.
 	 */
-	public InjectionDetails(Set<Object> injectCollections, Set<Object> injectables,
+	public InjectionDetails(Set<Object> injectCollections, OrderedSet<Object> injectables,
 			InjectableCollectionSet injectableCollectionSet) {
 		if (injectCollections == null) {
 			throw new IllegalArgumentException("injectCollections must not be null");
@@ -45,7 +48,7 @@ public class InjectionDetails {
 		}
 
 		this.injectCollections = Collections.unmodifiableSet(injectCollections);
-		this.injectables = Collections.unmodifiableSet(injectables);
+		this.injectables = new HashOrderedSet<Object>(injectables);
 		this.injectableCollectionSet = injectableCollectionSet;
 	}
 
@@ -63,7 +66,7 @@ public class InjectionDetails {
 	 *         injectables, this method will return an empty {@link Set}, this method will never return
 	 *         <code>null</code>. The returned {@link Set} is unmodifiable.
 	 */
-	public Set<Object> getInjectables() {
+	public OrderedSet<Object> getInjectables() {
 		return injectables;
 	}
 

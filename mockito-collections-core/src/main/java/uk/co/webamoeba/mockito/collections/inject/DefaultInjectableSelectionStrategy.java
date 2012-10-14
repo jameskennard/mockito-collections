@@ -1,8 +1,9 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * The default implementation of {@link InjectableSelectionStrategy}.
@@ -11,12 +12,9 @@ import java.util.Set;
  */
 public class DefaultInjectableSelectionStrategy implements InjectableSelectionStrategy {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings("unchecked")
-	public <T> Set<T> getInjectables(Set<Object> injectables, Class<T> injectableClass) {
-		Set<T> matchingInjectables = new HashSet<T>();
+	public <T> OrderedSet<T> getInjectables(OrderedSet<Object> injectables, Class<T> injectableClass) {
+		HashOrderedSet<T> matchingInjectables = new HashOrderedSet<T>();
 		for (Object object : injectables) {
 			if (injectableClass.isAssignableFrom(object.getClass())) {
 				matchingInjectables.add((T) object);
@@ -25,9 +23,6 @@ public class DefaultInjectableSelectionStrategy implements InjectableSelectionSt
 		return matchingInjectables;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings("unchecked")
 	public <C extends Collection<E>, E> InjectableCollection<C, E> getInjectableCollection(
 			InjectableCollectionSet injectableCollectionSet, Class<C> typeOfCollection, Class<E> typeOfElements) {

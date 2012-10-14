@@ -8,6 +8,7 @@ import java.util.Set;
 
 import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * The {@link CollectionInjector} is responsible for performing the injection of {@link Collection Collections}. The
@@ -42,7 +43,8 @@ public class CollectionInjector {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void inject(Object injectCollections, Set<Object> injectables, InjectableCollectionSet injectableCollectionSet) {
+	private void inject(Object injectCollections, OrderedSet<Object> injectables,
+			InjectableCollectionSet injectableCollectionSet) {
 		Field[] fields = injectCollections.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Type type = field.getGenericType();
@@ -73,7 +75,7 @@ public class CollectionInjector {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Collection getCollection(Set<Object> injectables, InjectableCollectionSet injectableCollectionSet,
+	private Collection getCollection(OrderedSet<Object> injectables, InjectableCollectionSet injectableCollectionSet,
 			Class rawType, Type collectionType) {
 		Collection collection = null;
 		InjectableCollection injectableCollection = strategy.getInjectableCollection(injectableCollectionSet, rawType,

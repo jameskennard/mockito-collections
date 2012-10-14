@@ -9,8 +9,14 @@ import java.util.SortedSet;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithListOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithMoreThanOneCollectionOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithQueueOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSetOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSortedSetOfCollaborators;
+
 /**
- * <b>Narrative:</b> Inject {@link Collection Collections} interfaces of mocks into an {@link Object} under test
+ * <b>Narrative:</b> Inject {@link Collection Collections} (interfaces) of mocks into an {@link Object} under test
  * <p>
  * <b>As a</b> developer<br />
  * <b>I want</b> to inject {@link Collection Collections} of mocks (denoted by the {@link Mock} annotation) into an
@@ -21,7 +27,7 @@ import org.mockito.Mock;
  * @see InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTestStory
  * @author James Kennard
  */
-public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
+public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has {@link List} of collaborators
@@ -34,10 +40,10 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link List} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link List} are in the order they are defined
+	 * 
+	 * @see ClassWithListOfCollaborators
 	 */
-	public void classOfObjectUnderTestHasListOfCollaborators() {
-
-	}
+	public void classOfObjectUnderTestHasListOfCollaborators();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has {@link Set} of collaborators
@@ -50,10 +56,10 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Set} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link Set} are in the order they are defined
+	 * 
+	 * @see ClassWithSetOfCollaborators
 	 */
-	public void classOfObjectUnderTestHasSetOfCollaborators() {
-
-	}
+	public void classOfObjectUnderTestHasSetOfCollaborators();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has {@link SortedSet} of collaborators
@@ -67,10 +73,10 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * <b>Then</b> the mocks are injected as a {@link SortedSet} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link SortedSet} are in the order they are defined<br />
 	 * <b>And</b> the {@link SortedSet} of mocks is 'pseudo sorted' by time of insertion
+	 * 
+	 * @see ClassWithSortedSetOfCollaborators
 	 */
-	public void classOfObjectUnderTestHasSortedSetOfCollaborators() {
-
-	}
+	public void classOfObjectUnderTestHasSortedSetOfCollaborators();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has {@link Queue} of collaborators
@@ -83,10 +89,10 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Queue} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link Queue} are in the order they are defined<br />
+	 * 
+	 * @see ClassWithQueueOfCollaborators
 	 */
-	public void classOfObjectUnderTestHasQueueOfCollaborators() {
-
-	}
+	public void classOfObjectUnderTestHasQueueOfCollaborators();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has more than one {@link Collection} of collaborators
@@ -99,10 +105,11 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as {@link Collection Collections} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link Collection Collections} are in the order they are defined<br />
+	 * 
+	 * @see ClassWithMoreThanOneCollectionOfCollaborators
 	 */
-	public void classOfObjectUnderTestHasMoreThanOneCollectionOfCollaborators() {
-
-	}
+	// TODO is this in the correct location? Does this scenario matter?
+	public void classOfObjectUnderTestHasMoreThanOneCollectionOfCollaborators();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has no {@link Collection Collections} of collaborators
@@ -112,9 +119,7 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> no {@link Collection Collections} of mocks are injected into the object under test<br />
 	 */
-	public void classOfObjectUnderTestHasNoCollectionsOfCollaborators() {
-
-	}
+	public void classOfObjectUnderTestHasNoCollectionsOfCollaborators();
 
 	/**
 	 * <b>Scenario:</b> Class of object under test has {@link Collection Collections} of collaborators with no generics
@@ -124,8 +129,8 @@ public class InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory {
 	 * generics<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> no {@link Collection Collections} of mocks are injected into the object under test<br />
+	 * 
+	 * @see ClassWithCollectionOfCollaboratorsWithNoGenerics
 	 */
-	public void classOfObjectUnderTestHasCollectionsOfCollaboratorsWithNoGenerics() {
-
-	}
+	public void classOfObjectUnderTestHasCollectionsOfCollaboratorsWithNoGenerics();
 }

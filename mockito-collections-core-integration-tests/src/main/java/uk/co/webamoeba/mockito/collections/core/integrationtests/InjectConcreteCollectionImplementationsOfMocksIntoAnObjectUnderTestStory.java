@@ -17,6 +17,6 @@ import org.mockito.Mock;
  * @see InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory
  * @author James Kennard
  */
-public class InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTestStory {
+public interface InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTestStory {
 	// TODO
 }

@@ -3,6 +3,8 @@ package uk.co.webamoeba.mockito.collections.inject;
 import java.util.Collection;
 import java.util.Set;
 
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
+
 /**
  * Strategy that is intended to get {@link Object}s that can be placed in a {@link Collection} where the Generics on
  * that Collection are described as a particular type.
@@ -20,7 +22,7 @@ public interface InjectableSelectionStrategy {
 	 * @param injectableClass
 	 * @return
 	 */
-	public <T> Set<T> getInjectables(Set<Object> injectables, Class<T> injectableClass);
+	public <T> OrderedSet<T> getInjectables(OrderedSet<Object> injectables, Class<T> injectableClass);
 
 	/**
 	 * Gets the {@link InjectableCollection} from the provided {@link InjectableCollectionSet} that matches the
