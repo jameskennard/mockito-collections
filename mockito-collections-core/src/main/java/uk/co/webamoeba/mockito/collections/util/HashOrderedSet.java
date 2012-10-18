@@ -32,6 +32,10 @@ public class HashOrderedSet<E> extends AbstractSet<E> implements OrderedSet<E> {
 		map = new HashMap<E, Object>();
 	}
 
+	public HashOrderedSet(int initialCapacity) {
+		map = new HashMap<E, Object>(initialCapacity);
+	}
+
 	public HashOrderedSet(Collection<E> collection) {
 		map = new HashMap<E, Object>(collection.size());
 		addAll(collection);

@@ -5,7 +5,10 @@ import java.util.Set;
 
 public class ClassWithSetOfCollaborators {
 
-	@SuppressWarnings("unused")
 	private Set<EventListener> collaborators;
+
+	public Set<EventListener> getCollaborators() {
+		return collaborators;
+	}
 
 }
