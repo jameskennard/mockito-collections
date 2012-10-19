@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSetBackedSortedSet;
 
 /**
  * Factory used to create {@link Collection Collections} of the specified type.
@@ -33,7 +33,7 @@ public class CollectionFactory {
 	public <T extends Collection<Object>> T createCollection(Class<T> collectionClass, Collection<?> contents) {
 		T collection;
 		if (collectionClass.equals(SortedSet.class)) {
-			collection = (T) new TreeSet();
+			collection = (T) new HashOrderedSetBackedSortedSet();
 		} else if (collectionClass.equals(Set.class) || collectionClass.equals(Collection.class)) {
 			collection = (T) new HashOrderedSet(contents != null ? contents.size() : 0);
 		} else if (collectionClass.equals(List.class)) {
@@ -44,6 +44,9 @@ public class CollectionFactory {
 			} catch (Exception e) {
 				throw new MockitoCollectionsException("Could not create collection of type " + collectionClass, e);
 			}
+			System.out
+					.println("[WARN] Mockito-Collections cannot gaurantee order of elements in injected collection of type "
+							+ collectionClass);
 		}
 		if (contents != null) {
 			collection.addAll(contents);
