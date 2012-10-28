@@ -5,7 +5,10 @@ import java.util.Queue;
 
 public class ClassWithQueueOfCollaborators {
 
-	@SuppressWarnings("unused")
 	private Queue<EventListener> collaborators;
+
+	public Queue<EventListener> getCollaborators() {
+		return collaborators;
+	}
 
 }

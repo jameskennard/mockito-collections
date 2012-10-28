@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import org.junit.Test;
 
@@ -63,6 +64,16 @@ public class CollectionFactoryTest {
 	}
 
 	@Test
+	public void shouldCreateCollectionGivenQueue() {
+		shouldCreateCollection(Queue.class);
+	}
+
+	@Test
+	public void shouldCreateCollectionGivenQueueAndContents() {
+		shouldCreateCollectionGivenContents(Queue.class);
+	}
+
+	@Test
 	public void shouldCreateCollectionGivenSpecificType() {
 		shouldCreateCollection(LinkedList.class);
 	}
@@ -74,12 +85,12 @@ public class CollectionFactoryTest {
 
 	@Test(expected = MockitoCollectionsException.class)
 	public void shouldFailToCreateCollectionGivenCannotInstantiateSpecificType() {
-		shouldCreateCollection(Queue.class);
+		shouldCreateCollection(ArrayBlockingQueue.class);
 	}
 
 	@Test(expected = MockitoCollectionsException.class)
 	public void shouldFailToCreateCollectionGivenCannotInstantiateSpecificTypeAndContents() {
-		shouldCreateCollectionGivenContents(Queue.class);
+		shouldCreateCollectionGivenContents(ArrayBlockingQueue.class);
 	}
 
 	private <T extends Collection<Object>> void shouldCreateCollection(Class<T> clazz) {

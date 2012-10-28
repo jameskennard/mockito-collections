@@ -9,6 +9,7 @@ import java.util.SortedSet;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaboratorsWithNoGenerics;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithListOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithMoreThanOneCollectionOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithQueueOfCollaborators;
@@ -100,7 +101,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>Given</b> a test Class with an object under test denoted by an {@link InjectMocks} annotation<br />
 	 * <b>And</b> the Class of the {@link Object} under test has more than one {@link Collection} of collaborators with
 	 * generics<br />
-	 * <b>And</b> the test Class defines a number of mocks of suitable for the {@link Collection Collections} of
+	 * <b>And</b> the test Class defines a number of mocks of suitable type for the {@link Collection Collections} of
 	 * collaborators<br />
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as {@link Collection Collections} into the object under test<br />

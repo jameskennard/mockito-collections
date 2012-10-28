@@ -2,27 +2,28 @@ package uk.co.webamoeba.mockito.collections.core.integrationtests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.EventListener;
 import java.util.EventListenerProxy;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Observer;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaboratorsWithNoGenerics;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithListOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithMoreThanOneCollectionOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithQueueOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSetOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSortedSetOfCollaborators;
 
 /**
  * Integration test intended to exercise the scenarios set out in the story <b>
@@ -37,120 +38,159 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 	@Test
 	public void classOfObjectUnderTestHasListOfCollaborators() {
 		// Given
-		final ClassWithListOfCollaborators outterCUT = new ClassWithListOfCollaborators();
-		final EventListener outerCollaborator1 = mock(EventListener.class);
-		final EventListener outerCollaborator2 = mock(EventListener.class);
-		final EventListenerProxy outerSubTypeCollaborator1 = mock(EventListenerProxy.class);
-		final EventListenerProxy outerSubTypeCollaborator2 = mock(EventListenerProxy.class);
-		List<EventListener> expectedCollection = Arrays.asList(outerCollaborator1, outerCollaborator2,
-				outerSubTypeCollaborator1, outerSubTypeCollaborator2);
-		@SuppressWarnings("unused")
-		Object exampleTest = new Object() {
-
-			@InjectMocks
-			private ClassWithListOfCollaborators cut = outterCUT;
-
-			@Mock
-			private EventListener collaborator1 = outerCollaborator1;
-
-			@Mock
-			private EventListener collaborator2 = outerCollaborator2;
-
-			@Mock
-			private EventListenerProxy subTypeCollaborator1 = outerSubTypeCollaborator1;
-
-			@Mock
-			private EventListenerProxy subTypeCollaborator2 = outerSubTypeCollaborator2;
-
-			@Mock
-			private Observer uninterestingMock = mock(Observer.class);
-
-			@Mock
-			private DateFormat anotherUninterestingMock = mock(DateFormat.class);
-		};
+		ExampleTest<ClassWithListOfCollaborators> exampleTest = new ExampleTest<ClassWithListOfCollaborators>();
+		exampleTest.cut = new ClassWithListOfCollaborators();
 
 		// When
 		MockitoCollectionAnnotations.inject(exampleTest);
 
 		// Then
-		assertNotNull(outterCUT.getCollaborators());
-		assertTrue(outterCUT.getCollaborators().equals(expectedCollection));
+		assertNotNull(exampleTest.cut.getCollaborators());
+		assertEquals(4, exampleTest.cut.getCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, iterator.next());
+		assertSame(exampleTest.collaborator2, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 	}
 
 	@Test
 	public void classOfObjectUnderTestHasSetOfCollaborators() {
 		// Given
-		final ClassWithSetOfCollaborators outterCUT = new ClassWithSetOfCollaborators();
-		final EventListener outerCollaborator1 = mock(EventListener.class);
-		final EventListener outerCollaborator2 = mock(EventListener.class);
-		final EventListenerProxy outerSubTypeCollaborator1 = mock(EventListenerProxy.class);
-		final EventListenerProxy outerSubTypeCollaborator2 = mock(EventListenerProxy.class);
-		@SuppressWarnings("unused")
-		Object exampleTest = new Object() {
-
-			@InjectMocks
-			private ClassWithSetOfCollaborators cut = outterCUT;
-
-			@Mock
-			private EventListener collaborator1 = outerCollaborator1;
-
-			@Mock
-			private EventListener collaborator2 = outerCollaborator2;
-
-			@Mock
-			private EventListenerProxy subTypeCollaborator1 = outerSubTypeCollaborator1;
-
-			@Mock
-			private EventListenerProxy subTypeCollaborator2 = outerSubTypeCollaborator2;
-
-			@Mock
-			private Observer uninterestingMock = mock(Observer.class);
-
-			@Mock
-			private DateFormat anotherUninterestingMock = mock(DateFormat.class);
-		};
+		ExampleTest<ClassWithSetOfCollaborators> exampleTest = new ExampleTest<ClassWithSetOfCollaborators>();
+		exampleTest.cut = new ClassWithSetOfCollaborators();
 
 		// When
 		MockitoCollectionAnnotations.inject(exampleTest);
 
 		// Then
-		assertNotNull(outterCUT.getCollaborators());
-		assertEquals(4, outterCUT.getCollaborators().size());
-		Iterator<EventListener> iterator = outterCUT.getCollaborators().iterator();
-		assertSame(outerCollaborator1, iterator.next());
-		assertSame(outerCollaborator2, iterator.next());
-		assertSame(outerSubTypeCollaborator1, iterator.next());
-		assertSame(outerSubTypeCollaborator2, iterator.next());
+		assertNotNull(exampleTest.cut.getCollaborators());
+		assertEquals(4, exampleTest.cut.getCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, iterator.next());
+		assertSame(exampleTest.collaborator2, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 	}
 
 	@Test
-	@Ignore
 	public void classOfObjectUnderTestHasSortedSetOfCollaborators() {
-		fail("TODO");
+		// Given
+		ExampleTest<ClassWithSortedSetOfCollaborators> exampleTest = new ExampleTest<ClassWithSortedSetOfCollaborators>();
+		exampleTest.cut = new ClassWithSortedSetOfCollaborators();
+
+		// When
+		MockitoCollectionAnnotations.inject(exampleTest);
+
+		// Then
+		assertNotNull(exampleTest.cut.getCollaborators());
+		assertEquals(4, exampleTest.cut.getCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, iterator.next());
+		assertSame(exampleTest.collaborator2, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 	}
 
 	@Test
-	@Ignore
 	public void classOfObjectUnderTestHasQueueOfCollaborators() {
-		fail("TODO");
+		// Given
+		ExampleTest<ClassWithQueueOfCollaborators> exampleTest = new ExampleTest<ClassWithQueueOfCollaborators>();
+		exampleTest.cut = new ClassWithQueueOfCollaborators();
+
+		// When
+		MockitoCollectionAnnotations.inject(exampleTest);
+
+		// Then
+		assertNotNull(exampleTest.cut.getCollaborators());
+		assertEquals(4, exampleTest.cut.getCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, iterator.next());
+		assertSame(exampleTest.collaborator2, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 	}
 
 	@Test
-	@Ignore
 	public void classOfObjectUnderTestHasMoreThanOneCollectionOfCollaborators() {
-		fail("TODO");
+		// Given
+		ExampleTest<ClassWithMoreThanOneCollectionOfCollaborators> exampleTest = new ExampleTest<ClassWithMoreThanOneCollectionOfCollaborators>();
+		exampleTest.cut = new ClassWithMoreThanOneCollectionOfCollaborators();
+
+		// When
+		MockitoCollectionAnnotations.inject(exampleTest);
+
+		// Then
+		assertNotNull(exampleTest.cut.getSomeCollaborators());
+		assertEquals(4, exampleTest.cut.getSomeCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.cut.getSomeCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, iterator.next());
+		assertSame(exampleTest.collaborator2, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
+		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
+
+		assertNotNull(exampleTest.cut.getSomeOtherCollaborators());
+		assertEquals(4, exampleTest.cut.getSomeOtherCollaborators().size());
+		Iterator<EventListener> otherIterator = exampleTest.cut.getSomeOtherCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, otherIterator.next());
+		assertSame(exampleTest.collaborator2, otherIterator.next());
+		assertSame(exampleTest.subTypeCollaborator1, otherIterator.next());
+		assertSame(exampleTest.subTypeCollaborator2, otherIterator.next());
+
+		assertNotSame(exampleTest.cut.getSomeCollaborators(), exampleTest.cut.getSomeOtherCollaborators());
 	}
 
 	@Test
-	@Ignore
 	public void classOfObjectUnderTestHasNoCollectionsOfCollaborators() {
-		fail("TODO");
+		// Given
+		ExampleTest<Object> exampleTest = new ExampleTest<Object>();
+		exampleTest.cut = new Object();
+
+		// When
+		MockitoCollectionAnnotations.inject(exampleTest);
+
+		// Then
+		// Nothing to assert, we just want to ensure we make it out alive!
 	}
 
 	@Test
-	@Ignore
 	public void classOfObjectUnderTestHasCollectionsOfCollaboratorsWithNoGenerics() {
-		fail("TODO");
+		// Given
+		ExampleTest<ClassWithCollectionOfCollaboratorsWithNoGenerics> exampleTest = new ExampleTest<ClassWithCollectionOfCollaboratorsWithNoGenerics>();
+		exampleTest.cut = new ClassWithCollectionOfCollaboratorsWithNoGenerics();
+
+		// When
+		MockitoCollectionAnnotations.inject(exampleTest);
+
+		// Then
+		assertNull(exampleTest.cut.getCollaborators());
 	}
+
+	private class ExampleTest<CUT> {
+
+		@InjectMocks
+		private CUT cut;
+
+		@Mock
+		private EventListener collaborator1 = mock(EventListener.class);
+
+		@Mock
+		private EventListener collaborator2 = mock(EventListener.class);
+
+		@Mock
+		private EventListenerProxy subTypeCollaborator1 = mock(EventListenerProxy.class);
+
+		@Mock
+		private EventListenerProxy subTypeCollaborator2 = mock(EventListenerProxy.class);
+
+		@Mock
+		@SuppressWarnings("unused")
+		private Observer uninterestingMock = mock(Observer.class);
+
+		@Mock
+		@SuppressWarnings("unused")
+		private DateFormat anotherUninterestingMock = mock(DateFormat.class);
+
+	};
 
 }

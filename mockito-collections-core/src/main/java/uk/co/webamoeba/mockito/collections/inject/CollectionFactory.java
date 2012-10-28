@@ -3,8 +3,10 @@ package uk.co.webamoeba.mockito.collections.inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
@@ -38,6 +40,8 @@ public class CollectionFactory {
 			collection = (T) new HashOrderedSet(contents != null ? contents.size() : 0);
 		} else if (collectionClass.equals(List.class)) {
 			collection = (T) new ArrayList(contents != null ? contents.size() : 0);
+		} else if (collectionClass.equals(Queue.class)) {
+			collection = (T) new ConcurrentLinkedQueue();
 		} else {
 			try {
 				collection = collectionClass.newInstance();

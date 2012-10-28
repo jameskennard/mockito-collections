@@ -5,10 +5,16 @@ import java.util.EventListener;
 
 public class ClassWithMoreThanOneCollectionOfCollaborators {
 
-	@SuppressWarnings("unused")
 	private Collection<EventListener> someCollaborators;
 
-	@SuppressWarnings("unused")
 	private Collection<EventListener> someOtherCollaborators;
+
+	public Collection<EventListener> getSomeCollaborators() {
+		return someCollaborators;
+	}
+
+	public Collection<EventListener> getSomeOtherCollaborators() {
+		return someOtherCollaborators;
+	}
 
 }

@@ -5,7 +5,10 @@ import java.util.SortedSet;
 
 public class ClassWithSortedSetOfCollaborators {
 
-	@SuppressWarnings("unused")
 	private SortedSet<EventListener> collaborators;
+
+	public SortedSet<EventListener> getCollaborators() {
+		return collaborators;
+	}
 
 }
