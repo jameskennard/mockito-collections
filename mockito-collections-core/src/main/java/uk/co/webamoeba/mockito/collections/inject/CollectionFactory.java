@@ -48,9 +48,11 @@ public class CollectionFactory {
 			} catch (Exception e) {
 				throw new MockitoCollectionsException("Could not create collection of type " + collectionClass, e);
 			}
-			System.out
-					.println("[WARN] Mockito-Collections cannot gaurantee order of elements in injected collection of type "
-							+ collectionClass);
+			if (Set.class.isAssignableFrom(collectionClass)) {
+				System.out
+						.println("[WARN] Mockito-Collections cannot gaurantee order of elements in injected collection of type "
+								+ collectionClass);
+			}
 		}
 		if (contents != null) {
 			collection.addAll(contents);

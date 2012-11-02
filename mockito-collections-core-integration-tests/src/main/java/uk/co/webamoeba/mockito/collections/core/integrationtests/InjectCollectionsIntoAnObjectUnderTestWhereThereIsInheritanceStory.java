@@ -17,7 +17,7 @@ import org.mockito.Mock;
  * 
  * @author James Kennard
  */
-public interface InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritance {
+public interface InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceStory {
 
 	/**
 	 * <b>Scenario:</b> Test Class inherits some mocks from a parent test class
@@ -26,14 +26,38 @@ public interface InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritance {
 	 * <b>And</b> the Class of the {@link Object} under test has one {@link Collection} of collaborators with generics<br />
 	 * <b>And</b> the test Class extends another test Class<br />
 	 * <b>And</b> the test Class defines a number of mocks suitable for the {@link Collection}<br />
-	 * <b>And</b> the parent test Class defines a number of mocks suitable for the {@link Collection}<br />
+	 * <b>And</b> the parent test Class defines a number of mocks suitable for the {@link Collection} with names
+	 * different to the child test class<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Collection} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link Collection} are in the order they are defined where the parent mocks take
-	 * precedence
+	 * <b>And</b> the mocks in the {@link Collection} are in hierarchical and alphabetical order
+	 * <p>
+	 * <b>Notes:</b><br />
+	 * By hierarchical and alphabetical order we mean the parent test class' mocks are first in the {@link Collection}
+	 * in alphabetical order, followed by the child class' mocks, again in alphabetical order. For example, given test
+	 * class B extends test class A, and test class A contains suitable mocks named aMock and yMock, and test class B
+	 * contains suitable mocks named bMock and zMock, we would expect to them to be ordered aMock, yMock, bMock and
+	 * zMock.
 	 */
 	public void testClassInheritsSomeMocksFromAParentTestClass();
 
+	/**
+	 * <b>Scenario:</b> Test Class inherits some mocks from a parent test class with the same names
+	 * <p>
+	 * <b>Given</b> a test Class with an object under test denoted by an {@link InjectMocks} annotation<br />
+	 * <b>And</b> the Class of the {@link Object} under test has one {@link Collection} of collaborators with generics<br />
+	 * <b>And</b> the test Class extends another test Class<br />
+	 * <b>And</b> the test Class defines a number of mocks suitable for the {@link Collection}<br />
+	 * <b>And</b> the parent test Class defines a number of mocks suitable for the {@link Collection} with names the
+	 * same as the child classes suitable mocks<br />
+	 * <b>When</b> I setup the test<br />
+	 * <b>Then</b> the mocks are injected as a {@link Collection} into the object under test<br />
+	 * <b>And</b> the mocks in the {@link Collection} do not include the suitable mock from the parent test Class
+	 */
+	public void testClassInheritsSomeMocksFromAParentTestClassWithTheSameNames();
+
+	// TODO I think this is a separate story, these are two distinct bits of behaviour both of which happen to revolve
+	// around inheritance
 	/**
 	 * <b>Scenario:</b> Class of object under test inherits {@link Collection} of collaborators from parent class
 	 * <p>

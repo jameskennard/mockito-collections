@@ -40,7 +40,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>And</b> the test Class defines a number of mocks that are of an entirely different type to the generic type<br />
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link List} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link List} are in the order they are defined
+	 * <b>And</b> the mocks in the {@link List} are in alphabetical order
 	 * 
 	 * @see ClassWithListOfCollaborators
 	 */
@@ -56,7 +56,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>And</b> the test Class defines a number of mocks that are of an entirely different type to the generic type<br />
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Set} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link Set} are in the order they are defined
+	 * <b>And</b> the mocks in the {@link Set} are in alphabetical order
 	 * 
 	 * @see ClassWithSetOfCollaborators
 	 */
@@ -72,8 +72,8 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>And</b> the test Class defines a number of mocks that are of an entirely different type to the generic type<br />
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link SortedSet} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link SortedSet} are in the order they are defined<br />
-	 * <b>And</b> the {@link SortedSet} of mocks is 'pseudo sorted' by time of insertion
+	 * <b>And</b> the mocks in the {@link SortedSet} are in alphabetical order<br />
+	 * <b>And</b> the {@link SortedSet} of mocks is FILO sorted
 	 * 
 	 * @see ClassWithSortedSetOfCollaborators
 	 */
@@ -89,7 +89,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>And</b> the test Class defines a number of mocks that are of an entirely different type to the generic type<br />
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Queue} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link Queue} are in the order they are defined<br />
+	 * <b>And</b> the mocks in the {@link Queue} are in alphabetical order
 	 * 
 	 * @see ClassWithQueueOfCollaborators
 	 */
@@ -105,7 +105,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * collaborators<br />
 	 * <b>When</b> I setup the JUnit test<br />
 	 * <b>Then</b> the mocks are injected as {@link Collection Collections} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link Collection Collections} are in the order they are defined<br />
+	 * <b>And</b> the mocks in the {@link Collection Collections} are in alphabetical order
 	 * 
 	 * @see ClassWithMoreThanOneCollectionOfCollaborators
 	 */

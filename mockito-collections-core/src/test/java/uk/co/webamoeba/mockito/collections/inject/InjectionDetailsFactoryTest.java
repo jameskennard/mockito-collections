@@ -8,9 +8,12 @@ import static org.mockito.Mockito.mock;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -120,6 +123,59 @@ public class InjectionDetailsFactoryTest {
 	}
 
 	@Test
+	public void shouldCreateInjectionDetailsGivenInheritance() {
+		// Given
+		ExtendedClassWithAnnnotations object = new ExtendedClassWithAnnnotations();
+		Field injectableField1 = getField(ExtendedClassWithAnnnotations.class, "injectable1");
+		Field injectableField2 = getField(ExtendedClassWithAnnnotations.class, "injectable2");
+		Field inheritedInjectableField1 = getField(ClassWithAnnnotations.class, "injectable1");
+		Field inheritedInjectableField2 = getField(ClassWithAnnnotations.class, "injectable2");
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
+				new HashSet<Field>(Arrays.asList(injectableField1, inheritedInjectableField1, injectableField2,
+						inheritedInjectableField2)));
+
+		// When
+		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
+
+		// Then
+		assertEquals(0, injectionDetails.getInjectCollections().size());
+		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
+		assertEquals(4, injectionDetails.getInjectables().size());
+		Iterator<Object> iterator = injectionDetails.getInjectables().iterator();
+		assertSame(object.getInjectable1(), iterator.next());
+		assertSame(object.getInjectable2(), iterator.next());
+		assertSame(object.getExtendedInjectable1(), iterator.next());
+		assertSame(object.getExtendedInjectable2(), iterator.next());
+	}
+
+	@Test
+	public void shouldCreateInjectionDetailsGivenInheritanceAndMockAndInjectableAnnotations() {
+		// Given
+		ExtendedClassWithAnnnotations object = new ExtendedClassWithAnnnotations();
+		Field injectableField1 = getField(ExtendedClassWithAnnnotations.class, "injectable1");
+		Field injectableField2 = getField(ExtendedClassWithAnnnotations.class, "injectable2");
+		Field inheritedInjectableField1 = getField(ClassWithAnnnotations.class, "injectable1");
+		Field inheritedInjectableField2 = getField(ClassWithAnnnotations.class, "injectable2");
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
+				new HashSet<Field>(Arrays.asList(injectableField1, inheritedInjectableField1, injectableField2)));
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class)).willReturn(
+				Collections.singleton(inheritedInjectableField2));
+
+		// When
+		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
+
+		// Then
+		assertEquals(0, injectionDetails.getInjectCollections().size());
+		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
+		assertEquals(4, injectionDetails.getInjectables().size());
+		Iterator<Object> iterator = injectionDetails.getInjectables().iterator();
+		assertSame(object.getInjectable1(), iterator.next());
+		assertSame(object.getInjectable2(), iterator.next());
+		assertSame(object.getExtendedInjectable1(), iterator.next());
+		assertSame(object.getExtendedInjectable2(), iterator.next());
+	}
+
+	@Test
 	public void shouldCreateInjectionDetailsGivenInjectable() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
@@ -144,7 +200,7 @@ public class InjectionDetailsFactoryTest {
 		Field injectableField1 = getField(object.getClass(), "injectable1");
 		Field injectableField2 = getField(object.getClass(), "injectable2");
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
-				Collections.singleton(injectableField1));
+				new HashSet<Field>(Collections.singleton(injectableField1)));
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class)).willReturn(
 				Collections.singleton(injectableField2));
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreInjectable.class)).willReturn(
@@ -171,8 +227,7 @@ public class InjectionDetailsFactoryTest {
 						uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks.class)).willReturn(
 				Collections.singleton(collectionOfMocksField));
 		Class typeOfElements = EventListener.class;
-		given(genericCollectionTypeResolver.getCollectionFieldType(collectionOfMocksField)).willReturn(
-				typeOfElements);
+		given(genericCollectionTypeResolver.getCollectionFieldType(collectionOfMocksField)).willReturn(typeOfElements);
 
 		// When
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
@@ -229,5 +284,30 @@ public class InjectionDetailsFactoryTest {
 
 		@SuppressWarnings("unchecked")
 		private List<EventListener> injectableCollection1 = mock(List.class);
+
+		public Object getInjectable1() {
+			return injectable1;
+		}
+
+		public Object getInjectable2() {
+			return injectable2;
+		}
+
+	}
+
+	private class ExtendedClassWithAnnnotations extends ClassWithAnnnotations {
+
+		protected Object injectable1 = mock(InputStream.class);
+
+		public Object injectable2 = mock(InputStream.class);
+
+		public Object getExtendedInjectable1() {
+			return injectable1;
+		}
+
+		public Object getExtendedInjectable2() {
+			return injectable2;
+		}
+
 	}
 }

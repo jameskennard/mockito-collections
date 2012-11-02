@@ -70,10 +70,10 @@ public class InjectionDetailsFactory {
 	}
 
 	private OrderedSet<Object> getInjectables(Object object) {
-		OrderedSet<Object> injectables = getFieldValues(object, Mock.class);
-		injectables.addAll(getFieldValues(object, Injectable.class));
-		injectables.removeAll(getFieldValues(object, IgnoreInjectable.class));
-		return injectables;
+		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class);
+		fields.addAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class));
+		fields.removeAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreInjectable.class));
+		return getFieldValues(object, fields);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -112,18 +112,31 @@ public class InjectionDetailsFactory {
 	 * @return Values of the {@link Field Fields} retrieved from the object
 	 */
 	private OrderedSet<Object> getFieldValues(Object object, Set<Field> fields) {
-		TreeSet<Field> sortedFields = new TreeSet<Field>(new Comparator<Field>() {
-
-			public int compare(Field o1, Field o2) {
-				return o1.getName().compareToIgnoreCase(o2.getName());
-			}
-		});
+		TreeSet<Field> sortedFields = new TreeSet<Field>(new FieldComparator());
 		sortedFields.addAll(fields);
-
 		OrderedSet<Object> values = new HashOrderedSet<Object>();
 		for (Field field : sortedFields) {
 			values.add(new FieldReader(object, field).read());
 		}
 		return values;
+	}
+
+	/**
+	 * A {@link Comparator} that compares {@link Field Fields} by their declaring class and then their declared name.
+	 * 
+	 * @author James Kennard
+	 */
+	private class FieldComparator implements Comparator<Field> {
+
+		public int compare(Field o1, Field o2) {
+			if (o1.getDeclaringClass() == o2.getDeclaringClass()) {
+				return o1.getName().compareToIgnoreCase(o2.getName());
+			} else if (o1.getDeclaringClass().isAssignableFrom(o2.getDeclaringClass())) {
+				return -1;
+			} else if (o2.getDeclaringClass().isAssignableFrom(o1.getDeclaringClass())) {
+				return 1;
+			}
+			throw new IllegalArgumentException("The fields in the set are not from the same hierarchical tree");
+		}
 	}
 }
