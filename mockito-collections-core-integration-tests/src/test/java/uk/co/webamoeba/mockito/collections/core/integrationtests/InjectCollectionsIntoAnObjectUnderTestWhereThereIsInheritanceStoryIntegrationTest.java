@@ -54,9 +54,36 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceStoryI
 	}
 
 	@Test
-	@Ignore
 	public void testClassInheritsSomeMocksFromAParentTestClassWithTheSameNames() {
-		fail("TODO");
+		// Given
+		final ClassWithCollectionOfCollaborators outerCUT = new ClassWithCollectionOfCollaborators();
+		final EventListener outerCollaborator1 = mock(EventListener.class);
+		final EventListener outerCollaborator3 = mock(EventListener.class);
+		@SuppressWarnings("unused")
+		BaseExampleTest exampleTest = new BaseExampleTest() {
+
+			@InjectMocks
+			private ClassWithCollectionOfCollaborators cut = outerCUT;
+
+			@Mock
+			private EventListener collaborator1 = outerCollaborator1;
+
+			@Mock
+			private EventListener collaborator3 = outerCollaborator3;
+
+		};
+
+		// When
+		MockitoCollectionAnnotations.inject(exampleTest);
+
+		// Then
+		assertNotNull(outerCUT.getCollaborators());
+		assertEquals(4, outerCUT.getCollaborators().size());
+		Iterator<EventListener> iterator = outerCUT.getCollaborators().iterator();
+		assertSame(exampleTest.collaborator1, iterator.next());
+		assertSame(exampleTest.collaborator3, iterator.next());
+		assertSame(outerCollaborator1, iterator.next());
+		assertSame(outerCollaborator3, iterator.next());
 	}
 
 	@Test

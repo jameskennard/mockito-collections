@@ -18,7 +18,7 @@ import java.util.Set;
  * 
  * @author James Kennard
  */
-public class InjectableCollection<C extends Collection, E extends Object> {
+public class InjectableCollection<C extends Collection<?>, E extends Object> {
 
 	/**
 	 * The {@link Collection} that is of the specified {@link #typeOfCollection type} and contains elements of the
