@@ -15,14 +15,13 @@ import org.junit.Test;
 public class InjectableCollectionTest {
 
 	@Test
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void shouldMatchesGivenSelf() {
 		// Given
 		Set<Object> value = Collections.emptySet();
 		Class<Set> typeOfCollection = Set.class;
 		Class<Object> typeOfElements = Object.class;
-		InjectableCollection injectableCollection = new InjectableCollection<Set, Object>(value, typeOfCollection,
-				typeOfElements);
+		InjectableCollection injectableCollection = new InjectableCollection(value, typeOfCollection, typeOfElements);
 
 		// When
 		boolean matches = injectableCollection.matches(injectableCollection);
@@ -32,14 +31,12 @@ public class InjectableCollectionTest {
 	}
 
 	@Test
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void shouldMatchesGivenEqualTypeOfCollection() {
 		// Given
 		Set value = Collections.emptySet();
-		InjectableCollection injectableCollection = new InjectableCollection<Set, Object>(value, Set.class,
-				Object.class);
-		InjectableCollection otherInjectableCollection = new InjectableCollection<Set, String>(value, Set.class,
-				String.class);
+		InjectableCollection injectableCollection = new InjectableCollection(value, Set.class, Object.class);
+		InjectableCollection otherInjectableCollection = new InjectableCollection(value, Set.class, String.class);
 
 		// When
 		boolean matches = injectableCollection.matches(otherInjectableCollection);
@@ -49,13 +46,13 @@ public class InjectableCollectionTest {
 	}
 
 	@Test
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void shouldMatchesGivenEqualTypeOfElement() {
 		// Given
-		InjectableCollection injectableCollection = new InjectableCollection<Set, Number>(Collections.emptySet(),
-				Set.class, Number.class);
-		InjectableCollection otherInjectableCollection = new InjectableCollection<List, Number>(
-				Collections.emptyList(), List.class, Number.class);
+		InjectableCollection injectableCollection = new InjectableCollection(Collections.emptySet(), Set.class,
+				Number.class);
+		InjectableCollection otherInjectableCollection = new InjectableCollection(Collections.emptyList(), List.class,
+				Number.class);
 
 		// When
 		boolean matches = injectableCollection.matches(otherInjectableCollection);
@@ -65,14 +62,12 @@ public class InjectableCollectionTest {
 	}
 
 	@Test
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void shouldMatchesGivenEqualTypeOfCollectionAndEqualTypeOfElement() {
 		// Given
 		Set<Object> value = Collections.emptySet();
-		InjectableCollection injectableCollection = new InjectableCollection<Set, Number>(value, Set.class,
-				Number.class);
-		InjectableCollection otherInjectableCollection = new InjectableCollection<Set, Number>(value, Set.class,
-				Number.class);
+		InjectableCollection injectableCollection = new InjectableCollection(value, Set.class, Number.class);
+		InjectableCollection otherInjectableCollection = new InjectableCollection(value, Set.class, Number.class);
 
 		// When
 		boolean matches = injectableCollection.matches(otherInjectableCollection);

@@ -3,13 +3,11 @@ package uk.co.webamoeba.mockito.collections.core.integrationtests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.util.EventListener;
 import java.util.Iterator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,8 +15,8 @@ import org.mockito.Mock;
 import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
 
-public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceStoryIntegrationTest implements
-		InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceStory {
+public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheTestClassStoryTest implements
+		InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheTestClassStory {
 
 	@Test
 	public void testClassInheritsSomeMocksFromAParentTestClass() {
@@ -84,12 +82,6 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceStoryI
 		assertSame(exampleTest.collaborator3, iterator.next());
 		assertSame(outerCollaborator1, iterator.next());
 		assertSame(outerCollaborator3, iterator.next());
-	}
-
-	@Test
-	@Ignore
-	public void classOfObjectUnderTestInheritsCollectionOfCollaboratorsFromParentClass() {
-		fail("TODO");
 	}
 
 	private abstract class BaseExampleTest {

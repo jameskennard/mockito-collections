@@ -38,14 +38,15 @@ public class CollectionInjector {
 	 */
 	public void inject(InjectionDetails injectionDetails) {
 		for (Object injectCollections : injectionDetails.getInjectCollections()) {
-			inject(injectCollections, injectionDetails.getInjectables(), injectionDetails.getInjectableCollectionSet());
+			inject(injectCollections, injectionDetails.getInjectables(), injectionDetails.getInjectableCollectionSet(),
+					injectCollections.getClass());
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void inject(Object injectCollections, OrderedSet<Object> injectables,
-			InjectableCollectionSet injectableCollectionSet) {
-		Field[] fields = injectCollections.getClass().getDeclaredFields();
+			InjectableCollectionSet injectableCollectionSet, Class<? extends Object> fieldClazz) {
+		Field[] fields = fieldClazz.getDeclaredFields();
 		for (Field field : fields) {
 			Type type = field.getGenericType();
 			if (type instanceof ParameterizedType) {
@@ -71,6 +72,10 @@ public class CollectionInjector {
 					}
 				}
 			}
+		}
+		Class<?> superclass = fieldClazz.getSuperclass();
+		if (superclass != Object.class && superclass != null) {
+			inject(injectCollections, injectables, injectableCollectionSet, superclass);
 		}
 	}
 

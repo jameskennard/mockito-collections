@@ -12,9 +12,9 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
+import java.util.EventListenerProxy;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -140,8 +140,8 @@ public class CollectionInjectorTest {
 		Class<EventListener> clazz = EventListener.class;
 		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
 
-		List<Object> list = mock(List.class);
-		given(collectionFactory.createCollection(List.class, stragtegyInjectables)).willReturn(list);
+		Collection<Object> collection = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(collection);
 
 		Field field = getField("listeners", injectCollections);
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
@@ -150,13 +150,14 @@ public class CollectionInjectorTest {
 		injector.inject(injectionDetails);
 
 		// Then
-		assertSame(list, injectCollections.listeners);
+		assertSame(collection, injectCollections.listeners);
 	}
 
 	/**
 	 * Gets the {@link Field} of the specified name from the injectCollections. This method will only look for
-	 * {@link Field Fields} that are declared in the class represented by this injectCollections. This includes public,
-	 * protected, default (package) access, and private fields, but excludes inherited fields.
+	 * {@link Field Fields} that are declared in the class represented by this injectCollections, that is to say it will
+	 * not inspect parent classes. This includes public, protected, default (package) access, and private fields, but
+	 * excludes inherited fields.
 	 * 
 	 * @param fieldName
 	 *            Name of the field we want to retrieve
@@ -167,13 +168,31 @@ public class CollectionInjectorTest {
 	 *             Thrown when no matching {@link Field} can be found
 	 */
 	private Field getField(String fieldName, Object injectCollections) throws NoSuchFieldException {
-		for (Field field : injectCollections.getClass().getDeclaredFields()) {
+		return getField(fieldName, injectCollections.getClass());
+	}
+
+	/**
+	 * Gets the {@link Field} of the specified name from the {@link Class} in which the field is declared. This method
+	 * will only look for {@link Field Fields} that are declared in the {@link Class}, that is to say it will not
+	 * inspect parent classes. This includes public, protected, default (package) access, and private fields, but
+	 * excludes inherited fields.
+	 * 
+	 * @param fieldName
+	 *            Name of the field we want to retrieve
+	 * @param injectCollections
+	 *            Object from which we want to retrieve the {@link Field}.
+	 * @return
+	 * @throws NoSuchFieldException
+	 *             Thrown when no matching {@link Field} can be found
+	 */
+	private Field getField(String fieldName, Class<?> classInWhichFieldDeclared) throws NoSuchFieldException {
+		for (Field field : classInWhichFieldDeclared.getDeclaredFields()) {
 			if (field.getName().equals(fieldName)) {
 				return field;
 			}
 		}
 		throw new NoSuchFieldException("No such field " + fieldName + " exists on object of type "
-				+ injectCollections.getClass());
+				+ classInWhichFieldDeclared);
 	}
 
 	@Test
@@ -281,6 +300,77 @@ public class CollectionInjectorTest {
 		assertSame(eventListeners, injectCollections.listeners);
 	}
 
+	@Test
+	public void shouldInjectIntoExtendedClassWithInheritedCollection() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+		ExtendedClassWithInheritedCollection injectCollections = new ExtendedClassWithInheritedCollection();
+		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
+
+		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
+		Class<EventListener> clazz = EventListener.class;
+		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		Collection<Object> collection = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(collection);
+		Field field = getField("listeners", ClassWithPrivateEventListenerCollection.class);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+
+		OrderedSet<EventListenerProxy> eventListenerProxyStragtegyInjectables = mock(OrderedSet.class);
+		Class<EventListenerProxy> childClazz = EventListenerProxy.class;
+		given(strategy.getInjectables(injectables, childClazz)).willReturn(eventListenerProxyStragtegyInjectables);
+		Collection<Object> childCollection = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, eventListenerProxyStragtegyInjectables)).willReturn(
+				childCollection);
+		Field childField = getField("childListeners", ExtendedClassWithInheritedCollection.class);
+		given(genericCollectionTypeResolver.getCollectionFieldType(childField)).willReturn((Class) childClazz);
+
+		// When
+		injector.inject(injectionDetails);
+
+		// Then
+		assertSame(childCollection, injectCollections.childListeners);
+		assertSame(collection, injectCollections.getListeners());
+	}
+
+	@Test
+	public void shouldInjectIntoExtendedClassWithInheritedCollectionOfSameName() throws Exception {
+		// Given
+		InjectionDetails injectionDetails = mock(InjectionDetails.class);
+
+		ExtendedClassWithInheritedCollectionOfSameName injectCollections = new ExtendedClassWithInheritedCollectionOfSameName();
+		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
+		given(injectionDetails.getInjectables()).willReturn(injectables);
+
+		OrderedSet<EventListener> eventListenerStragtegyInjectables = mock(OrderedSet.class);
+		Class<EventListener> clazz = EventListener.class;
+		given(strategy.getInjectables(injectables, clazz)).willReturn(eventListenerStragtegyInjectables);
+		Collection<Object> collection = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, eventListenerStragtegyInjectables)).willReturn(
+				collection);
+		Field field = getField("listeners", ClassWithPrivateEventListenerCollection.class);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
+
+		OrderedSet<EventListenerProxy> eventListenerProxyStragtegyInjectables = mock(OrderedSet.class);
+		Class<EventListenerProxy> childClazz = EventListenerProxy.class;
+		given(strategy.getInjectables(injectables, childClazz)).willReturn(eventListenerProxyStragtegyInjectables);
+		Collection<Object> childCollection = mock(Collection.class);
+		given(collectionFactory.createCollection(Collection.class, eventListenerProxyStragtegyInjectables)).willReturn(
+				childCollection);
+		Field childField = getField("listeners", ExtendedClassWithInheritedCollectionOfSameName.class);
+		given(genericCollectionTypeResolver.getCollectionFieldType(childField)).willReturn((Class) childClazz);
+
+		// When
+		injector.inject(injectionDetails);
+
+		// Then
+		assertSame(childCollection, injectCollections.listeners);
+		assertSame(collection, injectCollections.getListeners());
+	}
+
 	private class ClassWithPublicEventListenerCollection {
 
 		public Collection<EventListener> listeners;
@@ -299,7 +389,11 @@ public class CollectionInjectorTest {
 
 	private class ClassWithPrivateEventListenerCollection {
 
-		private List<EventListener> listeners;
+		private Collection<EventListener> listeners;
+
+		public Collection<EventListener> getListeners() {
+			return listeners;
+		}
 	}
 
 	private class ClassWithPrivateEventListenerSet {
@@ -315,5 +409,17 @@ public class CollectionInjectorTest {
 	private class ClassWithPrivateEventListenerArray {
 
 		private EventListener[] listeners;
+	}
+
+	private class ExtendedClassWithInheritedCollection extends ClassWithPrivateEventListenerCollection {
+
+		public Collection<EventListenerProxy> childListeners;
+
+	}
+
+	private class ExtendedClassWithInheritedCollectionOfSameName extends ClassWithPrivateEventListenerCollection {
+
+		public Collection<EventListenerProxy> listeners;
+
 	}
 }

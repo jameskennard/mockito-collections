@@ -66,10 +66,10 @@ public class DefaultInjectableSelectionStrategyTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldGetInjectableCollectionGivenTwoTypesOfCollection() {
 		// Given
-		InjectableCollection injectableCollection1 = new InjectableCollection<Set, InputStream>(Collections.emptySet(),
-				Set.class, InputStream.class);
-		InjectableCollection injectableCollection2 = new InjectableCollection<TreeSet, InputStream>(
-				mock(TreeSet.class), TreeSet.class, InputStream.class);
+		InjectableCollection injectableCollection1 = new InjectableCollection(Collections.emptySet(), Set.class,
+				InputStream.class);
+		InjectableCollection injectableCollection2 = new InjectableCollection(mock(TreeSet.class), TreeSet.class,
+				InputStream.class);
 		Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = new HashSet<InjectableCollection<Collection<Object>, Object>>(
 				Arrays.<InjectableCollection<Collection<Object>, Object>> asList(injectableCollection1,
 						injectableCollection2));
@@ -80,8 +80,8 @@ public class DefaultInjectableSelectionStrategyTest {
 		Class<InputStream> typeOfElements = InputStream.class;
 
 		// When
-		InjectableCollection<Set, InputStream> actualInjectableCollection = strategy.getInjectableCollection(set,
-				typeOfCollection, typeOfElements);
+		InjectableCollection actualInjectableCollection = strategy.getInjectableCollection(set, typeOfCollection,
+				typeOfElements);
 
 		// Then
 		assertSame(injectableCollection1, actualInjectableCollection);
@@ -91,10 +91,10 @@ public class DefaultInjectableSelectionStrategyTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldGetInjectableCollectionGivenTwoTypesOfElement() {
 		// Given
-		InjectableCollection injectableCollection1 = new InjectableCollection<List, FileOutputStream>(
-				Collections.emptyList(), List.class, FileOutputStream.class);
-		InjectableCollection injectableCollection2 = new InjectableCollection<List, OutputStream>(
-				Collections.emptyList(), List.class, OutputStream.class);
+		InjectableCollection injectableCollection1 = new InjectableCollection(Collections.emptyList(), List.class,
+				FileOutputStream.class);
+		InjectableCollection injectableCollection2 = new InjectableCollection(Collections.emptyList(), List.class,
+				OutputStream.class);
 		Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = new HashSet<InjectableCollection<Collection<Object>, Object>>(
 				Arrays.<InjectableCollection<Collection<Object>, Object>> asList(injectableCollection1,
 						injectableCollection2));
@@ -105,8 +105,8 @@ public class DefaultInjectableSelectionStrategyTest {
 		Class<OutputStream> typeOfElements = OutputStream.class;
 
 		// When
-		InjectableCollection<List, OutputStream> actualInjectableCollection = strategy.getInjectableCollection(set,
-				typeOfCollection, typeOfElements);
+		InjectableCollection actualInjectableCollection = strategy.getInjectableCollection(set, typeOfCollection,
+				typeOfElements);
 
 		// Then
 		assertSame(injectableCollection2, actualInjectableCollection);
@@ -116,8 +116,8 @@ public class DefaultInjectableSelectionStrategyTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldGetInjectableCollectionGivenNoMatchingInjectableCollection() {
 		// Given
-		InjectableCollection injectableCollection = new InjectableCollection<List, FileOutputStream>(
-				Collections.emptyList(), List.class, FileOutputStream.class);
+		InjectableCollection injectableCollection = new InjectableCollection(Collections.emptyList(), List.class,
+				FileOutputStream.class);
 		Set<InjectableCollection<Collection<Object>, Object>> injectableCollections = Collections
 				.<InjectableCollection<Collection<Object>, Object>> singleton(injectableCollection);
 		InjectableCollectionSet set = mock(InjectableCollectionSet.class);
@@ -126,8 +126,8 @@ public class DefaultInjectableSelectionStrategyTest {
 		Class<EventListener> typeOfElements = EventListener.class;
 
 		// When
-		InjectableCollection<Collection, EventListener> actualInjectableCollection = strategy.getInjectableCollection(
-				set, typeOfCollection, typeOfElements);
+		InjectableCollection actualInjectableCollection = strategy.getInjectableCollection(set, typeOfCollection,
+				typeOfElements);
 
 		// Then
 		assertNull(actualInjectableCollection);
