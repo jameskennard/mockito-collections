@@ -1,9 +1,11 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -98,21 +100,27 @@ public class CollectionFactoryTest {
 	}
 
 	private <T extends Collection<Object>> void shouldCreateCollectionGivenContents(Class<T> clazz) {
-		Collection<Object> contents = Arrays.<Object> asList("Some Contents", 'A', 12L, 3.0f);
+		List<Object> contents = Arrays.<Object> asList("Some Contents", 'A', 12L, 3.0f);
 		shouldCreateCollection(clazz, contents);
 	}
 
-	private <T extends Collection<Object>> void shouldCreateCollection(Class<T> clazz, Collection<Object> contents) {
+	private <T extends Collection<Object>> void shouldCreateCollection(Class<T> clazz, List<Object> contents) {
 		// Given
 		Class<T> collectionClass = clazz;
 
 		// When
-		Collection<?> collection = factory.createCollection(collectionClass, contents);
+		Collection<Object> collection = factory.createCollection(collectionClass, contents);
 
 		// Then
 		assertTrue(collectionClass.isAssignableFrom(collection.getClass()));
 		if (contents != null) {
-			assertTrue(collection.containsAll(contents));
+			assertEquals(contents.size(), collection.size());
+			Iterator<Object> iterator = collection.iterator();
+			for (int i = 0; i < contents.size(); i++) {
+				assertEquals(contents.get(i), iterator.next());
+			}
+		} else {
+			assertTrue(collection.isEmpty());
 		}
 	}
 }
