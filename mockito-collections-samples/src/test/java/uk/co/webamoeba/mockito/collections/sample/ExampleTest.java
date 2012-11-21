@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import java.util.Collection;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,7 +20,6 @@ import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
  * @author James Kennard
  */
 // FIXME This needs a lot of work
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class ExampleTest {
 

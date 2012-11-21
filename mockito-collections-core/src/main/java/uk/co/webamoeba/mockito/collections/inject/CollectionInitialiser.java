@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.mockito.Mock;
@@ -14,6 +13,8 @@ import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * The {@link CollectionInitialiser} is responsible for handling the instantiation of {@link Collection Collections} and
@@ -47,6 +48,7 @@ public class CollectionInitialiser {
 	 * 
 	 * @param object
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void initialise(Object object) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class);
 		// TODO tidy this up, looks like a nasty big block of code...
@@ -58,7 +60,7 @@ public class CollectionInitialiser {
 			Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
 			CollectionOfMocks annotation = field.getAnnotation(CollectionOfMocks.class);
 			assert annotation != null : "Field is missing CollectionOfMocks annotation, unexpected field retrieved from annotatedFieldRetriever";
-			Collection<?> mocks = createMocks((Class) collectionType, getNumberOfMocks(annotation)); // TODO is the cast
+			OrderedSet<?> mocks = createMocks((Class) collectionType, getNumberOfMocks(annotation)); // TODO is the cast
 			// to Class okay?
 			Collection collection = collectionFactory.createCollection(rawType, mocks);
 			new FieldValueMutator(object, field).mutateTo(collection);
@@ -80,8 +82,8 @@ public class CollectionInitialiser {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Collection<?> createMocks(Class collectionType, int numberOfMocks) {
-		Set mocks = new HashSet();
+	private OrderedSet<?> createMocks(Class collectionType, int numberOfMocks) {
+		OrderedSet mocks = new HashOrderedSet();
 		for (int i = 0; i < numberOfMocks; i++) {
 			Object mock = mockStrategy.createMock(collectionType);
 			mocks.add(mock);

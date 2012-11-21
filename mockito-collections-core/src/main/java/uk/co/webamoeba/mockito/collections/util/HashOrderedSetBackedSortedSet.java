@@ -9,6 +9,7 @@ import java.util.SortedSet;
  * @author James Kennard
  * @param <T>
  */
+// TODO consider renaming to SortedSetBackedByHashOrderedSet
 public class HashOrderedSetBackedSortedSet<T> implements SortedSet<T> {
 
 	private OrderedSet<T> orderedSet = new HashOrderedSet<T>();

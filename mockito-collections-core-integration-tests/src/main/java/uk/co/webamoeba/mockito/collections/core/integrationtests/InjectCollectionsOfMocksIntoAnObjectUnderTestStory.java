@@ -134,4 +134,16 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * @see ClassWithCollectionOfCollaboratorsWithNoGenerics
 	 */
 	public void classOfObjectUnderTestHasCollectionsOfCollaboratorsWithNoGenerics();
+
+	// @formatter:off
+
+	/* TODO Consider these scenarios:
+	 * Abstract Collection
+	 * <b>Scenario:</b> Class of object under test declares an abstract {@link Collection} of collaborators
+	 *
+	 * Extended Collection interface that is not with the plain java library
+	 * <b>Scenario:</b> Class of object under test declares an extended {@link Collection} interface of collaborators
+	 */
+
+	// @formatter:on
 }

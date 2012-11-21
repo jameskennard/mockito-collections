@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -33,7 +32,6 @@ import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.P
  * @author James Kennard
  */
 // FIXME this is a mishmash of a sample and a BDD acceptance test for mockito-collections-core
-@Ignore
 @RunWith(Suite.class)
 @SuiteClasses({ PlainMockito.class, MockitoCollections.class, MockitoCollectionsGivenCollectionOfMocksAnnotation.class })
 public class VerifyCollectionOfMocksStory {

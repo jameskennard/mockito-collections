@@ -21,6 +21,7 @@ import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
+import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionInitialiserTest {
@@ -54,8 +55,9 @@ public class CollectionInitialiserTest {
 		EventListener mockEventListener = mock(EventListener.class);
 		given(mockStrategy.createMock(EventListener.class)).willReturn(mockEventListener);
 		Collection collection = mock(Collection.class);
-		given(collectionFactory.createCollection(eq(Collection.class), eq(Collections.singleton(mockEventListener))))
-				.willReturn(collection);
+		given(
+				collectionFactory.createCollection(eq(Collection.class),
+						eq(new HashOrderedSet(Collections.singleton(mockEventListener))))).willReturn(collection);
 
 		// When
 		initialiser.initialise(object);
@@ -76,7 +78,7 @@ public class CollectionInitialiserTest {
 		Class collectionType = EventListener.class;
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
 		Collection collection = mock(Collection.class);
-		given(collectionFactory.createCollection(Collection.class, Collections.emptySet())).willReturn(collection);
+		given(collectionFactory.createCollection(Collection.class, new HashOrderedSet())).willReturn(collection);
 
 		// When
 		initialiser.initialise(object);

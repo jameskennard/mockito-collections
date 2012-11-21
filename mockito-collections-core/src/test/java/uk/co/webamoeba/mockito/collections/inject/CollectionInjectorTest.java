@@ -53,7 +53,7 @@ public class CollectionInjectorTest {
 		// Workaround so as we can mock this correctly in tests, without this will throw ClassCastException when
 		// specifying willReturn (unless returning a LinkedList or parent type) because the default Mockito answer
 		// returns an empty LinkedList. Would be nicer if there were an Answers type that always returned null.
-		given(collectionFactory.createCollection(any(Class.class), any(Collection.class))).willReturn(null);
+		given(collectionFactory.createCollection(any(Class.class), any(OrderedSet.class))).willReturn(null);
 	}
 
 	@Test

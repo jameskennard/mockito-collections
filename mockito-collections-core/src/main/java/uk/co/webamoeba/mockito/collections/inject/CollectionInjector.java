@@ -88,7 +88,7 @@ public class CollectionInjector {
 		if (injectableCollection != null) {
 			collection = injectableCollection.getValue();
 		} else {
-			Set strategyInjectables = strategy.getInjectables(injectables, (Class) collectionType);
+			OrderedSet strategyInjectables = strategy.getInjectables(injectables, (Class) collectionType);
 			if (!strategyInjectables.isEmpty()) {
 				collection = collectionFactory.createCollection(rawType, strategyInjectables);
 			}
