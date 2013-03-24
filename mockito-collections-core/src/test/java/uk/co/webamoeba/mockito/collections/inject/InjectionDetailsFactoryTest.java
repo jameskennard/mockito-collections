@@ -22,7 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
+import uk.co.webamoeba.mockito.collections.annotation.IgnoreMockForCollections;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -111,7 +111,7 @@ public class InjectionDetailsFactoryTest {
 		Field injectableField1 = getField(object.getClass(), "injectable1");
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
 				new HashSet<Field>(Collections.singleton(injectableField1)));
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreInjectable.class)).willReturn(
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreMockForCollections.class)).willReturn(
 				Collections.singleton(injectableField1));
 
 		// When

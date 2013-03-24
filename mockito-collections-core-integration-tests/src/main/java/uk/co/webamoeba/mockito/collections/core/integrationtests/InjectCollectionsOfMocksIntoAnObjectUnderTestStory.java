@@ -118,7 +118,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>Given</b> a test Class with an object under test denoted by an {@link InjectMocks} annotation<br />
 	 * <b>And</b> the Class of the {@link Object} under test has no {@link Collection Collections} of collaborators<br />
 	 * <b>When</b> I setup the test<br />
-	 * <b>Then</b> no {@link Collection Collections} of mocks are injected into the object under test<br />
+	 * <b>Then</b> no {@link Collection Collections} of mocks are injected into the object under test
 	 */
 	public void classOfObjectUnderTestHasNoCollectionsOfCollaborators();
 
@@ -129,7 +129,7 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * <b>And</b> the Class of the {@link Object} under test has {@link Collection Collections} of collaborators with no
 	 * generics<br />
 	 * <b>When</b> I setup the test<br />
-	 * <b>Then</b> no {@link Collection Collections} of mocks are injected into the object under test<br />
+	 * <b>Then</b> no {@link Collection Collections} of mocks are injected into the object under test
 	 * 
 	 * @see ClassWithCollectionOfCollaboratorsWithNoGenerics
 	 */

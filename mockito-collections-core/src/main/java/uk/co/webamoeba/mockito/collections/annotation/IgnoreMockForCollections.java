@@ -10,13 +10,13 @@ import org.mockito.Mock;
 
 /**
  * Annotation which when added to a {@link Field} in a test that would otherwise be considered an injectable, tells
- * Mockito-Collections not to use this as an injectable. {@link IgnoreInjectable} always takes precedence, for example a
- * {@link Field} annotated with {@link Mock}, and annotated with {@link IgnoreInjectable} will be ignored.
+ * Mockito-Collections not to use this as an injectable. {@link IgnoreMockForCollections} always takes precedence, for example a
+ * {@link Field} annotated with {@link Mock}, and annotated with {@link IgnoreMockForCollections} will be ignored.
  * 
  * @author James Kennard
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface IgnoreInjectable {
+public @interface IgnoreMockForCollections {
 
 }
