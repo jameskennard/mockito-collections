@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.internal.util.reflection.FieldReader;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
-import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -23,14 +22,13 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
- * annotations. {@link Field Fields} with the {@link InjectMocks} or {@link InjectCollections} annotation are considered
- * for injection of {@link Collection Collections}. {@link Field Fields} with the {@link Mock} annotation are considered
- * injectables. It is also possible to ignore fields that would other wise be considered injectables or for injecting
- * {@link Collection Collections} using the {@link IgnoreInjectable} annotation.
+ * annotations. {@link Field Fields} with the {@link InjectMocks} annotation are considered for injection of
+ * {@link Collection Collections}. {@link Field Fields} with the {@link Mock} annotation are considered injectables. It
+ * is also possible to ignore fields that would other wise be considered injectables or for injecting {@link Collection
+ * Collections} using the {@link IgnoreInjectable} annotation.
  * 
  * @see Mock
  * @see InjectMocks
- * @see InjectCollections
  * @see IgnoreInjectable
  * @author James Kennard
  */
@@ -59,7 +57,6 @@ public class InjectionDetailsFactory {
 
 	private Set<Object> getInjectCollections(Object object) {
 		Set<Object> injectCollections = getFieldValues(object, InjectMocks.class);
-		injectCollections.addAll(getFieldValues(object, InjectCollections.class));
 		return injectCollections;
 	}
 

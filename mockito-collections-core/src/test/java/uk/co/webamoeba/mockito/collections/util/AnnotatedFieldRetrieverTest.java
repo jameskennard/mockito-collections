@@ -11,10 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
-import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 
 /**
  * @author James Kennard
@@ -71,7 +71,7 @@ public class AnnotatedFieldRetrieverTest {
 	public void shouldGetAnnotatedFieldsGivenPackageField() {
 		// Given
 		Class<ClassWithAnnnotations> clazz = ClassWithAnnnotations.class;
-		Class<? extends Annotation> annotationClass = InjectCollections.class;
+		Class<? extends Annotation> annotationClass = Spy.class;
 
 		// When
 		Set<Field> fields = retriever.getAnnotatedFields(clazz, annotationClass);
@@ -119,7 +119,7 @@ public class AnnotatedFieldRetrieverTest {
 		@CollectionOfMocks
 		public Object publicAnnotatedField;
 
-		@InjectCollections
+		@Spy
 		Object defaultAnnotatedField;
 	}
 

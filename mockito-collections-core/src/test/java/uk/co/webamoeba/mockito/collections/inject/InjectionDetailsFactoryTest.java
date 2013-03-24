@@ -23,7 +23,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
-import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -59,24 +58,6 @@ public class InjectionDetailsFactoryTest {
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 		assertEquals(1, injectionDetails.getInjectCollections().size());
 		assertTrue(injectionDetails.getInjectCollections().contains(object.injectCollections1));
-	}
-
-	@Test
-	public void shouldCreateInjectionDetailsGivenInjectCollections() {
-		// Given
-		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injectCollectionsField = getField(object.getClass(), "injectCollections2");
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectCollections.class)).willReturn(
-				Collections.singleton(injectCollectionsField));
-
-		// When
-		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
-
-		// Then
-		assertEquals(0, injectionDetails.getInjectables().size());
-		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getInjectCollections().size());
-		assertTrue(injectionDetails.getInjectCollections().contains(object.injectCollections2));
 	}
 
 	@Test
@@ -201,8 +182,6 @@ public class InjectionDetailsFactoryTest {
 	private class ClassWithAnnnotations {
 
 		Object injectCollections1 = mock(Object.class);
-
-		private Object injectCollections2 = mock(Object.class);
 
 		protected Object injectable1 = mock(InputStream.class);
 
