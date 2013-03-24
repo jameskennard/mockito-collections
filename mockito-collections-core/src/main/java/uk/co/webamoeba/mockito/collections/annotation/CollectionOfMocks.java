@@ -38,6 +38,4 @@ public @interface CollectionOfMocks {
 
 	int numberOfMocks() default 1;
 
-	// TODO consider adding 'ignore when injecting' to prevent from being injected
-
 }
