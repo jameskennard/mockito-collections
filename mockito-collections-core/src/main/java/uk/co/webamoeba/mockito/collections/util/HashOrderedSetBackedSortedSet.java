@@ -68,8 +68,7 @@ public class HashOrderedSetBackedSortedSet<T> implements SortedSet<T> {
 
 	@Override
 	public int hashCode() {
-		int result = 31 + ((orderedSet == null) ? 0 : orderedSet.hashCode());
-		return result;
+		return 31 + orderedSet.hashCode();
 	}
 
 	@Override
@@ -80,10 +79,7 @@ public class HashOrderedSetBackedSortedSet<T> implements SortedSet<T> {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		HashOrderedSetBackedSortedSet other = (HashOrderedSetBackedSortedSet) obj;
-		if (orderedSet == null && other.orderedSet != null) {
-			return false;
-		} else if (orderedSet != null && !orderedSet.equals(other.orderedSet)) {
+		if (orderedSet.equals(obj)) {
 			return false;
 		}
 		return true;
