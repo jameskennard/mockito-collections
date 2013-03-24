@@ -13,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.annotation.Injectable;
+import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
 
 /**
@@ -36,7 +36,7 @@ public class AnnotatedFieldRetrieverTest {
 
 		// Then
 		assertEquals(1, fields.size());
-		assertTrue(fields.contains(getField(clazz, "injectMocksAnnotatedField")));
+		assertTrue(fields.contains(getField(clazz, "privateAnnotatedField")));
 	}
 
 	@Test
@@ -50,21 +50,21 @@ public class AnnotatedFieldRetrieverTest {
 
 		// Then
 		assertEquals(1, fields.size());
-		assertTrue(fields.contains(getField(clazz, "mockAnnotatedField")));
+		assertTrue(fields.contains(getField(clazz, "protectedAnnotatedField")));
 	}
 
 	@Test
 	public void shouldGetAnnotatedFieldsGivenPublicField() {
 		// Given
 		Class<ClassWithAnnnotations> clazz = ClassWithAnnnotations.class;
-		Class<? extends Annotation> annotationClass = Injectable.class;
+		Class<? extends Annotation> annotationClass = CollectionOfMocks.class;
 
 		// When
 		Set<Field> fields = retriever.getAnnotatedFields(clazz, annotationClass);
 
 		// Then
 		assertEquals(1, fields.size());
-		assertTrue(fields.contains(getField(clazz, "injectableAnnotatedField")));
+		assertTrue(fields.contains(getField(clazz, "publicAnnotatedField")));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class AnnotatedFieldRetrieverTest {
 
 		// Then
 		assertEquals(1, fields.size());
-		assertTrue(fields.contains(getField(clazz, "injectCollectionsAnnotatedField")));
+		assertTrue(fields.contains(getField(clazz, "defaultAnnotatedField")));
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class AnnotatedFieldRetrieverTest {
 
 		// Then
 		assertEquals(2, fields.size());
-		assertTrue(fields.contains(getField(clazz, "injectMocksAnnotatedField")));
-		assertTrue(fields.contains(getField(ClassWithAnnnotations.class, "injectMocksAnnotatedField")));
+		assertTrue(fields.contains(getField(clazz, "privateAnnotatedField")));
+		assertTrue(fields.contains(getField(ClassWithAnnnotations.class, "privateAnnotatedField")));
 	}
 
 	private Field getField(Class<?> clazz, String name) {
@@ -111,16 +111,16 @@ public class AnnotatedFieldRetrieverTest {
 	private class ClassWithAnnnotations {
 
 		@InjectMocks
-		private Object injectMocksAnnotatedField;
+		private Object privateAnnotatedField;
 
 		@Mock
-		protected Object mockAnnotatedField;
+		protected Object protectedAnnotatedField;
 
-		@Injectable
-		public Object injectableAnnotatedField;
+		@CollectionOfMocks
+		public Object publicAnnotatedField;
 
 		@InjectCollections
-		Object injectCollectionsAnnotatedField;
+		Object defaultAnnotatedField;
 	}
 
 	// suppressing unused warnings, in practice all fields are used via reflection
@@ -128,6 +128,6 @@ public class AnnotatedFieldRetrieverTest {
 	private class ExtendedClassWithAnnnotations extends ClassWithAnnnotations {
 
 		@InjectMocks
-		public Object injectMocksAnnotatedField;
+		public Object privateAnnotatedField;
 	}
 }

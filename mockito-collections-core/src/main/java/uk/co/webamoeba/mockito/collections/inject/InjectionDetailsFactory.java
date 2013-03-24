@@ -15,7 +15,6 @@ import org.mockito.internal.util.reflection.FieldReader;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
-import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -25,13 +24,12 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
  * annotations. {@link Field Fields} with the {@link InjectMocks} or {@link InjectCollections} annotation are considered
- * for injection of {@link Collection Collections}. {@link Field Fields} with the {@link Mock} or {@link Injectable}
- * annotation are considered injectables. It is also possible to ignore fields that would other wise be considered
- * injectables or for injecting {@link Collection Collections} using the {@link IgnoreInjectable} annotation.
+ * for injection of {@link Collection Collections}. {@link Field Fields} with the {@link Mock} annotation are considered
+ * injectables. It is also possible to ignore fields that would other wise be considered injectables or for injecting
+ * {@link Collection Collections} using the {@link IgnoreInjectable} annotation.
  * 
  * @see Mock
  * @see InjectMocks
- * @see Injectable
  * @see InjectCollections
  * @see IgnoreInjectable
  * @author James Kennard
@@ -67,7 +65,6 @@ public class InjectionDetailsFactory {
 
 	private OrderedSet<Object> getInjectables(Object object) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class);
-		fields.addAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class));
 		fields.removeAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreInjectable.class));
 		return getFieldValues(object, fields);
 	}

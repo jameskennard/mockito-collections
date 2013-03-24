@@ -26,9 +26,8 @@ import org.mockito.Mock;
  * }
  * </pre>
  * 
- * A {@link Field} annotated with {@link CollectionOfMocks} is considered for injection verbatim. That is to say, unlike
- * {@link Injectable}, a {@link CollectionOfMocks} will be injected as a whole not as an element in a {@link Collection}
- * .
+ * A {@link Field} annotated with {@link CollectionOfMocks} is considered for injection verbatim. That is to say, a
+ * {@link CollectionOfMocks} will be injected as a whole not as an element in a {@link Collection}.
  * 
  * @author James Kennard
  */

@@ -24,7 +24,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreInjectable;
 import uk.co.webamoeba.mockito.collections.annotation.InjectCollections;
-import uk.co.webamoeba.mockito.collections.annotation.Injectable;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
@@ -125,60 +124,12 @@ public class InjectionDetailsFactoryTest {
 	}
 
 	@Test
-	public void shouldCreateInjectionDetailsGivenInheritanceAndMockAndInjectableAnnotations() {
-		// Given
-		ExtendedClassWithAnnnotations object = new ExtendedClassWithAnnnotations();
-		Field injectableField1 = getField(ExtendedClassWithAnnnotations.class, "injectable1");
-		Field injectableField2 = getField(ExtendedClassWithAnnnotations.class, "injectable2");
-		Field inheritedInjectableField1 = getField(ClassWithAnnnotations.class, "injectable1");
-		Field inheritedInjectableField2 = getField(ClassWithAnnnotations.class, "injectable2");
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
-				new HashSet<Field>(Arrays.asList(injectableField1, inheritedInjectableField1, injectableField2)));
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class)).willReturn(
-				Collections.singleton(inheritedInjectableField2));
-
-		// When
-		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
-
-		// Then
-		assertEquals(0, injectionDetails.getInjectCollections().size());
-		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(4, injectionDetails.getInjectables().size());
-		Iterator<Object> iterator = injectionDetails.getInjectables().iterator();
-		assertSame(object.getInjectable1(), iterator.next());
-		assertSame(object.getInjectable2(), iterator.next());
-		assertSame(object.getExtendedInjectable1(), iterator.next());
-		assertSame(object.getExtendedInjectable2(), iterator.next());
-	}
-
-	@Test
-	public void shouldCreateInjectionDetailsGivenInjectable() {
-		// Given
-		ClassWithAnnnotations object = new ClassWithAnnnotations();
-		Field injectableField = getField(object.getClass(), "injectable2");
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class)).willReturn(
-				Collections.singleton(injectableField));
-
-		// When
-		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
-
-		// Then
-		assertEquals(0, injectionDetails.getInjectCollections().size());
-		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getInjectables().size());
-		assertTrue(injectionDetails.getInjectables().contains(object.injectable2));
-	}
-
-	@Test
 	public void shouldCreateInjectionDetailsGivenIgnoredInjectables() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
 		Field injectableField1 = getField(object.getClass(), "injectable1");
-		Field injectableField2 = getField(object.getClass(), "injectable2");
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
 				new HashSet<Field>(Collections.singleton(injectableField1)));
-		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Injectable.class)).willReturn(
-				Collections.singleton(injectableField2));
 		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreInjectable.class)).willReturn(
 				Collections.singleton(injectableField1));
 
@@ -188,8 +139,7 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getInjectables().size());
-		assertTrue(injectionDetails.getInjectables().contains(object.injectable2));
+		assertEquals(0, injectionDetails.getInjectables().size());
 	}
 
 	@Test
