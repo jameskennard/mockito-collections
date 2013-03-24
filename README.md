@@ -8,7 +8,7 @@ Project to investigate the possibility of injecting objects into Collections usi
 The Problem
 -----------
 
-When you use Mockito's @InjectMocks annotation it will not inject mocks into Collections. This results in the need to manually do so for example:
+When you use Mockito's @InjectMocks annotation it will not inject mocks into Collections. This results in the need to do so manually for example:
 
     @InjectMocks
     private MyDelegate delegate;
@@ -21,8 +21,8 @@ When you use Mockito's @InjectMocks annotation it will not inject mocks into Col
     
     @Before
     public void setup() {
-        Set<MyListener> lisenters = new HashSet<MyListener>(Arrays.asList(listener1, listener2));
-        delegate.setListeners(lisenters);
+        Set<MyListener> listeners = new HashSet<MyListener>(Arrays.asList(listener1, listener2));
+        delegate.setListeners(listeners);
     }
 
 We end up writing boiler plate code again and again specifically to deal with this scenario. This is laborious and a pain to maintain, especially when injecting many Collections.
@@ -32,7 +32,7 @@ The Solution
 
 The solution proposed by this project is to inspect the generics of the Collection fields on @InjectMocks annotated fields. Once the type of the elements of the Collection has been established, create a new Collection and add all of the mocks of the correct type to the Collection. And finally inject the new Collection into the relevant field.
 
-In an ideal scenario, we would be able to rely on the MockitoJUnitRunner to deal with this for us by specifying some sort of injection strategy. This is something Mockito does not yet provide. The workaround is to provide something similar to MockitoAnnotations.injectMocks(). Okay so there is still some boilerplate code, but it is far less verbose.
+In an ideal scenario, we would be able to rely on the MockitoJUnitRunner to deal with this for us by specifying some sort of injection strategy. This is something Mockito does not yet provide. For now, the workaround is to provide something similar to MockitoAnnotations.injectMocks(). Okay so there is still some boilerplate code, but it is far less verbose.
 
     @InjectMocks
     private MyDelegate delegate;
@@ -48,34 +48,19 @@ In an ideal scenario, we would be able to rely on the MockitoJUnitRunner to deal
         MockitoCollectionAnnotations.inject(this);
     }
 
-Beyond the Basics
-=================
+Ignoring a Mock when injecting into a Collection
+------------------------------------------------
 
-In addition to the basic usage described above, mockito-collections provides a number of its own annotations that can provide further support for dealing with Collections in tests. There are three key concepts:
-
-* An <i>injectCollections</i> is an Object into which we want to inject Collections of injectables.
-* An <i>injectable</i> is an Object that can be injected into Collections in injectCollections.
-* An <i>injectableCollection</i> is a {@link Collection} that can be injected verbatim into Collections in injectCollections.
-
-Fields annotated with the @InjectMocks annotation are considered to be injectCollections. It is possible to prevent a field annotated with @InjectMocks being considered an injectCollections using the @IgnoreInjectee annotation. And it is also possible to make fields that are not annotated with @InjectMocks considered to be injectCollections using the @InjectCollections annotation.
-
-    @InjectMocks
-    @IgnoreInjectee
-    private MyDelegate delegate;
-    
-    @InjectCollections
-    private MyDelegate otherDelegate = new MyDelegate;
-
-Fields annotated with the @Mock annotation are considered to be injectables. Like fields annotated with @InjectMocks, it is possible to prevent a field annotated with @Mock being considered an injectable using the @IgnoreInjectable annotation. And again, it is possible to make fields that are not annotated with @Mock considered to be injectables using the @Injectable annotation.
+Fields annotated with the @Mock annotation are considered for injection into Collection fields. It is possible to prevent a field annotated with @Mock being considered for this purpose using the @IgnoreMockForCollections annotation. 
 
     @Mock
-    @IgnoreInjectable
+    @IgnoreMockForCollections
     private MyListener listener1;
-    
-    @Injectable
-    private MyListener listener2 = new MyListener();
 
-The last annotation is similar to the Mockito @Mock annotation. The @CollectionOfMocks annotation can be used to create a Collection containing a specified number of mocks (by default this is one). In addition to creating a Collection of Mocks, the Collection will be considered for injection into Collection fields verbatim. The obvious consequence of this is that fields annotated with @CollectionOfMocks must be Collection fields. These Collections will be injected when the generics and raw type are equal to that of an injectCollections field. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
+Verbatim Collections
+--------------------
+
+The @CollectionOfMocks annotation can be used to create a Collection containing a specified number of mocks (by default this is one). In addition to creating a Collection of Mocks, the Collection will be considered for injection into Collection fields verbatim. The obvious consequence of this is that fields annotated with @CollectionOfMocks must be Collection fields. These Collections will be injected when the generics and raw type are identical. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
     
     @CollectionOfMocks(numberOfMocks = 2)
     private Set<MyListener> listeners;
