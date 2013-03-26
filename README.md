@@ -60,7 +60,7 @@ Fields annotated with the @Mock annotation are considered for injection into Col
 Verbatim Collections
 --------------------
 
-The @CollectionOfMocks annotation can be used to create a Collection containing a specified number of mocks (by default this is one). In addition to creating a Collection of Mocks, the Collection will be considered for injection into Collection fields verbatim. The obvious consequence of this is that fields annotated with @CollectionOfMocks must be Collection fields. These Collections will be injected when the generics and raw type are identical. This means Collection<InputStream> and Collection<FileInputStream> would not be considered equal nor would Collection<InputStream> and Set<InputStream>.
+The @CollectionOfMocks annotation can be used to create a Collection containing a specified number of mocks (by default this is one). In addition to creating a Collection of Mocks, the Collection will be considered for injection into Collection fields verbatim. The obvious consequence of this is that fields annotated with @CollectionOfMocks must be Collection fields. These Collections will be injected when the generics and raw type are identical. This means Collection&lt;InputStream&gt; and Collection&lt;FileInputStream&gt; would not be considered equal nor would Collection&lt;InputStream&gt and Set&lt;InputStream&gt;.
     
     @CollectionOfMocks(numberOfMocks = 2)
     private Set<MyListener> listeners;
