@@ -24,9 +24,9 @@ public class InjectionDetailsTest {
 		// Given
 		Object injectCollections = "Some InjectCollections";
 		Set<Object> setOfInjectCollections = Collections.singleton(injectCollections);
-		OrderedSet<Object> injectables = new HashOrderedSet<Object>();
-		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
-		InjectionDetails details = new InjectionDetails(setOfInjectCollections, injectables, injectableCollectionSet);
+		OrderedSet<Object> mocks = new HashOrderedSet<Object>();
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
+		InjectionDetails details = new InjectionDetails(setOfInjectCollections, mocks, collectionOfMocksFieldSet);
 
 		// When
 		Set<Object> actualInjectCollections = details.getInjectCollections();
@@ -39,48 +39,44 @@ public class InjectionDetailsTest {
 	public void shouldGetInjectables() {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
-		Object injectable = "Some Injectable";
-		OrderedSet<Object> injectables = new HashOrderedSet<Object>(Collections.singleton(injectable)); // FIXME
-																										// remember that
-																										// order is
-																										// important
-																										// when
-		// making assertions
-		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
-		InjectionDetails details = new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
+		Object mock = mock(Object.class);
+		OrderedSet<Object> mocks = new HashOrderedSet<Object>(Collections.singleton(mock));
+		// FIXME remember that order is important when making assertions
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
+		InjectionDetails details = new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
 		// When
-		OrderedSet<Object> actualInjectables = details.getInjectables();
+		OrderedSet<Object> actualInjectables = details.getMocks();
 
 		// Then
-		assertTrue(injectables != actualInjectables);
-		assertEquals(injectables, actualInjectables);
+		assertTrue(mocks != actualInjectables);
+		assertEquals(mocks, actualInjectables);
 	}
 
 	@Test
 	public void shouldGetInjectableCollectionSet() {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
-		OrderedSet<Object> injectables = new HashOrderedSet<Object>();
-		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
-		InjectionDetails details = new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
+		OrderedSet<Object> mocks = new HashOrderedSet<Object>();
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
+		InjectionDetails details = new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
 		// When
-		InjectableCollectionSet actualInjectableCollectionSet = details.getInjectableCollectionSet();
+		CollectionOfMocksFieldSet actualInjectableCollectionSet = details.getInjectableCollectionSet();
 
 		// Then
-		assertSame(injectableCollectionSet, actualInjectableCollectionSet);
+		assertSame(collectionOfMocksFieldSet, actualInjectableCollectionSet);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldFailToConstructGivenNullInjectCollections() {
 		// Given
 		Set<Object> injectCollections = null;
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
-		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 
 		// When
-		new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
+		new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
 		// Then
 		// Exception thrown
@@ -90,11 +86,11 @@ public class InjectionDetailsTest {
 	public void shouldFailToConstructGivenNullInjectables() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
-		OrderedSet<Object> injectables = null;
-		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+		OrderedSet<Object> mocks = null;
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 
 		// When
-		new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
+		new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
 		// Then
 		// Exception thrown
@@ -104,11 +100,11 @@ public class InjectionDetailsTest {
 	public void shouldFailToConstructGivenNullInjectableCollections() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
-		InjectableCollectionSet injectableCollectionSet = null;
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = null;
 
 		// When
-		new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
+		new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
 		// Then
 		// Exception thrown

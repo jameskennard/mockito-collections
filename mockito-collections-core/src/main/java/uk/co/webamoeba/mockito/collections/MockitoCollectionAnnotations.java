@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import uk.co.webamoeba.mockito.collections.inject.CollectionFactory;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInitialiser;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInjector;
-import uk.co.webamoeba.mockito.collections.inject.DefaultInjectableSelectionStrategy;
+import uk.co.webamoeba.mockito.collections.inject.DefaultMockSelectionStrategy;
 import uk.co.webamoeba.mockito.collections.inject.DefaultMockStrategy;
 import uk.co.webamoeba.mockito.collections.inject.InjectionDetailsFactory;
 import uk.co.webamoeba.mockito.collections.inject.MockStrategy;
@@ -50,12 +50,12 @@ public class MockitoCollectionAnnotations {
 
 	static {
 		GenericCollectionTypeResolver genericCollectionTypeResolver = new GenericCollectionTypeResolver();
-		DefaultInjectableSelectionStrategy injectableSelectionStrategy = new DefaultInjectableSelectionStrategy();
+		DefaultMockSelectionStrategy mockSelectionStrategy = new DefaultMockSelectionStrategy();
 		CollectionFactory collectionFactory = new CollectionFactory();
 		AnnotatedFieldRetriever annotatedFieldRetriever = new AnnotatedFieldRetriever();
 		MockStrategy mockStrategy = new DefaultMockStrategy();
 
-		injector = new CollectionInjector(collectionFactory, injectableSelectionStrategy, genericCollectionTypeResolver);
+		injector = new CollectionInjector(collectionFactory, mockSelectionStrategy, genericCollectionTypeResolver);
 		factory = new InjectionDetailsFactory(annotatedFieldRetriever, genericCollectionTypeResolver);
 		collectionInitialiser = new CollectionInitialiser(annotatedFieldRetriever, genericCollectionTypeResolver,
 				collectionFactory, mockStrategy);

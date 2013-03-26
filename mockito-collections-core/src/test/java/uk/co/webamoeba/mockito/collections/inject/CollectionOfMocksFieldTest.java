@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * @author James Kennard
  */
-public class InjectableCollectionTest {
+public class CollectionOfMocksFieldTest {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -21,10 +21,10 @@ public class InjectableCollectionTest {
 		Set<Object> value = Collections.emptySet();
 		Class<Set> typeOfCollection = Set.class;
 		Class<Object> typeOfElements = Object.class;
-		InjectableCollection injectableCollection = new InjectableCollection(value, typeOfCollection, typeOfElements);
+		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, typeOfCollection, typeOfElements);
 
 		// When
-		boolean matches = injectableCollection.matches(injectableCollection);
+		boolean matches = collectionOfMocksField.matches(collectionOfMocksField);
 
 		// Then
 		assertTrue(matches);
@@ -35,11 +35,11 @@ public class InjectableCollectionTest {
 	public void shouldMatchesGivenEqualTypeOfCollection() {
 		// Given
 		Set value = Collections.emptySet();
-		InjectableCollection injectableCollection = new InjectableCollection(value, Set.class, Object.class);
-		InjectableCollection otherInjectableCollection = new InjectableCollection(value, Set.class, String.class);
+		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, Set.class, Object.class);
+		CollectionOfMocksField otherInjectableCollection = new CollectionOfMocksField(value, Set.class, String.class);
 
 		// When
-		boolean matches = injectableCollection.matches(otherInjectableCollection);
+		boolean matches = collectionOfMocksField.matches(otherInjectableCollection);
 
 		// Then
 		assertFalse(matches);
@@ -49,13 +49,13 @@ public class InjectableCollectionTest {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void shouldMatchesGivenEqualTypeOfElement() {
 		// Given
-		InjectableCollection injectableCollection = new InjectableCollection(Collections.emptySet(), Set.class,
+		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(Collections.emptySet(), Set.class,
 				Number.class);
-		InjectableCollection otherInjectableCollection = new InjectableCollection(Collections.emptyList(), List.class,
+		CollectionOfMocksField otherInjectableCollection = new CollectionOfMocksField(Collections.emptyList(), List.class,
 				Number.class);
 
 		// When
-		boolean matches = injectableCollection.matches(otherInjectableCollection);
+		boolean matches = collectionOfMocksField.matches(otherInjectableCollection);
 
 		// Then
 		assertFalse(matches);
@@ -66,11 +66,11 @@ public class InjectableCollectionTest {
 	public void shouldMatchesGivenEqualTypeOfCollectionAndEqualTypeOfElement() {
 		// Given
 		Set<Object> value = Collections.emptySet();
-		InjectableCollection injectableCollection = new InjectableCollection(value, Set.class, Number.class);
-		InjectableCollection otherInjectableCollection = new InjectableCollection(value, Set.class, Number.class);
+		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, Set.class, Number.class);
+		CollectionOfMocksField otherInjectableCollection = new CollectionOfMocksField(value, Set.class, Number.class);
 
 		// When
-		boolean matches = injectableCollection.matches(otherInjectableCollection);
+		boolean matches = collectionOfMocksField.matches(otherInjectableCollection);
 
 		// Then
 		assertTrue(matches);

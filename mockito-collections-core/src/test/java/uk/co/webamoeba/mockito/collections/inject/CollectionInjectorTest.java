@@ -43,7 +43,7 @@ public class CollectionInjectorTest {
 	private CollectionFactory collectionFactory;
 
 	@Mock
-	private InjectableSelectionStrategy strategy;
+	private MockSelectionStrategy strategy;
 
 	@Mock
 	private GenericCollectionTypeResolver genericCollectionTypeResolver;
@@ -87,7 +87,7 @@ public class CollectionInjectorTest {
 		Field field = getField("listeners", injectCollections);
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) EventListener.class);
 
-		given(strategy.getInjectables(any(OrderedSet.class), any(Class.class))).willReturn(new HashOrderedSet());
+		given(strategy.selectMocks(any(OrderedSet.class), any(Class.class))).willReturn(new HashOrderedSet());
 
 		// When
 		injector.inject(injectionDetails);
@@ -104,12 +104,12 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ClassWithPublicEventListenerCollection injectCollections = new ClassWithPublicEventListenerCollection();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListener> clazz = EventListener.class;
-		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		given(strategy.selectMocks(mocks, clazz)).willReturn(stragtegyInjectables);
 
 		Collection<Object> set = mock(Collection.class);
 		given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(set);
@@ -132,13 +132,13 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ClassWithPrivateEventListenerCollection injectCollections = new ClassWithPrivateEventListenerCollection();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 
 		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListener> clazz = EventListener.class;
-		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		given(strategy.selectMocks(mocks, clazz)).willReturn(stragtegyInjectables);
 
 		Collection<Object> collection = mock(Collection.class);
 		given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(collection);
@@ -201,13 +201,13 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ClassWithPrivateEventListenerSet injectCollections = new ClassWithPrivateEventListenerSet();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 
 		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListener> clazz = EventListener.class;
-		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		given(strategy.selectMocks(mocks, clazz)).willReturn(stragtegyInjectables);
 
 		Set<Object> set = mock(Set.class);
 		given(collectionFactory.createCollection(Set.class, stragtegyInjectables)).willReturn(set);
@@ -228,13 +228,13 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ClassWithPrivateEventListenerVector injectCollections = new ClassWithPrivateEventListenerVector();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 
 		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListener> clazz = EventListener.class;
-		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		given(strategy.selectMocks(mocks, clazz)).willReturn(stragtegyInjectables);
 
 		Vector<Object> vector = mock(Vector.class);
 		given(collectionFactory.createCollection(Vector.class, stragtegyInjectables)).willReturn(vector);
@@ -255,13 +255,13 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ClassWithPrivateEventListenerArray injectCollections = new ClassWithPrivateEventListenerArray();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 
 		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
 		EventListener[] eventListeners = { mock(EventListener.class) };
-		given(strategy.getInjectables(injectables, EventListener.class)).willReturn(stragtegyInjectables);
+		given(strategy.selectMocks(mocks, EventListener.class)).willReturn(stragtegyInjectables);
 		given(stragtegyInjectables.toArray()).willReturn(eventListeners);
 
 		// When
@@ -277,18 +277,18 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ClassWithPrivateEventListenerSet injectCollections = new ClassWithPrivateEventListenerSet();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
-		InjectableCollectionSet injectableCollectionSet = mock(InjectableCollectionSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
-		given(injectionDetails.getInjectableCollectionSet()).willReturn(injectableCollectionSet);
+		given(injectionDetails.getMocks()).willReturn(mocks);
+		given(injectionDetails.getInjectableCollectionSet()).willReturn(collectionOfMocksFieldSet);
 
 		Class<EventListener> clazz = EventListener.class;
-		InjectableCollection injectableCollection = mock(InjectableCollection.class, RETURNS_DEEP_STUBS);
+		CollectionOfMocksField collectionOfMocksField = mock(CollectionOfMocksField.class, RETURNS_DEEP_STUBS);
 		Set<EventListener> eventListeners = new HashSet<EventListener>();
-		given(injectableCollection.getValue()).willReturn(eventListeners);
-		given(strategy.getInjectableCollection(injectableCollectionSet, Set.class, clazz)).willReturn(
-				injectableCollection);
+		given(collectionOfMocksField.getValue()).willReturn(eventListeners);
+		given(strategy.getCollectionOfMocksField(collectionOfMocksFieldSet, Set.class, clazz)).willReturn(
+				collectionOfMocksField);
 
 		Field field = getField("listeners", injectCollections);
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) clazz);
@@ -306,13 +306,13 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ExtendedClassWithInheritedCollection injectCollections = new ExtendedClassWithInheritedCollection();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 
 		OrderedSet<EventListener> stragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListener> clazz = EventListener.class;
-		given(strategy.getInjectables(injectables, clazz)).willReturn(stragtegyInjectables);
+		given(strategy.selectMocks(mocks, clazz)).willReturn(stragtegyInjectables);
 		Collection<Object> collection = mock(Collection.class);
 		given(collectionFactory.createCollection(Collection.class, stragtegyInjectables)).willReturn(collection);
 		Field field = getField("listeners", ClassWithPrivateEventListenerCollection.class);
@@ -320,7 +320,7 @@ public class CollectionInjectorTest {
 
 		OrderedSet<EventListenerProxy> eventListenerProxyStragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListenerProxy> childClazz = EventListenerProxy.class;
-		given(strategy.getInjectables(injectables, childClazz)).willReturn(eventListenerProxyStragtegyInjectables);
+		given(strategy.selectMocks(mocks, childClazz)).willReturn(eventListenerProxyStragtegyInjectables);
 		Collection<Object> childCollection = mock(Collection.class);
 		given(collectionFactory.createCollection(Collection.class, eventListenerProxyStragtegyInjectables)).willReturn(
 				childCollection);
@@ -341,13 +341,13 @@ public class CollectionInjectorTest {
 		InjectionDetails injectionDetails = mock(InjectionDetails.class);
 
 		ExtendedClassWithInheritedCollectionOfSameName injectCollections = new ExtendedClassWithInheritedCollectionOfSameName();
-		OrderedSet<Object> injectables = mock(OrderedSet.class);
+		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		given(injectionDetails.getInjectCollections()).willReturn(Collections.<Object> singleton(injectCollections));
-		given(injectionDetails.getInjectables()).willReturn(injectables);
+		given(injectionDetails.getMocks()).willReturn(mocks);
 
 		OrderedSet<EventListener> eventListenerStragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListener> clazz = EventListener.class;
-		given(strategy.getInjectables(injectables, clazz)).willReturn(eventListenerStragtegyInjectables);
+		given(strategy.selectMocks(mocks, clazz)).willReturn(eventListenerStragtegyInjectables);
 		Collection<Object> collection = mock(Collection.class);
 		given(collectionFactory.createCollection(Collection.class, eventListenerStragtegyInjectables)).willReturn(
 				collection);
@@ -356,7 +356,7 @@ public class CollectionInjectorTest {
 
 		OrderedSet<EventListenerProxy> eventListenerProxyStragtegyInjectables = mock(OrderedSet.class);
 		Class<EventListenerProxy> childClazz = EventListenerProxy.class;
-		given(strategy.getInjectables(injectables, childClazz)).willReturn(eventListenerProxyStragtegyInjectables);
+		given(strategy.selectMocks(mocks, childClazz)).willReturn(eventListenerProxyStragtegyInjectables);
 		Collection<Object> childCollection = mock(Collection.class);
 		given(collectionFactory.createCollection(Collection.class, eventListenerProxyStragtegyInjectables)).willReturn(
 				childCollection);

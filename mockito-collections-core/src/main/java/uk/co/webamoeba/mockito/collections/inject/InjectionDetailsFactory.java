@@ -1,6 +1,5 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -23,9 +22,9 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}
  * annotations. {@link Field Fields} with the {@link InjectMocks} annotation are considered for injection of
- * {@link Collection Collections}. {@link Field Fields} with the {@link Mock} annotation are considered injectables. It
- * is also possible to ignore fields that would other wise be considered injectables or for injecting {@link Collection
- * Collections} using the {@link IgnoreMockForCollections} annotation.
+ * {@link Collection Collections}. {@link Field Fields} with the {@link Mock} annotation are considered {@link Mock
+ * Mocks}. It is also possible to ignore fields that would otherwise be considered {@link Mock Mocks} using the
+ * {@link IgnoreMockForCollections} annotation.
  * 
  * @see Mock
  * @see InjectMocks
@@ -50,48 +49,43 @@ public class InjectionDetailsFactory {
 	 */
 	public InjectionDetails createInjectionDetails(Object object) {
 		Set<Object> injectCollections = getInjectCollections(object);
-		OrderedSet<Object> injectables = getInjectables(object);
-		InjectableCollectionSet injectableCollectionSet = getInjectableCollectionSet(object);
-		return new InjectionDetails(injectCollections, injectables, injectableCollectionSet);
+		OrderedSet<Object> mocks = getMocks(object);
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = getInjectableCollectionSet(object);
+		return new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 	}
 
 	private Set<Object> getInjectCollections(Object object) {
-		Set<Object> injectCollections = getFieldValues(object, InjectMocks.class);
-		return injectCollections;
+		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectMocks.class);
+		return getFieldValues(object, fields);
 	}
 
-	private OrderedSet<Object> getInjectables(Object object) {
+	private OrderedSet<Object> getMocks(Object object) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class);
 		fields.removeAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreMockForCollections.class));
 		return getFieldValues(object, fields);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private InjectableCollectionSet getInjectableCollectionSet(Object object) {
-		InjectableCollectionSet injectableCollectionSet = new InjectableCollectionSet();
+	private CollectionOfMocksFieldSet getInjectableCollectionSet(Object object) {
+		CollectionOfMocksFieldSet collectionOfMocksFieldSet = new CollectionOfMocksFieldSet();
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(),
 				uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks.class);
 		for (Field field : fields) {
 			Object fieldValue = new FieldReader(object, field).read();
 			if (!(fieldValue instanceof Collection)) {
 				throw new MockitoCollectionsException(
-						"Found field with InjectableCollection annotation, but the field is not a Collection, field is '"
+						"Found field with CollectionOfMocksField annotation, but the field is not a Collection, field is '"
 								+ field.getName() + "'");
 			}
 			Collection<?> value = (Collection<?>) fieldValue;
 			Class<Collection<?>> typeOfCollection = (Class<Collection<?>>) ((ParameterizedType) field.getGenericType())
 					.getRawType();
 			Class typeOfElements = genericCollectionTypeResolver.getCollectionFieldType(field);
-			InjectableCollection injectableCollection = new InjectableCollection(value, typeOfCollection,
+			CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, typeOfCollection,
 					typeOfElements);
-			injectableCollectionSet.add(injectableCollection);
+			collectionOfMocksFieldSet.add(collectionOfMocksField);
 		}
-		return injectableCollectionSet;
-	}
-
-	private OrderedSet<Object> getFieldValues(Object object, Class<? extends Annotation> annotationClass) {
-		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), annotationClass);
-		return getFieldValues(object, fields);
+		return collectionOfMocksFieldSet;
 	}
 
 	/**

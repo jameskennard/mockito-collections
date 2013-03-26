@@ -23,6 +23,7 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
  * 
  * @author James Kennard
  */
+// FIXME rename to CollectionOfMocksInitialiser or something similar
 public class CollectionInitialiser {
 
 	private AnnotatedFieldRetriever annotatedFieldRetriever;
