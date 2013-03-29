@@ -25,6 +25,7 @@ public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTe
 		final ClassWithCollectionOfCollaborators outterCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
 		final EventListener outerCollaborator2 = mock(EventListener.class);
+		@SuppressWarnings("unused")
 		Object exampleTest = new Object() {
 
 			@InjectMocks
@@ -52,6 +53,7 @@ public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTe
 		final ClassWithCollectionOfCollaborators outterCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
 		final EventListener outerCollaborator2 = mock(EventListener.class);
+		@SuppressWarnings("unused")
 		Object exampleTest = new Object() {
 
 			@InjectMocks
