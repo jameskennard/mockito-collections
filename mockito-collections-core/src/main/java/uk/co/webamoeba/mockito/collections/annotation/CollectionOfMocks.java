@@ -21,7 +21,7 @@ import org.mockito.Mock;
  * 
  * &#064;Before
  * public void setup() {
- * 	MockitoCollectionInjector(this);
+ * 	MockitoCollectionAnnotations.inject(this);
  * 	assert eventListeners.size() == 2;
  * }
  * </pre>

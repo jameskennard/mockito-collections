@@ -18,7 +18,7 @@ import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 
 /**
- * Utility class, comparable to {@link MockitoAnnotations}, which orchestrate the injection of {@link Collection
+ * Utility class, comparable to {@link MockitoAnnotations}, which orchestrates the injection of {@link Collection
  * Collections} of Mockito Mocks. This class will scan an {@link Object}, typically a Mockito style unit test, and
  * inject the values of {@link Field Fields} annotated with {@link Mock} into new {@link Collection Collections} on
  * {@link Field Fields} within {@link Field Fields} annotated with {@link InjectMocks}.
