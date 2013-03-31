@@ -39,5 +39,4 @@ public class SampleClassUnderTest {
 	public void setSampleDataProviders(List<SampleDataProvider> sampleDataProviders) {
 		this.sampleDataProviders = sampleDataProviders;
 	}
-
 }

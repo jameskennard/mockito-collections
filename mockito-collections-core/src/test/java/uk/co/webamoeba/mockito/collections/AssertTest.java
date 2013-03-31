@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.CharBuffer;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.exceptions.verification.NoInteractionsWanted;
 import org.mockito.exceptions.verification.WantedButNotInvoked;
-import org.mockito.exceptions.verification.junit.ArgumentsAreDifferent;
 
 /**
  * @author James Kennard
@@ -26,7 +25,7 @@ public class AssertTest {
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
-	public void shouldVerifyGivenVerificationOfUnusedMethod() throws IOException {
+	public void shouldCollectiveVerifyGivenWantedButNotInvoked() throws IOException {
 		// Given
 		Closeable mock = mock(Closeable.class);
 		Collection<Closeable> collection = Collections.singleton(mock);
@@ -34,71 +33,105 @@ public class AssertTest {
 		thrown.expect(new ThrowableCausedByMatcher(WantedButNotInvoked.class));
 
 		// When
-		Assert.verify(collection).close();
+		Assert.collectiveVerify(Closeable.class, collection).close();
 
 		// Then
 		// Exception thrown
 	}
 
 	@Test
-	public void shouldVerifyGivenVerificationOfUsedMethod() throws IOException {
+	public void shouldCollectiveVerifyGivenWantedAndInvoked() throws IOException {
 		// Given
-		Runnable mock = mock(Runnable.class);
-		mock.run();
-		Collection<Runnable> collection = Collections.singleton(mock);
+		Closeable mock = mock(Closeable.class);
+		mock.close();
+		Collection<Closeable> collection = Collections.singleton(mock);
 
 		// When
-		Assert.verify(collection).run();
+		Assert.collectiveVerify(Closeable.class, collection).close();
 
 		// Then
 		// No Exception thrown
 	}
 
 	@Test
-	public void shouldVerifyGivenVerificationOfUsedMethodWithDifferentParameters() throws IOException {
+	public void shouldCollectiveVerifyGivenWantedButNotAllInvoked() throws IOException {
 		// Given
-		Readable mock = mock(Readable.class);
-		CharBuffer cb1 = mock(CharBuffer.class);
-		CharBuffer cb2 = mock(CharBuffer.class);
-		mock.read(cb1);
-		Collection<Readable> collection = Collections.singleton(mock);
+		Closeable mock1 = mock(Closeable.class);
+		Closeable mock2 = mock(Closeable.class);
+		mock1.close();
+		Collection<Closeable> collection = Arrays.asList(mock1, mock2);
 
-		thrown.expect(new ThrowableCausedByMatcher(ArgumentsAreDifferent.class));
+		thrown.expect(new ThrowableCausedByMatcher(WantedButNotInvoked.class));
 
 		// When
-		Assert.verify(collection).read(cb2);
+		Assert.collectiveVerify(Closeable.class, collection).close();
 
 		// Then
 		// Exception thrown
 	}
 
 	@Test
-	public void shouldVerifyNoMoreInteractions() {
-		// Given
-		Object aMock = mock(Object.class);
-		Collection<Object> collection = Arrays.asList(aMock);
-
-		// When
-		Assert.verifyNoMoreInteractions(collection);
-
-		// Then
-		// No Exception thrown
-	}
-
-	@Test
-	public void shouldVerifyNoMoreInteractionsGivenMoreInteractionsArePresent() throws IOException {
+	@SuppressWarnings("unchecked")
+	public void shouldCollectiveVerifyNoMoreInteractions() throws IOException {
 		// Given
 		InputStream aMock = mock(InputStream.class);
 		aMock.read();
-		Collection<Object> collection = Arrays.<Object> asList(aMock);
+		Collection<InputStream> collection = Arrays.<InputStream> asList(aMock);
+		Assert.collectiveVerify(InputStream.class, collection).read();
+
+		// When
+		Assert.collectiveVerifyNoMoreInteractions(collection);
+
+		// Then
+		// No Exception thrown
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void shouldCollectiveVerifyNoMoreInteractionsGivenMoreInteractionsArePresent() throws IOException {
+		// Given
+		InputStream aMock = mock(InputStream.class);
+		aMock.read();
+		aMock.close();
+		Collection<InputStream> collection = Arrays.<InputStream> asList(aMock);
+		Assert.collectiveVerify(InputStream.class, collection).read();
 
 		thrown.expect(NoInteractionsWanted.class);
 
 		// When
-		Assert.verifyNoMoreInteractions(collection);
+		Assert.collectiveVerifyNoMoreInteractions(collection);
 
 		// Then
 		// Exception thrown
 	}
 
+	@Test
+	@SuppressWarnings("unchecked")
+	public void shouldCollectiveVerifyZeroInteractions() {
+		// Given
+		Collection<Object> collection = Arrays.asList(mock(Object.class), mock(Object.class));
+
+		// When
+		Assert.collectiveVerifyZeroInteractions(collection);
+
+		// Then
+		// No Exception thrown
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void shouldCollectiveVerifyZeroInteractionsGivenHasInteractions() throws IOException {
+		// Given
+		OutputStream aMock = mock(OutputStream.class);
+		aMock.close();
+		Collection<OutputStream> collection = Arrays.<OutputStream> asList(aMock);
+
+		thrown.expect(NoInteractionsWanted.class);
+
+		// When
+		Assert.collectiveVerifyZeroInteractions(collection);
+
+		// Then
+		// Exception thrown
+	}
 }
