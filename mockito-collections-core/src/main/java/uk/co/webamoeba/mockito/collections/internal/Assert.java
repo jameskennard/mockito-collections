@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.internal;
 
 import static org.mockito.Mockito.times;
 
@@ -14,6 +14,7 @@ import org.mockito.verification.VerificationMode;
 /**
  * @author James Kennard
  */
+// TODO Not happy with the name of this class, perhaps this should be in a MockitoCollections class?
 public class Assert {
 
 	/**

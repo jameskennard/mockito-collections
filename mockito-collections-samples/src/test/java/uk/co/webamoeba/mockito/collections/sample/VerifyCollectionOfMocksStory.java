@@ -4,7 +4,7 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static uk.co.webamoeba.mockito.collections.Assert.collectiveVerify;
+import static uk.co.webamoeba.mockito.collections.internal.Assert.collectiveVerify;
 
 import java.util.Collection;
 import java.util.Collections;

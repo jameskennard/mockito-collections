@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.internal;
 
 import static org.mockito.Mockito.mock;
 
@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.exceptions.verification.NoInteractionsWanted;
 import org.mockito.exceptions.verification.WantedButNotInvoked;
+
+import uk.co.webamoeba.mockito.collections.support.ThrowableCausedByMatcher;
 
 /**
  * @author James Kennard

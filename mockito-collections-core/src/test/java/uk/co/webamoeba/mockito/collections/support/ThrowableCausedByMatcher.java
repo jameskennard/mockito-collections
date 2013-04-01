@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.support;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
