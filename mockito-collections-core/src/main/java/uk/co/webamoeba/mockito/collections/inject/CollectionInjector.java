@@ -56,8 +56,7 @@ public class CollectionInjector {
 				if (Collection.class.isAssignableFrom(rawType)) {
 					Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field);
 					if (collectionType != null) {
-						Collection collection = getCollection(mocks, collectionOfMocksFieldSet, rawType,
-								collectionType);
+						Collection collection = getCollection(mocks, collectionOfMocksFieldSet, rawType, collectionType);
 						if (collection != null) {
 							new FieldValueMutator(injectCollections, field).mutateTo(collection);
 						}
@@ -83,8 +82,8 @@ public class CollectionInjector {
 	private Collection getCollection(OrderedSet<Object> mocks, CollectionOfMocksFieldSet collectionOfMocksFieldSet,
 			Class rawType, Type collectionType) {
 		Collection collection = null;
-		CollectionOfMocksField collectionOfMocksField = strategy.getCollectionOfMocksField(collectionOfMocksFieldSet, rawType,
-				(Class) collectionType);
+		CollectionOfMocksField collectionOfMocksField = strategy.getCollectionOfMocksField(collectionOfMocksFieldSet,
+				rawType, (Class) collectionType);
 		if (collectionOfMocksField != null) {
 			collection = collectionOfMocksField.getValue();
 		} else {

@@ -54,6 +54,13 @@ public class CollectionInjectorTest {
 		// specifying willReturn (unless returning a LinkedList or parent type) because the default Mockito answer
 		// returns an empty LinkedList. Would be nicer if there were an Answers type that always returned null.
 		given(collectionFactory.createCollection(any(Class.class), any(OrderedSet.class))).willReturn(null);
+
+		// Workaround so as we can perform Code Coverage. Using EclEmma found the test would fail because of an
+		// unexpected field (boolean[] jacocoData) present in the classes. This field is used by the Coverage tool to
+		// store the coverage information for the class. This workaround is perfectly legitimate given that
+		// strategy.selectMocks must always return an OrderedSet, i.e. it must never return null anyway.
+		// TODO May be better to use an Answer so that we can create a new OrderedSet for every matching invocation.
+		given(strategy.selectMocks(any(OrderedSet.class), any(Class.class))).willReturn(new HashOrderedSet());
 	}
 
 	@Test
