@@ -17,10 +17,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
-import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOfMocksStory.MockitoCollections;
-import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOfMocksStory.PlainMockito;
+import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOfMocksStory.MockitoCollectionsTest;
+import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOfMocksStory.PlainMockitoTest;
 
 /**
  * <b>As a</b> developer<br />
@@ -32,11 +32,11 @@ import uk.co.webamoeba.mockito.collections.sample.MockReturnValuesOfCollectionOf
  */
 // FIXME this is a mishmash of a sample and a BDD acceptance test for mockito-collections-core
 @RunWith(Suite.class)
-@SuiteClasses({ PlainMockito.class, MockitoCollections.class })
+@SuiteClasses({ PlainMockitoTest.class, MockitoCollectionsTest.class })
 public class MockReturnValuesOfCollectionOfMocksStory {
 
 	@RunWith(MockitoJUnitRunner.class)
-	public static class PlainMockito {
+	public static class PlainMockitoTest {
 
 		@InjectMocks
 		private SampleClassUnderTest sampleClassUnderTest;
@@ -71,7 +71,7 @@ public class MockReturnValuesOfCollectionOfMocksStory {
 	}
 
 	@RunWith(MockitoJUnitRunner.class)
-	public static class MockitoCollections {
+	public static class MockitoCollectionsTest {
 
 		@InjectMocks
 		private SampleClassUnderTest sampleClassUnderTest;
@@ -84,7 +84,7 @@ public class MockReturnValuesOfCollectionOfMocksStory {
 
 		@Before
 		public void before() {
-			MockitoCollectionAnnotations.inject(this);
+			MockitoCollections.initialise(this);
 		}
 
 		@Test
@@ -116,7 +116,7 @@ public class MockReturnValuesOfCollectionOfMocksStory {
 
 		@Before
 		public void before() {
-			MockitoCollectionAnnotations.inject(this);
+			MockitoCollections.initialise(this);
 		}
 
 		@Test

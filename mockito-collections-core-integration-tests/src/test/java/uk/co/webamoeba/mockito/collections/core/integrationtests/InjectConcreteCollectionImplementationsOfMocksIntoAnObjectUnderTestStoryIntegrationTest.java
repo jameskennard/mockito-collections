@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithConcreteCollectionOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithConcreteCollectionWithInitialCapacityConstructorOfCollaborators;
 
@@ -32,7 +32,7 @@ public class InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTest
 		};
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(outterCUT.getCollaborators());
@@ -55,7 +55,7 @@ public class InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTest
 		};
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(outterCUT.getCollaborators());

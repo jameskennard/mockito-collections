@@ -4,7 +4,7 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static uk.co.webamoeba.mockito.collections.internal.Assert.collectiveVerify;
+import static uk.co.webamoeba.mockito.collections.MockitoCollections.collectiveVerify;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -18,11 +18,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
-import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.MockitoCollectionsGivenCollectionOfMocksAnnotation;
-import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.PlainMockito;
+import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.MockitoCollectionsTest;
+import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.PlainMockitoTest;
 
 /**
  * <b>As a</b> developer<br />
@@ -33,11 +33,12 @@ import uk.co.webamoeba.mockito.collections.sample.VerifyCollectionOfMocksStory.P
  */
 // FIXME this is a mishmash of a sample and a BDD acceptance test for mockito-collections-core
 @RunWith(Suite.class)
-@SuiteClasses({ PlainMockito.class, MockitoCollections.class, MockitoCollectionsGivenCollectionOfMocksAnnotation.class })
+@SuiteClasses({ PlainMockitoTest.class, MockitoCollectionsTest.class,
+		MockitoCollectionsGivenCollectionOfMocksAnnotation.class })
 public class VerifyCollectionOfMocksStory {
 
 	@RunWith(MockitoJUnitRunner.class)
-	public static class PlainMockito {
+	public static class PlainMockitoTest {
 
 		@InjectMocks
 		private SampleClassUnderTest sampleClassUnderTest;
@@ -70,7 +71,7 @@ public class VerifyCollectionOfMocksStory {
 	}
 
 	@RunWith(MockitoJUnitRunner.class)
-	public static class MockitoCollections {
+	public static class MockitoCollectionsTest {
 
 		@InjectMocks
 		private SampleClassUnderTest sampleClassUnderTest;
@@ -83,7 +84,7 @@ public class VerifyCollectionOfMocksStory {
 
 		@Before
 		public void before() {
-			MockitoCollectionAnnotations.inject(this);
+			MockitoCollections.initialise(this);
 		}
 
 		@Test
@@ -116,7 +117,7 @@ public class VerifyCollectionOfMocksStory {
 
 		@Before
 		public void before() {
-			MockitoCollectionAnnotations.inject(this);
+			MockitoCollections.initialise(this);
 		}
 
 		@Test

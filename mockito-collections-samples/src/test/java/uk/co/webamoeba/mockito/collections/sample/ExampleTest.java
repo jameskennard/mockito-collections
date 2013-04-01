@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.MockitoCollections;
 
 /**
  * This test is intended to provide an example of how one might use Mockito-Collections in practice.
@@ -34,7 +34,7 @@ public class ExampleTest {
 
 	@Before
 	public void setup() {
-		MockitoCollectionAnnotations.inject(this);
+		MockitoCollections.initialise(this);
 	}
 
 	@Test

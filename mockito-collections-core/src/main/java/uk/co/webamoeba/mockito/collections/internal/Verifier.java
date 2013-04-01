@@ -14,8 +14,7 @@ import org.mockito.verification.VerificationMode;
 /**
  * @author James Kennard
  */
-// TODO Not happy with the name of this class, perhaps this should be in a MockitoCollections class?
-public class Assert {
+public class Verifier {
 
 	/**
 	 * Verifies certain behaviour of all the mocks in the {@link Collection} <b>occurred once</b>.
@@ -37,7 +36,7 @@ public class Assert {
 	 * @param collection
 	 * @return
 	 */
-	public static <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection) {
+	public <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection) {
 		return collectiveVerify(mockClass, collection, times(1));
 	}
 
@@ -62,7 +61,7 @@ public class Assert {
 	 * @param mode
 	 * @return
 	 */
-	public static <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection, VerificationMode mode) {
+	public <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection, VerificationMode mode) {
 		MethodInterceptor interceptor = new CollectiveVerifyMethodInterceptor(collection, mode);
 		T verifier = ClassImposterizer.INSTANCE.imposterise(interceptor, mockClass);
 		return verifier;
@@ -75,7 +74,7 @@ public class Assert {
 	 * 
 	 * @param mocks
 	 */
-	public static <T extends Object> void collectiveVerifyZeroInteractions(Collection<T>... mocks) {
+	public <T extends Object> void collectiveVerifyZeroInteractions(Collection<T>... mocks) {
 		collectiveVerifyNoMoreInteractions(mocks);
 	}
 
@@ -88,7 +87,7 @@ public class Assert {
 	 * 
 	 * @param mocks
 	 */
-	public static <T extends Object> void collectiveVerifyNoMoreInteractions(Collection<T>... mocks) {
+	public <T extends Object> void collectiveVerifyNoMoreInteractions(Collection<T>... mocks) {
 		for (Collection<T> collection : mocks) {
 			for (T item : collection) {
 				Mockito.verifyNoMoreInteractions(item);

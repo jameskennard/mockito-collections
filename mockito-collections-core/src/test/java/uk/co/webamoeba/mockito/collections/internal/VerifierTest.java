@@ -21,7 +21,9 @@ import uk.co.webamoeba.mockito.collections.support.ThrowableCausedByMatcher;
 /**
  * @author James Kennard
  */
-public class AssertTest {
+public class VerifierTest {
+
+	private Verifier verification = new Verifier();
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -35,7 +37,7 @@ public class AssertTest {
 		thrown.expect(new ThrowableCausedByMatcher(WantedButNotInvoked.class));
 
 		// When
-		Assert.collectiveVerify(Closeable.class, collection).close();
+		verification.collectiveVerify(Closeable.class, collection).close();
 
 		// Then
 		// Exception thrown
@@ -49,7 +51,7 @@ public class AssertTest {
 		Collection<Closeable> collection = Collections.singleton(mock);
 
 		// When
-		Assert.collectiveVerify(Closeable.class, collection).close();
+		verification.collectiveVerify(Closeable.class, collection).close();
 
 		// Then
 		// No Exception thrown
@@ -66,7 +68,7 @@ public class AssertTest {
 		thrown.expect(new ThrowableCausedByMatcher(WantedButNotInvoked.class));
 
 		// When
-		Assert.collectiveVerify(Closeable.class, collection).close();
+		verification.collectiveVerify(Closeable.class, collection).close();
 
 		// Then
 		// Exception thrown
@@ -79,10 +81,10 @@ public class AssertTest {
 		InputStream aMock = mock(InputStream.class);
 		aMock.read();
 		Collection<InputStream> collection = Arrays.<InputStream> asList(aMock);
-		Assert.collectiveVerify(InputStream.class, collection).read();
+		verification.collectiveVerify(InputStream.class, collection).read();
 
 		// When
-		Assert.collectiveVerifyNoMoreInteractions(collection);
+		verification.collectiveVerifyNoMoreInteractions(collection);
 
 		// Then
 		// No Exception thrown
@@ -96,12 +98,12 @@ public class AssertTest {
 		aMock.read();
 		aMock.close();
 		Collection<InputStream> collection = Arrays.<InputStream> asList(aMock);
-		Assert.collectiveVerify(InputStream.class, collection).read();
+		verification.collectiveVerify(InputStream.class, collection).read();
 
 		thrown.expect(NoInteractionsWanted.class);
 
 		// When
-		Assert.collectiveVerifyNoMoreInteractions(collection);
+		verification.collectiveVerifyNoMoreInteractions(collection);
 
 		// Then
 		// Exception thrown
@@ -114,7 +116,7 @@ public class AssertTest {
 		Collection<Object> collection = Arrays.asList(mock(Object.class), mock(Object.class));
 
 		// When
-		Assert.collectiveVerifyZeroInteractions(collection);
+		verification.collectiveVerifyZeroInteractions(collection);
 
 		// Then
 		// No Exception thrown
@@ -131,7 +133,7 @@ public class AssertTest {
 		thrown.expect(NoInteractionsWanted.class);
 
 		// When
-		Assert.collectiveVerifyZeroInteractions(collection);
+		verification.collectiveVerifyZeroInteractions(collection);
 
 		// Then
 		// Exception thrown

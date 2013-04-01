@@ -17,14 +17,14 @@ import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
- * The {@link CollectionInitialiser} is responsible for handling the instantiation of {@link Collection Collections} and
- * Mockito {@link Mock}s within those {@link Collection Collections} on {@link Field Fields} annotated with the
- * {@link CollectionOfMocks} annotation.
+ * The {@link CollectionOfMocksInitialiser} is responsible for handling the instantiation of {@link Collection
+ * Collections} and Mockito {@link Mock}s within those {@link Collection Collections} on {@link Field Fields} annotated
+ * with the {@link CollectionOfMocks} annotation.
  * 
  * @author James Kennard
  */
 // FIXME rename to CollectionOfMocksInitialiser or something similar
-public class CollectionInitialiser {
+public class CollectionOfMocksInitialiser {
 
 	private AnnotatedFieldRetriever annotatedFieldRetriever;
 
@@ -34,7 +34,7 @@ public class CollectionInitialiser {
 
 	private MockStrategy mockStrategy;
 
-	public CollectionInitialiser(AnnotatedFieldRetriever annotatedFieldRetriever,
+	public CollectionOfMocksInitialiser(AnnotatedFieldRetriever annotatedFieldRetriever,
 			GenericCollectionTypeResolver genericCollectionTypeResolver, CollectionFactory collectionFactory,
 			MockStrategy mockStrategy) {
 		this.annotatedFieldRetriever = annotatedFieldRetriever;

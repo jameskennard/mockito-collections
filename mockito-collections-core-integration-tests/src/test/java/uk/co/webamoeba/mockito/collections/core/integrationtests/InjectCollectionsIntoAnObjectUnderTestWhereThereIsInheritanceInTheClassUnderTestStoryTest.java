@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithInheritedCollectionOfCollaborators;
 
 public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheClassUnderTestStoryTest implements
@@ -39,7 +39,7 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheC
 		};
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(outerCUT.getCollaborators());

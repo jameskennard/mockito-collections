@@ -1,4 +1,4 @@
-package uk.co.webamoeba.mockito.collections;
+package uk.co.webamoeba.mockito.collections.internal;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import uk.co.webamoeba.mockito.collections.inject.CollectionFactory;
-import uk.co.webamoeba.mockito.collections.inject.CollectionInitialiser;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInjector;
+import uk.co.webamoeba.mockito.collections.inject.CollectionOfMocksInitialiser;
 import uk.co.webamoeba.mockito.collections.inject.DefaultMockSelectionStrategy;
 import uk.co.webamoeba.mockito.collections.inject.DefaultMockStrategy;
 import uk.co.webamoeba.mockito.collections.inject.InjectionDetailsFactory;
@@ -23,8 +23,8 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * inject the values of {@link Field Fields} annotated with {@link Mock} into new {@link Collection Collections} on
  * {@link Field Fields} within {@link Field Fields} annotated with {@link InjectMocks}.
  * 
- * <pre>
- * 
+ * <pre class="code">
+ * <code class="java">
  * &#064;InjectMocks
  * private MyClassWithEventListeners objectUnderTest;
  * 
@@ -36,19 +36,20 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
  * 	MockitoCollectionAnnotations.inject(this);
  * 	assert objectUnderTest.getEventListeners().contains(eventListener);
  * }
+ * </code>
  * </pre>
  * 
  * @author James Kennard
  */
-public class MockitoCollectionAnnotations {
+public class Initialiser {
 
-	private static CollectionInjector injector;
+	private CollectionInjector injector;
 
-	private static InjectionDetailsFactory factory;
+	private InjectionDetailsFactory factory;
 
-	private static CollectionInitialiser collectionInitialiser;
+	private CollectionOfMocksInitialiser collectionOfMocksInitialiser;
 
-	static {
+	{
 		GenericCollectionTypeResolver genericCollectionTypeResolver = new GenericCollectionTypeResolver();
 		DefaultMockSelectionStrategy mockSelectionStrategy = new DefaultMockSelectionStrategy();
 		CollectionFactory collectionFactory = new CollectionFactory();
@@ -57,12 +58,12 @@ public class MockitoCollectionAnnotations {
 
 		injector = new CollectionInjector(collectionFactory, mockSelectionStrategy, genericCollectionTypeResolver);
 		factory = new InjectionDetailsFactory(annotatedFieldRetriever, genericCollectionTypeResolver);
-		collectionInitialiser = new CollectionInitialiser(annotatedFieldRetriever, genericCollectionTypeResolver,
-				collectionFactory, mockStrategy);
+		collectionOfMocksInitialiser = new CollectionOfMocksInitialiser(annotatedFieldRetriever,
+				genericCollectionTypeResolver, collectionFactory, mockStrategy);
 	}
 
-	public static void inject(Object object) {
-		collectionInitialiser.initialise(object);
+	public void initialise(Object object) {
+		collectionOfMocksInitialiser.initialise(object);
 		injector.inject(factory.createInjectionDetails(object));
 	}
 

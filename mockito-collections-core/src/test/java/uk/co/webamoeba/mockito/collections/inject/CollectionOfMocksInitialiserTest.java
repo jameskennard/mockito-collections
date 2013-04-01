@@ -24,10 +24,10 @@ import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CollectionInitialiserTest {
+public class CollectionOfMocksInitialiserTest {
 
 	@InjectMocks
-	private CollectionInitialiser initialiser;
+	private CollectionOfMocksInitialiser initialiser;
 
 	@Mock
 	private AnnotatedFieldRetriever annotatedFieldRetriever;

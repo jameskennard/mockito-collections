@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollectionAnnotations;
+import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaboratorsWithNoGenerics;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithListOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithMoreThanOneCollectionOfCollaborators;
@@ -42,7 +42,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new ClassWithListOfCollaborators();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(exampleTest.cut.getCollaborators());
@@ -61,7 +61,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new ClassWithSetOfCollaborators();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(exampleTest.cut.getCollaborators());
@@ -80,7 +80,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new ClassWithSortedSetOfCollaborators();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(exampleTest.cut.getCollaborators());
@@ -99,7 +99,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new ClassWithQueueOfCollaborators();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(exampleTest.cut.getCollaborators());
@@ -118,7 +118,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new ClassWithMoreThanOneCollectionOfCollaborators();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNotNull(exampleTest.cut.getSomeCollaborators());
@@ -147,7 +147,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new Object();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		// Nothing to assert, we just want to ensure we make it out alive!
@@ -160,7 +160,7 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		exampleTest.cut = new ClassWithCollectionOfCollaboratorsWithNoGenerics();
 
 		// When
-		MockitoCollectionAnnotations.inject(exampleTest);
+		MockitoCollections.initialise(exampleTest);
 
 		// Then
 		assertNull(exampleTest.cut.getCollaborators());
