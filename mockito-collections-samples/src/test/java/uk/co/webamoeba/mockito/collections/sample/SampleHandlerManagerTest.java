@@ -14,8 +14,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
- * This test shows a typical test where there is a {@link Set} of delegates. Comments are included throughout the file
- * to hellp clarify what's going on.
+ * This test shows a typical test where there is a {@link Set} of delegates that return values. Comments are included
+ * throughout the file to hellp clarify what's going on.
  * 
  * @author James Kennard
  */
@@ -35,7 +35,7 @@ public class SampleHandlerManagerTest {
 	// Setup making use of LinkedHashSet to guarantee order
 	@Before
 	public void before() {
-		LinkedHashSet<Handler> handlers = new LinkedHashSet<Handler>();
+		Set<Handler> handlers = new LinkedHashSet<Handler>();
 		handlers.add(handler1);
 		handlers.add(handler2);
 		manager.setHandlers(handlers);

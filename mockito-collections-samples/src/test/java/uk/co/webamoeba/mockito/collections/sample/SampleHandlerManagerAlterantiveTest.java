@@ -15,8 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 
 /**
- * This test shows how you can use Mockito Collections to deal simply with a {@link Set} of delegates. Comments are
- * included throughout the file to hellp clarify what's going on.
+ * This test shows how you can use Mockito Collections to deal simply with a {@link Set} of delegates that return
+ * values. Comments are included throughout the file to hellp clarify what's going on.
  * 
  * @author James Kennard
  */
