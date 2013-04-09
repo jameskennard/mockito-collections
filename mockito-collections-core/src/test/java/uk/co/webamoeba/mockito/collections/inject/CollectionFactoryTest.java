@@ -7,11 +7,9 @@ import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NavigableSet;
 import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
@@ -108,21 +106,9 @@ public class CollectionFactoryTest {
 	}
 
 	@Test
-	public void shouldCreateCollectionGivenSubInterfaceOfSortedSet() {
-		Collection<Object> collection = shouldCreateCollectionGivenContents(NavigableSet.class);
-		assertIsMockWithSpiedIntanceOf(collection, SortedSet.class);
-	}
-
-	@Test
 	public void shouldCreateCollectionGivenSubInterfaceOfList() {
 		Collection<Object> collection = shouldCreateCollectionGivenContents(ExtendedListInterface.class);
 		assertIsMockWithSpiedIntanceOf(collection, List.class);
-	}
-
-	@Test
-	public void shouldCreateCollectionGivenSubInterfaceOfQueue() {
-		Collection<Object> collection = shouldCreateCollectionGivenContents(Deque.class);
-		assertIsMockWithSpiedIntanceOf(collection, Queue.class);
 	}
 
 	@Test
