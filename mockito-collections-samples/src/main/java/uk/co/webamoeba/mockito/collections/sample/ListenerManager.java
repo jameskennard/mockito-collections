@@ -3,21 +3,21 @@ package uk.co.webamoeba.mockito.collections.sample;
 import java.util.Collection;
 import java.util.Set;
 
-public class SampleListenerManager {
+public class ListenerManager {
 
-	private Collection<SampleListener> listeners;
+	private Collection<Listener> listeners;
 
 	public void eventOccurred(String someEvent) {
 		if (someEvent == null) {
 			throw new IllegalArgumentException("someEvent must not be null");
 		}
 
-		for (SampleListener listener : listeners) {
+		for (Listener listener : listeners) {
 			listener.eventOccured(someEvent);
 		}
 	}
 
-	public void setListeners(Set<SampleListener> listeners) {
+	public void setListeners(Set<Listener> listeners) {
 		this.listeners = listeners;
 	}
 }

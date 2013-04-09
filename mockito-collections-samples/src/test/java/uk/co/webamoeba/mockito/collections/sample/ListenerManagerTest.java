@@ -20,22 +20,22 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @author James Kennard
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SampleListenerManagerTest {
+public class ListenerManagerTest {
 
-	// SampleListenerManager containing a Collection of SampleListeners
+	// ListenerManager containing a Collection of SampleListeners
 	@InjectMocks
-	private SampleListenerManager manager;
+	private ListenerManager manager;
 
 	@Mock
-	private SampleListener sampleListener1;
+	private Listener sampleListener1;
 
 	@Mock
-	private SampleListener sampleListener2;
+	private Listener sampleListener2;
 
 	// Setup setting the listeners
 	@Before
 	public void before() {
-		Set<SampleListener> listeners = new HashSet<SampleListener>();
+		Set<Listener> listeners = new HashSet<Listener>();
 		listeners.add(sampleListener1);
 		listeners.add(sampleListener2);
 		manager.setListeners(listeners);

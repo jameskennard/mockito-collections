@@ -7,7 +7,7 @@ import java.util.Set;
  * 
  * @author James Kennard
  */
-public class SampleHandlerManager {
+public class HandlerManager {
 
 	private Set<Handler> handlers;
 

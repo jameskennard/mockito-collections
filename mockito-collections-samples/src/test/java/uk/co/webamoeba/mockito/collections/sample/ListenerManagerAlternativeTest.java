@@ -18,15 +18,15 @@ import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
  * @author James Kennard
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SampleListenerManagerAlternativeTest {
+public class ListenerManagerAlternativeTest {
 
-	// SampleListenerManager containing a Collection of SampleListeners
+	// ListenerManager containing a Collection of SampleListeners
 	@InjectMocks
-	private SampleListenerManager manager;
+	private ListenerManager manager;
 
 	// A Collection of two Mocks
 	@CollectionOfMocks(numberOfMocks = 2)
-	private Collection<SampleListener> listeners;
+	private Collection<Listener> listeners;
 
 	// Setup making use of Mockito Collections for injection of handlers
 	@Before
@@ -44,7 +44,7 @@ public class SampleListenerManagerAlternativeTest {
 
 		// Then
 		// collectively verify all the listeners were called
-		MockitoCollections.collectiveVerify(SampleListener.class, listeners).eventOccured(someEvent);
+		MockitoCollections.collectiveVerify(Listener.class, listeners).eventOccured(someEvent);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

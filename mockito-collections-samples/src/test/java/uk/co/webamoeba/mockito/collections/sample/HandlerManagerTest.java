@@ -3,6 +3,7 @@ package uk.co.webamoeba.mockito.collections.sample;
 import static org.junit.Assert.assertArrayEquals;
 import static org.mockito.BDDMockito.given;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -12,42 +13,38 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.MockitoCollections;
-
 /**
- * This test shows how you can use Mockito Collections to deal simply with a {@link Set} of delegates that return
- * values. Comments are included throughout the file to hellp clarify what's going on.
+ * This test shows a typical test where there is a {@link Set} of delegates that return values. Comments are included
+ * throughout the file to hellp clarify what's going on.
  * 
  * @author James Kennard
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SampleHandlerManagerAlterantiveTest {
+public class HandlerManagerTest {
 
-	// SampleHandlerManager containing a Set of Handlers
+	// HandlerManager containing a Set of Handlers
 	@InjectMocks
-	private SampleHandlerManager manager;
+	private HandlerManager manager;
 
-	// Mock to be injected
-	// Name means it will be always first even though it is to be injected into a Set (alphabetical)
 	@Mock
 	private Handler handler1;
 
-	// Another Mock to be injected
-	// Name means it will always be second even though it is to be injected into a Set (alphabetical)
 	@Mock
 	private Handler handler2;
 
-	// Setup making use of Mockito Collections for injection of handlers
+	// Setup making use of LinkedHashSet to guarantee order
 	@Before
 	public void before() {
-		MockitoCollections.initialise(this);
+		Set<Handler> handlers = new LinkedHashSet<Handler>();
+		handlers.add(handler1);
+		handlers.add(handler2);
+		manager.setHandlers(handlers);
 	}
 
 	@Test
 	public void shouldCallAllHandlers() {
 		// Given
 		String thingToHandle = "Something";
-		// normal use of Mockito
 		given(handler1.handle(thingToHandle)).willReturn("value1");
 		given(handler2.handle(thingToHandle)).willReturn("value2");
 
@@ -55,8 +52,7 @@ public class SampleHandlerManagerAlterantiveTest {
 		String[] strings = manager.handle(thingToHandle);
 
 		// Then
-		// Normal use of assert
-		// Is array (order is important) but we can guarantee order of Set of Handlers using Mockito Collections
+		// Is array (order is important) but we can guarantee order of Set of Handlers using LinkedHashSet
 		// No need to verify see http://monkeyisland.pl/2008/04/26/asking-and-telling/
 		assertArrayEquals(new String[] { "value1", "value2" }, strings);
 	}
