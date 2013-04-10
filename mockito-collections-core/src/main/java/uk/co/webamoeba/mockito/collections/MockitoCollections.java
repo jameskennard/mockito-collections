@@ -66,7 +66,7 @@ public class MockitoCollections {
 	 * 
 	 * @param mockClass
 	 * @param collection
-	 * @return
+	 * @return Object used for verification of all the mocks in the supplied collection
 	 */
 	public static <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection) {
 		return VERIFIER.collectiveVerify(mockClass, collection);
@@ -78,7 +78,7 @@ public class MockitoCollections {
 	 * @param mockClass
 	 * @param collection
 	 * @param mode
-	 * @return
+	 * @return Object used for verification of all the mocks in the supplied collection
 	 */
 	public static <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection, VerificationMode mode) {
 		return VERIFIER.collectiveVerify(mockClass, collection, mode);

@@ -23,7 +23,7 @@ public interface MockSelectionStrategy {
 	 * 
 	 * @param mocks
 	 * @param mockClass
-	 * @return
+	 * @return The {@link Mock Mocks} that are of the specified type.
 	 */
 	public <T> OrderedSet<T> selectMocks(OrderedSet<Object> mocks, Class<T> mockClass);
 
@@ -38,7 +38,7 @@ public interface MockSelectionStrategy {
 	 *            The type of {@link Collection} that we are looking for.
 	 * @param typeOfElements
 	 *            The type of elements within the {@link Collection} that we are looking for.
-	 * @return
+	 * @return The {@link CollectionOfMocksField} that matches the specified typeOfCollection and typeOfElements
 	 */
 	public <C extends Collection<E>, E extends Object> CollectionOfMocksField<C, E> getCollectionOfMocksField(
 			CollectionOfMocksFieldSet collectionOfMocksFieldSet, Class<C> typeOfCollection, Class<E> typeOfElements);

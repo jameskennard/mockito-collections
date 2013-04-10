@@ -34,7 +34,7 @@ public class Verifier {
 	 * @see Mockito#verify(Object)
 	 * @param mockClass
 	 * @param collection
-	 * @return
+	 * @return Object used for verification of all the mocks in the supplied collection
 	 */
 	public <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection) {
 		return collectiveVerify(mockClass, collection, times(1));
@@ -59,7 +59,7 @@ public class Verifier {
 	 * @param mockClass
 	 * @param collection
 	 * @param mode
-	 * @return
+	 * @return Object used for verification of all the mocks in the supplied collection
 	 */
 	public <T> T collectiveVerify(Class<T> mockClass, Collection<T> collection, VerificationMode mode) {
 		MethodInterceptor interceptor = new CollectiveVerifyMethodInterceptor(collection, mode);

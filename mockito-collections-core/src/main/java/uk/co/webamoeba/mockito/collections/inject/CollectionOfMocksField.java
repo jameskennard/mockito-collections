@@ -51,7 +51,8 @@ public class CollectionOfMocksField<C extends Collection<?>, E extends Object> {
 	 * not an {@link #equals(Object)} method, it does not check for equality of the contained {@link #getValue() value}.
 	 * 
 	 * @param collectionOfMocksField
-	 * @return
+	 * @return <code>true</code> if this {@link CollectionOfMocksField} matches the provided
+	 *         {@link CollectionOfMocksField}.
 	 */
 	@SuppressWarnings("rawtypes")
 	public boolean matches(CollectionOfMocksField collectionOfMocksField) {

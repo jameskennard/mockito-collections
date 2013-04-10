@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithConcreteCollectionOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithConcreteCollectionWithInitialCapacityConstructorOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ConcreteCollection;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ConcreteCollectionWithInitialCapacityConstructor;
 
@@ -18,7 +19,6 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.Concret
  * <b>So that</b> I can mock the behaviour of the collaborators<br />
  * <b>And</b> validate the behaviour of the {@link Object} under test
  * 
- * @see InjectCollectionsInterfacesOfMocksIntoAnObjectUnderTestStory
  * @author James Kennard
  */
 public interface InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTestStory {
