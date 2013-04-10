@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,9 +101,17 @@ public class CollectionFactory {
 									+ " could not find a default constructor or a constructor with an integer initial capacity (this can happen if there are available constructors but the class is a non-static nested class/inner class)");
 				}
 			}
-		} catch (Exception e) {
-			// TODO shouldn't be simply catching any type of exception
-			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass, e);
+		} catch (InvocationTargetException e) {
+			// Occurs if the invoked constructor throws an exception
+			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass + "\n"
+					+ e.getMessage(), e);
+		} catch (InstantiationException e) {
+			// Should never happen (we have protection against abstract classes)
+			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass + "\n"
+					+ e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass + "\n"
+					+ e.getMessage(), e);
 		}
 		if (Set.class.isAssignableFrom(collectionClass)) {
 			System.out

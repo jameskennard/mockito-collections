@@ -7,6 +7,7 @@ import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,7 +87,7 @@ public class CollectionFactoryTest {
 
 	@Test
 	public void shouldCreateCollectionGivenSpecificTypeWithDefaultConstructor() {
-		shouldCreateCollection(LinkedList.class);
+		shouldCreateCollection(HashSet.class);
 	}
 
 	@Test
@@ -109,6 +110,18 @@ public class CollectionFactoryTest {
 	public void shouldCreateCollectionGivenSubInterfaceOfList() {
 		Collection<Object> collection = shouldCreateCollectionGivenContents(ExtendedListInterface.class);
 		assertIsMockWithSpiedIntanceOf(collection, List.class);
+	}
+
+	@Test
+	public void shouldCreateCollectionGivenSubInterfaceOfExtendedSortedeSet() {
+		Collection<Object> collection = shouldCreateCollectionGivenContents(ExtendedSortedeSet.class);
+		assertIsMockWithSpiedIntanceOf(collection, SortedSet.class);
+	}
+
+	@Test
+	public void shouldCreateCollectionGivenSubInterfaceOfExtendedQueue() {
+		Collection<Object> collection = shouldCreateCollectionGivenContents(ExtendedQueue.class);
+		assertIsMockWithSpiedIntanceOf(collection, Queue.class);
 	}
 
 	@Test
@@ -140,6 +153,16 @@ public class CollectionFactoryTest {
 	@Test(expected = MockitoCollectionsException.class)
 	public void shouldFailToCreateCollectionGivenNonStaticNestedClassOrInnerClass() {
 		shouldCreateCollectionGivenContents(InnerArrayList.class);
+	}
+
+	@Test(expected = MockitoCollectionsException.class)
+	public void shouldFailToCreateCollectionGivenExceptionThrownByConstructor() {
+		shouldCreateCollectionGivenContents(ExplosiveCollection.class);
+	}
+
+	@Test(expected = MockitoCollectionsException.class)
+	public void shouldFailToCreateCollectionGivenConstructorIsPrivate() {
+		shouldCreateCollectionGivenContents(PrivateCollection.class);
 	}
 
 	private <T extends Collection<Object>> Collection<Object> shouldCreateCollection(Class<T> clazz) {
@@ -210,6 +233,21 @@ public class CollectionFactoryTest {
 
 		public InnerArrayList() {
 		}
+	}
+
+	public static class ExplosiveCollection<E extends Object> extends ArrayList<E> {
+
+		private static final long serialVersionUID = 1L;
+
+		public ExplosiveCollection() {
+			throw new RuntimeException("Explode!");
+		}
+	}
+
+	public static interface ExtendedSortedeSet<E extends Object> extends SortedSet<E> {
+	}
+
+	public static interface ExtendedQueue<E extends Object> extends Queue<E> {
 	}
 
 	// TODO add test for non static inner class
