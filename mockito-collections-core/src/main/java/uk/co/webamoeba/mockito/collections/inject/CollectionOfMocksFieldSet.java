@@ -12,7 +12,6 @@ import java.util.Set;
  */
 public class CollectionOfMocksFieldSet implements Iterable<CollectionOfMocksField<Collection<Object>, Object>> {
 
-	// TODO should this set be ordered?
 	private Set<CollectionOfMocksField<Collection<Object>, Object>> collectionOfMocksFields = new HashSet<CollectionOfMocksField<Collection<Object>, Object>>();
 
 	@SuppressWarnings("rawtypes")
