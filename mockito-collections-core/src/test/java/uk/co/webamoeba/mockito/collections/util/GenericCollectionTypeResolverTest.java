@@ -12,8 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
-
 /**
  * Unit test for {@link GenericCollectionTypeResolver}. Unlike {@link GenericCollectionTypeResolver} this class has not
  * been ported from Spring.
@@ -116,8 +114,6 @@ public class GenericCollectionTypeResolverTest {
 
 		/**
 		 * Expect {@link String[]}
-		 * <p>
-		 * TODO do we care about this scenario?
 		 */
 		@SuppressWarnings("unused")
 		public Collection<String[]> arrayCollection;
