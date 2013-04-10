@@ -109,7 +109,6 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * 
 	 * @see ClassWithMoreThanOneCollectionOfCollaborators
 	 */
-	// TODO is this in the correct location? Does this scenario matter?
 	public void classOfObjectUnderTestHasMoreThanOneCollectionOfCollaborators();
 
 	/**
