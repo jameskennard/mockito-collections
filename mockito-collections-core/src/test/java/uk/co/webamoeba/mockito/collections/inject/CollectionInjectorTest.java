@@ -23,7 +23,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
@@ -55,12 +57,8 @@ public class CollectionInjectorTest {
 		// returns an empty LinkedList. Would be nicer if there were an Answers type that always returned null.
 		given(collectionFactory.createCollection(any(Class.class), any(OrderedSet.class))).willReturn(null);
 
-		// Workaround so as we can perform Code Coverage. Using EclEmma found the test would fail because of an
-		// unexpected field (boolean[] jacocoData) present in the classes. This field is used by the Coverage tool to
-		// store the coverage information for the class. This workaround is perfectly legitimate given that
-		// strategy.selectMocks must always return an OrderedSet, i.e. it must never return null anyway.
-		// TODO May be better to use an Answer so that we can create a new OrderedSet for every matching invocation.
-		given(strategy.selectMocks(any(OrderedSet.class), any(Class.class))).willReturn(new HashOrderedSet());
+		// strategy.selectMocks must always return an OrderedSet, i.e. it must never return null
+		given(strategy.selectMocks(any(OrderedSet.class), any(Class.class))).willAnswer(withNewOrderedSet());
 	}
 
 	@Test
@@ -428,5 +426,14 @@ public class CollectionInjectorTest {
 
 		public Collection<EventListenerProxy> listeners;
 
+	}
+
+	private Answer<OrderedSet<Object>> withNewOrderedSet() {
+		return new Answer<OrderedSet<Object>>() {
+
+			public OrderedSet<Object> answer(InvocationOnMock invocation) throws Throwable {
+				return new HashOrderedSet<Object>();
+			}
+		};
 	}
 }
