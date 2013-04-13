@@ -48,33 +48,44 @@ public class CollectionOfMocksInitialiser {
 	 * 
 	 * @param object
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("rawtypes")
 	public void initialise(Object object) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class);
-		// TODO tidy this up, looks like a nasty big block of code...
 		for (Field field : fields) {
-			Type type = field.getGenericType();
-			ParameterizedType parameterizedType = (ParameterizedType) type; // FIXME ensure is paramerterized type
-			// should be safe, ParamerterizedType should only ever return a Class from this method
-			Class rawType = (Class) parameterizedType.getRawType();
-			Class collectionType = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
-			CollectionOfMocks annotation = field.getAnnotation(CollectionOfMocks.class);
-			assert annotation != null : "Field is missing CollectionOfMocks annotation, unexpected field retrieved from annotatedFieldRetriever";
-			OrderedSet<?> mocks = createMocks(collectionType, getNumberOfMocks(annotation));
-			Collection collection = collectionFactory.createCollection(rawType, mocks);
+			Collection collection = createCollectionForField(field);
 			new FieldValueMutator(object, field).mutateTo(collection);
 		}
 	}
 
+	private Collection createCollectionForField(Field field) {
+		OrderedSet<?> mocks = createMocks(getMockClass(field), getNumberOfMocks(field));
+		Class collectionClass = getCollectionClass(field.getGenericType());
+		return collectionFactory.createCollection(collectionClass, mocks);
+	}
+
+	private Class getMockClass(Field field) {
+		Class mockClass = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
+		return mockClass;
+	}
+
+	private Class getCollectionClass(Type type) {
+		ParameterizedType parameterizedType = (ParameterizedType) type;
+		// FIXME ensure is paramerterized type
+		// should be safe, ParamerterizedType should only ever return a Class from this method
+		// FIXME ensure is Collection class
+		return (Class) parameterizedType.getRawType();
+	}
+
 	/**
-	 * @param annotation
+	 * @param field
 	 * @return The {@link CollectionOfMocks#numberOfMocks() number of mocks} declared on the annotation.
 	 */
-	private int getNumberOfMocks(CollectionOfMocks annotation) {
+	private int getNumberOfMocks(Field field) {
+		CollectionOfMocks annotation = field.getAnnotation(CollectionOfMocks.class);
 		int numberOfMocks = annotation.numberOfMocks();
 		if (numberOfMocks < 0) {
 			throw new MockitoCollectionsException(
-					"Unexpected numberOfMocks, the minimum number of mocks you can specify using the "
+					"Unexpected numberOfMocks, the minimum number of mocks you can specify using "
 							+ CollectionOfMocks.class + " is zero.");
 		}
 		return numberOfMocks;
