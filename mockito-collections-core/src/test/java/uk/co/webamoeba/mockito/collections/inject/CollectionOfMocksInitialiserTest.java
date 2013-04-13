@@ -5,10 +5,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
@@ -106,6 +108,44 @@ public class CollectionOfMocksInitialiserTest {
 		// Exception Thrown
 	}
 
+	@Test(expected = MockitoCollectionsException.class)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void shouldFailToInitialiseGivenAnnotatedFieldNotCollection() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field field = getField(object.getClass(), "notCollection");
+		Set<Field> fields = Collections.singleton(field);
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
+				.willReturn(fields);
+		Class collectionType = EventListener.class;
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
+
+		// When
+		initialiser.initialise(object);
+
+		// Then
+		// Exception Thrown
+	}
+
+	@Test(expected = MockitoCollectionsException.class)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void shouldFailToInitialiseGivenAnnotatedFieldNotCollectionButIsParameterizedType() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field field = getField(object.getClass(), "notCollectionButIsParameterizedType");
+		Set<Field> fields = Collections.singleton(field);
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
+				.willReturn(fields);
+		Class collectionType = EventListener.class;
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
+
+		// When
+		initialiser.initialise(object);
+
+		// Then
+		// Exception Thrown
+	}
+
 	private Field getField(Class<?> clazz, String name) {
 		Field field;
 		try {
@@ -123,6 +163,12 @@ public class CollectionOfMocksInitialiserTest {
 
 		@CollectionOfMocks(numberOfMocks = 0)
 		private Collection<EventListener> collectionWithZeroMocks;
+
+		@CollectionOfMocks
+		private InputStream notCollection;
+
+		@CollectionOfMocks
+		private Iterator<String> notCollectionButIsParameterizedType;
 
 		@SuppressWarnings("unused")
 		@CollectionOfMocks(numberOfMocks = -1)

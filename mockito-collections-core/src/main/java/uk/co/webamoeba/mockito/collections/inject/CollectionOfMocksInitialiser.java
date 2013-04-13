@@ -57,23 +57,35 @@ public class CollectionOfMocksInitialiser {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Collection createCollectionForField(Field field) {
 		OrderedSet<?> mocks = createMocks(getMockClass(field), getNumberOfMocks(field));
 		Class collectionClass = getCollectionClass(field.getGenericType());
 		return collectionFactory.createCollection(collectionClass, mocks);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Class getMockClass(Field field) {
 		Class mockClass = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
 		return mockClass;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Class getCollectionClass(Type type) {
+		if (!(type instanceof ParameterizedType)) {
+			throw new MockitoCollectionsException("A field annotated with " + CollectionOfMocks.class.getSimpleName()
+					+ " must be a Collection, but found " + type);
+		}
 		ParameterizedType parameterizedType = (ParameterizedType) type;
-		// FIXME ensure is paramerterized type
-		// should be safe, ParamerterizedType should only ever return a Class from this method
-		// FIXME ensure is Collection class
-		return (Class) parameterizedType.getRawType();
+
+		// ParamerterizedType only ever returns a Class from this method
+		// http://stackoverflow.com/questions/5767122/parameterizedtype-getrawtype-returns-j-l-r-type-not-class
+		Class collectionClass = (Class) parameterizedType.getRawType();
+		if (!Collection.class.isAssignableFrom(collectionClass)) {
+			throw new MockitoCollectionsException("A field annotated with " + CollectionOfMocks.class.getSimpleName()
+					+ " must be a Collection, but found " + type);
+		}
+		return collectionClass;
 	}
 
 	/**
@@ -86,7 +98,7 @@ public class CollectionOfMocksInitialiser {
 		if (numberOfMocks < 0) {
 			throw new MockitoCollectionsException(
 					"Unexpected numberOfMocks, the minimum number of mocks you can specify using "
-							+ CollectionOfMocks.class + " is zero.");
+							+ CollectionOfMocks.class.getSimpleName() + " is zero.");
 		}
 		return numberOfMocks;
 	}
