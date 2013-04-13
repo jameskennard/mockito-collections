@@ -23,7 +23,6 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
  * 
  * @author James Kennard
  */
-// FIXME rename to CollectionOfMocksInitialiser or something similar
 public class CollectionOfMocksInitialiser {
 
 	private AnnotatedFieldRetriever annotatedFieldRetriever;
@@ -58,11 +57,10 @@ public class CollectionOfMocksInitialiser {
 			ParameterizedType parameterizedType = (ParameterizedType) type; // FIXME ensure is paramerterized type
 			// should be safe, ParamerterizedType should only ever return a Class from this method
 			Class rawType = (Class) parameterizedType.getRawType();
-			Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
+			Class collectionType = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
 			CollectionOfMocks annotation = field.getAnnotation(CollectionOfMocks.class);
 			assert annotation != null : "Field is missing CollectionOfMocks annotation, unexpected field retrieved from annotatedFieldRetriever";
-			OrderedSet<?> mocks = createMocks((Class) collectionType, getNumberOfMocks(annotation)); // TODO is the cast
-			// to Class okay?
+			OrderedSet<?> mocks = createMocks(collectionType, getNumberOfMocks(annotation));
 			Collection collection = collectionFactory.createCollection(rawType, mocks);
 			new FieldValueMutator(object, field).mutateTo(collection);
 		}
