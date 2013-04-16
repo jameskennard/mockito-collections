@@ -115,36 +115,33 @@ public class GenericCollectionTypeResolverTest {
 	 * 
 	 * @author James Kennard
 	 */
+	@SuppressWarnings("unused")
 	private class FieldProvider<T> {
 
 		/**
 		 * Expect {@link String}
 		 */
-		@SuppressWarnings("unused")
 		public Collection<String> collection;
 
 		/**
 		 * Expect <code>null</code>
 		 */
-		@SuppressWarnings({ "unused", "rawtypes" })
+		@SuppressWarnings("rawtypes")
 		public Collection rawCollection;
 
 		/**
 		 * Expect {@link String[]}
 		 */
-		@SuppressWarnings("unused")
 		public Collection<String[]> arrayCollection;
 
 		/**
 		 * Expect <code>null</code>
 		 */
-		@SuppressWarnings("unused")
 		public Collection<?> wildcardCollection;
 
 		/**
 		 * Expect {@link InputStream}
 		 */
-		@SuppressWarnings("unused")
 		public Collection<? extends InputStream> wildcardUpperBoundCollection;
 
 		/**
@@ -155,37 +152,31 @@ public class GenericCollectionTypeResolverTest {
 		 * @see <a href="http://docs.oracle.com/javase/tutorial/extra/generics/morefun.html">Generics, bound
 		 *      wildcards</a>
 		 */
-		@SuppressWarnings("unused")
 		public Collection<? super FileInputStream> wildcardLowerBoundCollection;
 
 		/**
 		 * Expect {@link Integer} as per {@link HardCodedTypeCollection}
 		 */
-		@SuppressWarnings("unused")
 		public HardCodedTypeCollection hardCodedTypeCollection;
 
 		/**
 		 * Expect {@link Boolean}
 		 */
-		@SuppressWarnings("unused")
 		public TypeCollection<Boolean> typeCollection;
 
 		/**
 		 * Expect {@link Integer} as per {@link HardCodedTypeCollection} (should ignore {@link String} generic declared
 		 * here)
 		 */
-		@SuppressWarnings("unused")
 		public ExtendedHardCodedTypeCollection<String> extendedHardCodedTypeCollection;
 
 		/**
 		 * Expect {@link Integer} as per {@link HardCodedTypeCollection} (should ignore {@link Reader} generic declared
 		 * as part of {@link DoubleExtendedHardCodedTypeCollection})
 		 */
-		@SuppressWarnings("unused")
 		public DoubleExtendedHardCodedTypeCollection doubleExtendedHardCodedTypeCollection;
 
 		public T typeVariable;
-
 	}
 
 	private interface HardCodedTypeCollection extends Collection<Integer> {
