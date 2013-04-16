@@ -49,26 +49,7 @@ public class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public Class<?> getCollectionFieldType(Field collectionField) {
-		return getGenericFieldType(collectionField, Collection.class, 0, null, 1);
-	}
-
-	/**
-	 * Extract the generic type from the given field.
-	 * 
-	 * @param field
-	 *            the field to check the type for
-	 * @param source
-	 *            the source class/interface defining the generic parameter types
-	 * @param typeIndex
-	 *            the index of the type (e.g. 0 for {@link Collection Collections}, 0 for {@link Map} keys, 1 for
-	 *            {@link Map} values)
-	 * @param nestingLevel
-	 *            the nesting level of the target type
-	 * @return the generic type, or <code>null</code> if none
-	 */
-	private Class<?> getGenericFieldType(Field field, Class<?> source, int typeIndex,
-			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel) {
-		return extractType(field.getGenericType(), source, typeIndex, null, typeIndexesPerLevel, nestingLevel, 1);
+		return extractType(collectionField.getGenericType(), Collection.class, 0, null, null, 1, 1);
 	}
 
 	/**
