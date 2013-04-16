@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public Class<?> getCollectionFieldType(Field collectionField) {
-		return extractType(collectionField.getGenericType(), Collection.class, 0, null, null, 1, 1);
+		return extractType(collectionField.getGenericType(), Collection.class, 0, null, 1, 1);
 	}
 
 	/**
@@ -68,26 +67,19 @@ public class GenericCollectionTypeResolver {
 	 * @return the generic type as Class, or <code>null</code> if none
 	 */
 	@SuppressWarnings("rawtypes")
-	private Class<?> extractType(Type type, Class<?> source, int typeIndex, Map<TypeVariable, Type> typeVariableMap,
-			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
+	private Class<?> extractType(Type type, Class<?> source, int typeIndex, Map<Integer, Integer> typeIndexesPerLevel,
+			int nestingLevel, int currentLevel) {
 
 		Type resolvedType = type;
-		if (type instanceof TypeVariable && typeVariableMap != null) {
-			Type mappedType = typeVariableMap.get(type);
-			if (mappedType != null) {
-				resolvedType = mappedType;
-			}
-		}
 		if (resolvedType instanceof ParameterizedType) {
 			return extractTypeFromParameterizedType((ParameterizedType) resolvedType, source, typeIndex,
-					typeVariableMap, typeIndexesPerLevel, nestingLevel, currentLevel);
+					typeIndexesPerLevel, nestingLevel, currentLevel);
 		} else if (resolvedType instanceof Class) {
-			return extractTypeFromClass((Class) resolvedType, source, typeIndex, typeVariableMap, typeIndexesPerLevel,
-					nestingLevel, currentLevel);
+			return extractTypeFromClass((Class) resolvedType, source, typeIndex, typeIndexesPerLevel, nestingLevel,
+					currentLevel);
 		} else if (resolvedType instanceof GenericArrayType) {
 			Type compType = ((GenericArrayType) resolvedType).getGenericComponentType();
-			return extractType(compType, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
-					currentLevel + 1);
+			return extractType(compType, source, typeIndex, typeIndexesPerLevel, nestingLevel, currentLevel + 1);
 		} else {
 			return null;
 		}
@@ -110,8 +102,7 @@ public class GenericCollectionTypeResolver {
 	 */
 	@SuppressWarnings("rawtypes")
 	private Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source, int typeIndex,
-			Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
-			int currentLevel) {
+			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
 
 		if (!(ptype.getRawType() instanceof Class)) {
 			return null;
@@ -124,14 +115,13 @@ public class GenericCollectionTypeResolver {
 			// Default is last parameter type: Collection element or Map value.
 			int indexToUse = (currentTypeIndex != null ? currentTypeIndex : paramTypes.length - 1);
 			Type paramType = paramTypes[indexToUse];
-			return extractType(paramType, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
-					nextLevel);
+			return extractType(paramType, source, typeIndex, typeIndexesPerLevel, nestingLevel, nextLevel);
 		}
 		if (source != null && !source.isAssignableFrom(rawType)) {
 			return null;
 		}
-		Class fromSuperclassOrInterface = extractTypeFromClass(rawType, source, typeIndex, typeVariableMap,
-				typeIndexesPerLevel, nestingLevel, currentLevel);
+		Class fromSuperclassOrInterface = extractTypeFromClass(rawType, source, typeIndex, typeIndexesPerLevel,
+				nestingLevel, currentLevel);
 		if (fromSuperclassOrInterface != null) {
 			return fromSuperclassOrInterface;
 		}
@@ -139,12 +129,6 @@ public class GenericCollectionTypeResolver {
 			return null;
 		}
 		Type paramType = paramTypes[typeIndex];
-		if (paramType instanceof TypeVariable && typeVariableMap != null) {
-			Type mappedType = typeVariableMap.get(paramType);
-			if (mappedType != null) {
-				paramType = mappedType;
-			}
-		}
 		if (paramType instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) paramType;
 			Type[] upperBounds = wildcardType.getUpperBounds();
@@ -190,15 +174,14 @@ public class GenericCollectionTypeResolver {
 	 */
 	@SuppressWarnings("rawtypes")
 	private Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex,
-			Map<TypeVariable, Type> typeVariableMap, Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel,
-			int currentLevel) {
+			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
 
 		if (clazz.getName().startsWith("java.util.")) {
 			return null;
 		}
 		if (clazz.getSuperclass() != null && isIntrospectionCandidate(clazz.getSuperclass())) {
-			return extractType(clazz.getGenericSuperclass(), source, typeIndex, typeVariableMap, typeIndexesPerLevel,
-					nestingLevel, currentLevel);
+			return extractType(clazz.getGenericSuperclass(), source, typeIndex, typeIndexesPerLevel, nestingLevel,
+					currentLevel);
 		}
 		Type[] ifcs = clazz.getGenericInterfaces();
 		if (ifcs != null) {
@@ -208,8 +191,7 @@ public class GenericCollectionTypeResolver {
 					rawType = ((ParameterizedType) ifc).getRawType();
 				}
 				if (rawType instanceof Class && isIntrospectionCandidate((Class) rawType)) {
-					return extractType(ifc, source, typeIndex, typeVariableMap, typeIndexesPerLevel, nestingLevel,
-							currentLevel);
+					return extractType(ifc, source, typeIndex, typeIndexesPerLevel, nestingLevel, currentLevel);
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package uk.co.webamoeba.mockito.collections.util;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.io.FileInputStream;
@@ -73,6 +74,11 @@ public class GenericCollectionTypeResolverTest {
 		shouldGetCollectionFieldType("doubleExtendedHardCodedTypeCollection", Integer.class);
 	}
 
+	@Test
+	public void shouldFailToGetCollectionFieldTypeGivenTypeVariable() {
+		shouldFailToGetCollectionFieldType("typeVariable");
+	}
+
 	private void shouldGetCollectionFieldType(String fieldName, Class<?> expectedType) {
 		// Given
 		Field field = getField(fieldName);
@@ -82,6 +88,17 @@ public class GenericCollectionTypeResolverTest {
 
 		// Then
 		assertSame(expectedType, type);
+	}
+
+	private void shouldFailToGetCollectionFieldType(String fieldName) {
+		// Given
+		Field field = getField(fieldName);
+
+		// When
+		Class<?> type = resolver.getCollectionFieldType(field);
+
+		// Then
+		assertNull(type);
 	}
 
 	private Field getField(String name) {
@@ -98,7 +115,7 @@ public class GenericCollectionTypeResolverTest {
 	 * 
 	 * @author James Kennard
 	 */
-	private class FieldProvider {
+	private class FieldProvider<T> {
 
 		/**
 		 * Expect {@link String}
@@ -166,6 +183,8 @@ public class GenericCollectionTypeResolverTest {
 		 */
 		@SuppressWarnings("unused")
 		public DoubleExtendedHardCodedTypeCollection doubleExtendedHardCodedTypeCollection;
+
+		public T typeVariable;
 
 	}
 
