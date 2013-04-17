@@ -75,6 +75,11 @@ public class GenericCollectionTypeResolverTest {
 	}
 
 	@Test
+	public void shouldGetCollectionFieldTypeGivenCollectionOfArrays() {
+		shouldGetCollectionFieldType("collectionOfArrays", Integer[].class);
+	}
+
+	@Test
 	public void shouldFailToGetCollectionFieldTypeGivenTypeVariable() {
 		shouldFailToGetCollectionFieldType("typeVariable");
 	}
@@ -175,6 +180,8 @@ public class GenericCollectionTypeResolverTest {
 		 * as part of {@link DoubleExtendedHardCodedTypeCollection})
 		 */
 		public DoubleExtendedHardCodedTypeCollection doubleExtendedHardCodedTypeCollection;
+
+		public Collection<Integer[]> collectionOfArrays;
 
 		public T typeVariable;
 	}
