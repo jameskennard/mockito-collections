@@ -66,7 +66,12 @@ public class CollectionOfMocksInitialiser {
 
 	@SuppressWarnings("rawtypes")
 	private Class getMockClass(Field field) {
-		Class mockClass = genericCollectionTypeResolver.getCollectionFieldType(field); // FIXME null check
+		Class mockClass = genericCollectionTypeResolver.getCollectionFieldType(field);
+		if (mockClass == null) {
+			throw new MockitoCollectionsException("A field annotated with " + CollectionOfMocks.class.getSimpleName()
+					+ " must be a Collection with Generics, but found no generics for Collection field "
+					+ field.getName());
+		}
 		return mockClass;
 	}
 

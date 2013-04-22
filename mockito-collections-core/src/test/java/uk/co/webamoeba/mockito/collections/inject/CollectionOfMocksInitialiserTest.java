@@ -146,6 +146,23 @@ public class CollectionOfMocksInitialiserTest {
 		// Exception Thrown
 	}
 
+	@Test(expected = MockitoCollectionsException.class)
+	public void shouldFailToInitialiseGivenAnnotatedFieldIsCollectionButHasNoGenerics() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field field = getField(object.getClass(), "collectionButHasNoGenerics");
+		Set<Field> fields = Collections.singleton(field);
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), CollectionOfMocks.class))
+				.willReturn(fields);
+		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(null);
+
+		// When
+		initialiser.initialise(object);
+
+		// Then
+		// Exception Thrown
+	}
+
 	private Field getField(Class<?> clazz, String name) {
 		Field field;
 		try {
@@ -156,6 +173,7 @@ public class CollectionOfMocksInitialiserTest {
 		return field;
 	}
 
+	@SuppressWarnings("unused")
 	private class ClassWithAnnnotations {
 
 		@CollectionOfMocks
@@ -165,12 +183,15 @@ public class CollectionOfMocksInitialiserTest {
 		private Collection<EventListener> collectionWithZeroMocks;
 
 		@CollectionOfMocks
+		@SuppressWarnings("rawtypes")
+		private Collection collectionButHasNoGenerics;
+
+		@CollectionOfMocks
 		private InputStream notCollection;
 
 		@CollectionOfMocks
 		private Iterator<String> notCollectionButIsParameterizedType;
 
-		@SuppressWarnings("unused")
 		@CollectionOfMocks(numberOfMocks = -1)
 		private Collection<EventListener> collectionWithNegativeNumberOfMocks;
 	}
