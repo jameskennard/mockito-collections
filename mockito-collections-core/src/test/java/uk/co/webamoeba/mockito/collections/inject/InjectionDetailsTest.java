@@ -36,12 +36,11 @@ public class InjectionDetailsTest {
 	}
 
 	@Test
-	public void shouldGetInjectables() {
+	public void shouldGetMocks() {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
 		Object mock = mock(Object.class);
 		OrderedSet<Object> mocks = new HashOrderedSet<Object>(Collections.singleton(mock));
-		// FIXME remember that order is important when making assertions
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 		InjectionDetails details = new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
@@ -54,7 +53,7 @@ public class InjectionDetailsTest {
 	}
 
 	@Test
-	public void shouldGetInjectableCollectionSet() {
+	public void shouldGetCollectionOfMocksFieldSet() {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
 		OrderedSet<Object> mocks = new HashOrderedSet<Object>();
@@ -83,7 +82,7 @@ public class InjectionDetailsTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void shouldFailToConstructGivenNullInjectables() {
+	public void shouldFailToConstructGivenNullMocks() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
 		OrderedSet<Object> mocks = null;
@@ -97,7 +96,7 @@ public class InjectionDetailsTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void shouldFailToConstructGivenNullInjectableCollections() {
+	public void shouldFailToConstructGivenNullCollectionOfMocksFieldSet() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
 		OrderedSet<Object> mocks = mock(OrderedSet.class);
