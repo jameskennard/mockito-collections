@@ -167,7 +167,35 @@ public class InjectionDetailsFactoryTest {
 		// Exception Thrown
 	}
 
-	// FIXME add tests to deal with null values in fields
+	@Test(expected = MockitoCollectionsException.class)
+	public void shouldFailToCreateInjectionDetailsGivenMockFieldIsNull() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field collectionOfMocksField = getField(object.getClass(), "nullMock");
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class)).willReturn(
+				Collections.singleton(collectionOfMocksField));
+
+		// When
+		factory.createInjectionDetails(object);
+
+		// Then
+		// Exception Thrown
+	}
+
+	@Test(expected = MockitoCollectionsException.class)
+	public void shouldFailToCreateInjectionDetailsGivenInjectMocksFieldIsNull() {
+		// Given
+		ClassWithAnnnotations object = new ClassWithAnnnotations();
+		Field collectionOfMocksField = getField(object.getClass(), "nullInjectCollections");
+		given(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), InjectMocks.class)).willReturn(
+				Collections.singleton(collectionOfMocksField));
+
+		// When
+		factory.createInjectionDetails(object);
+
+		// Then
+		// Exception Thrown
+	}
 
 	private Field getField(Class<?> clazz, String name) {
 		Field field;
@@ -179,6 +207,7 @@ public class InjectionDetailsFactoryTest {
 		return field;
 	}
 
+	@SuppressWarnings("unused")
 	private class ClassWithAnnnotations {
 
 		Object injectCollections1 = mock(Object.class);
@@ -190,6 +219,10 @@ public class InjectionDetailsFactoryTest {
 		@SuppressWarnings("unchecked")
 		private List<EventListener> mocksField1 = mock(List.class);
 
+		public Object nullMock;
+
+		public Object nullInjectCollections;
+
 		public Object getInjectable1() {
 			return mock1;
 		}
@@ -197,7 +230,6 @@ public class InjectionDetailsFactoryTest {
 		public Object getInjectable2() {
 			return mock2;
 		}
-
 	}
 
 	private class ExtendedClassWithAnnnotations extends ClassWithAnnnotations {
@@ -213,6 +245,5 @@ public class InjectionDetailsFactoryTest {
 		public Object getExtendedInjectable2() {
 			return mock2;
 		}
-
 	}
 }

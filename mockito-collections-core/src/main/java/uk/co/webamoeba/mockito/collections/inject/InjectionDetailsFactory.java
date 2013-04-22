@@ -100,7 +100,12 @@ public class InjectionDetailsFactory {
 		sortedFields.addAll(fields);
 		OrderedSet<Object> values = new HashOrderedSet<Object>();
 		for (Field field : sortedFields) {
-			values.add(new FieldReader(object, field).read());
+			Object fieldValue = new FieldReader(object, field).read();
+			if (fieldValue == null) {
+				throw new MockitoCollectionsException("The field " + field.getName()
+						+ " is null, you must initialse the fields before using Mockito-Collections");
+			}
+			values.add(fieldValue);
 		}
 		return values;
 	}
