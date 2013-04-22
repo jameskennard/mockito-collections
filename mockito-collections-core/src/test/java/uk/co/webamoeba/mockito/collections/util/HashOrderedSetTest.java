@@ -18,6 +18,17 @@ import org.junit.Test;
 public class HashOrderedSetTest {
 
 	@Test
+	public void shouldConstruct() {
+		// Given
+
+		// When
+		HashOrderedSet<String> set = new HashOrderedSet<String>();
+
+		// Then
+		assertTrue(set.isEmpty());
+	}
+
+	@Test
 	public void shouldConstructGivenExistingCollection() {
 		// Given
 		Collection<String> orginalCollection = Arrays.asList("ABC", "GHI", "DEF", "JKL");

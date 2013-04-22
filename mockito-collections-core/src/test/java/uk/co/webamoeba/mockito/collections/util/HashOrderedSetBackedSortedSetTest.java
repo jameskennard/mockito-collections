@@ -1,5 +1,6 @@
 package uk.co.webamoeba.mockito.collections.util;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -127,7 +128,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	}
 
 	@Test
-	public void shouldRemove() {
+	public void shouldRemoveGivenIterator() {
 		// Given
 		SortedSet<Integer> set = new HashOrderedSetBackedSortedSet<Integer>();
 		Integer elementOne = 16;
@@ -150,7 +151,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	}
 
 	@Test
-	public void shouldRemoveGivenIsFirstElement() {
+	public void shouldRemoveGivenIteratorAndIsFirstElement() {
 		// Given
 		SortedSet<Integer> set = new HashOrderedSetBackedSortedSet<Integer>();
 		Integer elementOne = 16;
@@ -170,7 +171,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	}
 
 	@Test
-	public void shouldRemoveGivenIsLastElement() {
+	public void shouldRemoveGivenIteratorAndIsLastElement() {
 		// Given
 		SortedSet<Long> set = new HashOrderedSetBackedSortedSet<Long>();
 		Long elementOne = 3454L;
@@ -191,7 +192,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	}
 
 	@Test
-	public void shouldRemoveGivenIsOnlyElement() {
+	public void shouldRemoveGivenIteratorAndIsOnlyElement() {
 		// Given
 		SortedSet<Boolean> set = new HashOrderedSetBackedSortedSet<Boolean>();
 		Boolean element = false;
@@ -313,7 +314,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	}
 
 	@Test
-	public void first() {
+	public void shouldGetFirst() {
 		// Given
 		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
 		String expectedFirst = "A";
@@ -327,7 +328,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	}
 
 	@Test
-	public void last() {
+	public void shouldGetLast() {
 		// Given
 		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
 		String expectedLast = "Z";
@@ -338,5 +339,63 @@ public class HashOrderedSetBackedSortedSetTest {
 
 		// Then
 		assertEquals(expectedLast, last);
+	}
+
+	@Test
+	public void shouldGetAsArray() {
+		// Given
+		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		Object[] expectedObjects = new Object[] { 'E', 9, null, -1L, "W" };
+		set.addAll(Arrays.<Object> asList(expectedObjects));
+
+		// When
+		Object[] array = set.toArray();
+
+		// Then
+		assertArrayEquals(expectedObjects, array);
+	}
+
+	@Test
+	public void shouldGetAsArrayGivenExistingArray() {
+		// Given
+		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		String[] expectedObjects = new String[] { "M", "O", "C", "K" };
+		set.addAll(Arrays.<String> asList(expectedObjects));
+
+		// When
+		String[] array = set.toArray(new String[0]);
+
+		// Then
+		assertArrayEquals(expectedObjects, array);
+	}
+
+	@Test
+	public void shouldRemove() {
+		// Given
+		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		String[] expectedObjects = new String[] { "A", "B", "C", "D" };
+		set.addAll(Arrays.<String> asList(expectedObjects));
+
+		// When
+		boolean removed = set.remove("C");
+
+		// Then
+		assertTrue(removed);
+		assertArrayEquals(new Object[] { "A", "B", "D" }, set.toArray());
+	}
+
+	@Test
+	public void shouldRemoveGivenNotPresent() {
+		// Given
+		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		String[] expectedObjects = new String[] { "A", "B", "C", "D" };
+		set.addAll(Arrays.<String> asList(expectedObjects));
+
+		// When
+		boolean removed = set.remove("E");
+
+		// Then
+		assertFalse(removed);
+		assertArrayEquals(new Object[] { "A", "B", "C", "D" }, set.toArray());
 	}
 }
