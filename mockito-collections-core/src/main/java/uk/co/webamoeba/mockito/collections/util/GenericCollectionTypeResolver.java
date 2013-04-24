@@ -77,9 +77,6 @@ public class GenericCollectionTypeResolver {
 		} else if (resolvedType instanceof Class) {
 			return extractTypeFromClass((Class) resolvedType, source, typeIndex, typeIndexesPerLevel, nestingLevel,
 					currentLevel);
-		} else if (resolvedType instanceof GenericArrayType) {
-			Type compType = ((GenericArrayType) resolvedType).getGenericComponentType();
-			return extractType(compType, source, typeIndex, typeIndexesPerLevel, nestingLevel, currentLevel + 1);
 		} else {
 			return null;
 		}

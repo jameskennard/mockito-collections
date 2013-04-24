@@ -84,6 +84,11 @@ public class GenericCollectionTypeResolverTest {
 		shouldFailToGetCollectionFieldType("typeVariable");
 	}
 
+	@Test
+	public void shouldFailToGetCollectionFieldTypeGivenGenericArrayType() {
+		shouldFailToGetCollectionFieldType("genericArrayType");
+	}
+
 	private void shouldGetCollectionFieldType(String fieldName, Class<?> expectedType) {
 		// Given
 		Field field = getField(fieldName);
@@ -184,6 +189,8 @@ public class GenericCollectionTypeResolverTest {
 		public Collection<Integer[]> collectionOfArrays;
 
 		public T typeVariable;
+
+		public T[] genericArrayType;
 	}
 
 	private interface HardCodedTypeCollection extends Collection<Integer> {
