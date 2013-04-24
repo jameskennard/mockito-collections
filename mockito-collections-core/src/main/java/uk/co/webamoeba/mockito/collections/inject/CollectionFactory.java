@@ -98,7 +98,10 @@ public class CollectionFactory {
 					throw new MockitoCollectionsException(
 							"Could not create collection of type "
 									+ collectionClass
-									+ " could not find a default constructor or a constructor with an integer initial capacity (this can happen if there are available constructors but the class is a non-static nested class/inner class)");
+									+ " could not find a default constructor"
+									+ " or a constructor with an integer initial capacity"
+									+ " (this can happen if there are available constructors but the class is a non-static nested class/inner class"
+									+ " or if the available constructors are not visible)");
 				}
 			}
 		} catch (InvocationTargetException e) {
