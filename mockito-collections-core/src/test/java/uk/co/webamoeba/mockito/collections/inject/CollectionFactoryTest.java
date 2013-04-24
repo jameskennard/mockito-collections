@@ -51,7 +51,6 @@ public class CollectionFactoryTest {
 
 	@Test
 	public void shouldCreateCollectionGivenSortedSetAndContents() {
-		// TODO, is this okay?
 		shouldCreateCollection(SortedSet.class, new HashOrderedSet<Object>(Arrays.<Object> asList("ABC", "DEF", "GHI")));
 	}
 
