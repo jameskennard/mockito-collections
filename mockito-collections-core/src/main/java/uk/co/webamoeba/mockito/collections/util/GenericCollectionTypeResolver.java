@@ -40,6 +40,9 @@ import java.util.Map;
  */
 public class GenericCollectionTypeResolver {
 
+	@SuppressWarnings("rawtypes")
+	private static final Class<Collection> COLLECTION_CLASS = Collection.class;
+
 	/**
 	 * Determine the generic element type of the given {@link Collection} {@link Field}.
 	 * 
@@ -48,7 +51,7 @@ public class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public Class<?> getCollectionFieldType(Field collectionField) {
-		return extractType(collectionField.getGenericType(), Collection.class, 0, null, 1, 1);
+		return extractType(collectionField.getGenericType(), COLLECTION_CLASS);
 	}
 
 	/**
@@ -58,25 +61,15 @@ public class GenericCollectionTypeResolver {
 	 *            the Type to check
 	 * @param source
 	 *            the source {@link Collection}/{@link Map} Class that we check
-	 * @param typeIndex
-	 *            the index of the actual type argument
-	 * @param nestingLevel
-	 *            the nesting level of the target type
-	 * @param currentLevel
-	 *            the current nested level
 	 * @return the generic type as Class, or <code>null</code> if none
 	 */
 	@SuppressWarnings("rawtypes")
-	private Class<?> extractType(Type type, Class<?> source, int typeIndex, Map<Integer, Integer> typeIndexesPerLevel,
-			int nestingLevel, int currentLevel) {
-
+	private Class<?> extractType(Type type, Class<?> source) {
 		Type resolvedType = type;
 		if (resolvedType instanceof ParameterizedType) {
-			return extractTypeFromParameterizedType((ParameterizedType) resolvedType, source, typeIndex,
-					typeIndexesPerLevel, nestingLevel, currentLevel);
+			return extractTypeFromParameterizedType((ParameterizedType) resolvedType, source);
 		} else if (resolvedType instanceof Class) {
-			return extractTypeFromClass((Class) resolvedType, source, typeIndex, typeIndexesPerLevel, nestingLevel,
-					currentLevel);
+			return extractTypeFromClass((Class) resolvedType, source);
 		} else {
 			return null;
 		}
@@ -89,43 +82,17 @@ public class GenericCollectionTypeResolver {
 	 *            the {@link ParameterizedType} to check
 	 * @param source
 	 *            the expected raw source type (can be <code>null</code>)
-	 * @param typeIndex
-	 *            the index of the actual type argument
-	 * @param nestingLevel
-	 *            the nesting level of the target type
-	 * @param currentLevel
-	 *            the current nested level
 	 * @return the generic type as {@link Class}, or <code>null</code> if none
 	 */
 	@SuppressWarnings("rawtypes")
-	private Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source, int typeIndex,
-			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
-
-		if (!(ptype.getRawType() instanceof Class)) {
-			return null;
-		}
+	private Class<?> extractTypeFromParameterizedType(ParameterizedType ptype, Class<?> source) {
 		Class rawType = (Class) ptype.getRawType();
 		Type[] paramTypes = ptype.getActualTypeArguments();
-		if (nestingLevel - currentLevel > 0) {
-			int nextLevel = currentLevel + 1;
-			Integer currentTypeIndex = (typeIndexesPerLevel != null ? typeIndexesPerLevel.get(nextLevel) : null);
-			// Default is last parameter type: Collection element or Map value.
-			int indexToUse = (currentTypeIndex != null ? currentTypeIndex : paramTypes.length - 1);
-			Type paramType = paramTypes[indexToUse];
-			return extractType(paramType, source, typeIndex, typeIndexesPerLevel, nestingLevel, nextLevel);
-		}
-		if (source != null && !source.isAssignableFrom(rawType)) {
-			return null;
-		}
-		Class fromSuperclassOrInterface = extractTypeFromClass(rawType, source, typeIndex, typeIndexesPerLevel,
-				nestingLevel, currentLevel);
+		Class fromSuperclassOrInterface = extractTypeFromClass(rawType, source);
 		if (fromSuperclassOrInterface != null) {
 			return fromSuperclassOrInterface;
 		}
-		if (paramTypes == null || typeIndex >= paramTypes.length) {
-			return null;
-		}
-		Type paramType = paramTypes[typeIndex];
+		Type paramType = paramTypes[0];
 		if (paramType instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) paramType;
 			Type[] upperBounds = wildcardType.getUpperBounds();
@@ -137,9 +104,6 @@ public class GenericCollectionTypeResolver {
 					paramType = lowerBounds[0];
 				}
 			}
-		}
-		if (paramType instanceof ParameterizedType) {
-			paramType = ((ParameterizedType) paramType).getRawType();
 		}
 		if (paramType instanceof GenericArrayType) {
 			// A generic array type... Let's turn it into a straight array type if possible.
@@ -170,15 +134,9 @@ public class GenericCollectionTypeResolver {
 	 * @return the generic type as {@link Class}, or <code>null</code> if none
 	 */
 	@SuppressWarnings("rawtypes")
-	private Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source, int typeIndex,
-			Map<Integer, Integer> typeIndexesPerLevel, int nestingLevel, int currentLevel) {
-
+	private Class<?> extractTypeFromClass(Class<?> clazz, Class<?> source) {
 		if (clazz.getName().startsWith("java.util.")) {
 			return null;
-		}
-		if (clazz.getSuperclass() != null && isIntrospectionCandidate(clazz.getSuperclass())) {
-			return extractType(clazz.getGenericSuperclass(), source, typeIndex, typeIndexesPerLevel, nestingLevel,
-					currentLevel);
 		}
 		Type[] ifcs = clazz.getGenericInterfaces();
 		if (ifcs != null) {
@@ -188,7 +146,7 @@ public class GenericCollectionTypeResolver {
 					rawType = ((ParameterizedType) ifc).getRawType();
 				}
 				if (rawType instanceof Class && isIntrospectionCandidate((Class) rawType)) {
-					return extractType(ifc, source, typeIndex, typeIndexesPerLevel, nestingLevel, currentLevel);
+					return extractType(ifc, source);
 				}
 			}
 		}
@@ -204,7 +162,7 @@ public class GenericCollectionTypeResolver {
 	 */
 	@SuppressWarnings("rawtypes")
 	private boolean isIntrospectionCandidate(Class clazz) {
-		return (Collection.class.isAssignableFrom(clazz) || Map.class.isAssignableFrom(clazz));
+		return (COLLECTION_CLASS.isAssignableFrom(clazz) || Map.class.isAssignableFrom(clazz));
 	}
 
 }
