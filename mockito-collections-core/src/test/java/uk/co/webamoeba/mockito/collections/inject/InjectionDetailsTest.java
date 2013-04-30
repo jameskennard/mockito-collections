@@ -67,35 +67,35 @@ public class InjectionDetailsTest {
 		assertSame(collectionOfMocksFieldSet, actualInjectableCollectionSet);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void shouldFailToConstructGivenNullInjectCollections() {
 		// Given
 		Set<Object> injectCollections = null;
 		OrderedSet<Object> mocks = mock(OrderedSet.class);
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 
-		// When
-		new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
+		IllegalArgumentException exception = instantiateAndThrowIllegalArgumentException(injectCollections, mocks,
+				collectionOfMocksFieldSet);
 
 		// Then
-		// Exception thrown
+		assertEquals("injectCollections must not be null", exception.getMessage());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void shouldFailToConstructGivenNullMocks() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
 		OrderedSet<Object> mocks = null;
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 
-		// When
-		new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
+		IllegalArgumentException exception = instantiateAndThrowIllegalArgumentException(injectCollections, mocks,
+				collectionOfMocksFieldSet);
 
 		// Then
-		// Exception thrown
+		assertEquals("mocks must not be null", exception.getMessage());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void shouldFailToConstructGivenNullCollectionOfMocksFieldSet() {
 		// Given
 		Set<Object> injectCollections = Collections.emptySet();
@@ -103,9 +103,21 @@ public class InjectionDetailsTest {
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = null;
 
 		// When
-		new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
+		IllegalArgumentException exception = instantiateAndThrowIllegalArgumentException(injectCollections, mocks,
+				collectionOfMocksFieldSet);
 
 		// Then
-		// Exception thrown
+		assertEquals("collectionOfMocksFieldSet must not be null", exception.getMessage());
+	}
+
+	private IllegalArgumentException instantiateAndThrowIllegalArgumentException(Set<Object> injectCollections,
+			OrderedSet<Object> mocks, CollectionOfMocksFieldSet collectionOfMocksFieldSet) {
+		try {
+			new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
+
+		} catch (IllegalArgumentException e) {
+			return e;
+		}
+		return null;
 	}
 }

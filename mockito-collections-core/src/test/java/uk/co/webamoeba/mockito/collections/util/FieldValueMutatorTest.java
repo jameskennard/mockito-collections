@@ -3,6 +3,7 @@ package uk.co.webamoeba.mockito.collections.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.Field;
@@ -65,17 +66,21 @@ public class FieldValueMutatorTest {
 		assertFalse(field.isAccessible());
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	public void shouldFailToSetGivenIncompatibleType() {
 		// Given
 		FieldValueMutator mutator = new FieldValueMutator(support, getField("privateCollection"));
 		Object value = 100L;
 
-		// When
-		mutator.mutateTo(value);
+		try {
+			// When
+			mutator.mutateTo(value);
 
-		// Then
-		// Exception thrown
+			// Then
+			fail();
+		} catch (MockitoCollectionsException e) {
+			assertTrue(e.getMessage().contains("incompatible type"));
+		}
 	}
 
 	private Field getField(String fieldName) {

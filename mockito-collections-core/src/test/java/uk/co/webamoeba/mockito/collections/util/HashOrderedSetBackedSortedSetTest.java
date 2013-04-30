@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -96,22 +97,25 @@ public class HashOrderedSetBackedSortedSetTest {
 		assertEquals(set.size(), elements.size() + 1);
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void shouldNextGivenIteratorHasNoElements() {
 		// Given
 		SortedSet<Long> set = new HashOrderedSetBackedSortedSet<Long>();
 		Iterator<Long> iterator = set.iterator();
-		iterator.next();
 
 		// When
 		assert iterator.hasNext() == false;
-		iterator.next();
+		try {
+			iterator.next();
 
-		// Then
-		// Exception Expected
+			// Then
+			fail();
+		} catch (NoSuchElementException e) {
+			assertEquals("No more elements", e.getMessage());
+		}
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void shouldNextGivenIteratorHasNoMoreElements() {
 		// Given
 		SortedSet<Boolean> set = new HashOrderedSetBackedSortedSet<Boolean>();
@@ -121,10 +125,14 @@ public class HashOrderedSetBackedSortedSetTest {
 
 		// When
 		assert iterator.hasNext() == false;
-		iterator.next();
+		try {
+			iterator.next();
 
-		// Then
-		// Exception Expected
+			// Then
+			fail();
+		} catch (NoSuchElementException e) {
+			assertEquals("No more elements", e.getMessage());
+		}
 	}
 
 	@Test
@@ -293,24 +301,68 @@ public class HashOrderedSetBackedSortedSetTest {
 		assertFalse(containsAll);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void shouldComparator() {
-		new HashOrderedSetBackedSortedSet<Object>().comparator();
+		// Given
+		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+
+		// When
+		try {
+			set.comparator();
+
+			// Then
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertEquals("Mockito-Collections injected SortedSet does not support this method", e.getMessage());
+		}
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void shouldSubSet() {
-		new HashOrderedSetBackedSortedSet<Object>().subSet("From", "To");
+		// Given
+		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+
+		// When
+		try {
+			set.subSet("From", "To");
+
+			// Then
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertEquals("Mockito-Collections injected SortedSet does not support this method", e.getMessage());
+		}
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void shouldHeadSet() {
-		new HashOrderedSetBackedSortedSet<Object>().headSet("To");
+		// Given
+		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+
+		// When
+		try {
+			set.headSet("To");
+
+			// Then
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertEquals("Mockito-Collections injected SortedSet does not support this method", e.getMessage());
+		}
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void shouldTailSet() {
-		new HashOrderedSetBackedSortedSet<Object>().tailSet("From");
+		// Given
+		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+
+		// When
+		try {
+			set.tailSet("From");
+
+			// Then
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertEquals("Mockito-Collections injected SortedSet does not support this method", e.getMessage());
+		}
 	}
 
 	@Test

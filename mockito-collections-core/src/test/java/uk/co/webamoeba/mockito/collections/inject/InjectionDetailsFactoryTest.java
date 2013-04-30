@@ -150,8 +150,8 @@ public class InjectionDetailsFactoryTest {
 		assertEquals(typeOfElements, mocksField.getTypeOfElements());
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
-	public void shouldFailToCreateInjectionDetailsGivenInjectableCollectionOnNonCollection() {
+	@Test
+	public void shouldFailToCreateInjectionDetailsGivenCollectionOfMocksOnNonCollection() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
 		Field collectionOfMocksField = getField(object.getClass(), "mock1");
@@ -161,13 +161,13 @@ public class InjectionDetailsFactoryTest {
 				Collections.singleton(collectionOfMocksField));
 
 		// When
-		factory.createInjectionDetails(object);
+		MockitoCollectionsException exception = createInjectionDetailsAndThrowMockitoCollectionsException(object);
 
 		// Then
-		// Exception Thrown
+		assertTrue(exception.getMessage().contains("field is not a Collection"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	public void shouldFailToCreateInjectionDetailsGivenMockFieldIsNull() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
@@ -176,13 +176,14 @@ public class InjectionDetailsFactoryTest {
 				Collections.singleton(collectionOfMocksField));
 
 		// When
-		factory.createInjectionDetails(object);
+		MockitoCollectionsException exception = createInjectionDetailsAndThrowMockitoCollectionsException(object);
 
 		// Then
-		// Exception Thrown
+		assertEquals("The field nullMock is null, you must initialse the fields before using Mockito-Collections",
+				exception.getMessage());
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	public void shouldFailToCreateInjectionDetailsGivenInjectMocksFieldIsNull() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
@@ -191,10 +192,22 @@ public class InjectionDetailsFactoryTest {
 				Collections.singleton(collectionOfMocksField));
 
 		// When
-		factory.createInjectionDetails(object);
+		MockitoCollectionsException exception = createInjectionDetailsAndThrowMockitoCollectionsException(object);
 
 		// Then
-		// Exception Thrown
+		assertEquals(
+				"The field nullInjectCollections is null, you must initialse the fields before using Mockito-Collections",
+				exception.getMessage());
+	}
+
+	private MockitoCollectionsException createInjectionDetailsAndThrowMockitoCollectionsException(
+			ClassWithAnnnotations object) {
+		try {
+			factory.createInjectionDetails(object);
+		} catch (MockitoCollectionsException e) {
+			return e;
+		}
+		return null;
 	}
 
 	private Field getField(Class<?> clazz, String name) {

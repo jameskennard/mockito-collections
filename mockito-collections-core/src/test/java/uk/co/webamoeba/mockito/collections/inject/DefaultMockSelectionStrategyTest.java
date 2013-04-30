@@ -1,5 +1,6 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -129,7 +130,7 @@ public class DefaultMockSelectionStrategyTest {
 		assertNull(actualMockCollection);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldFailToGetMockCollectionGivenNullMockCollectionSet() {
 		// Given
@@ -138,13 +139,14 @@ public class DefaultMockSelectionStrategyTest {
 		Class<EventListener> typeOfElements = EventListener.class;
 
 		// When
-		strategy.getCollectionOfMocksField(set, typeOfCollection, typeOfElements);
+		IllegalArgumentException exception = getCollectionOfMocksFieldAndIllegalArgumentExceptionThrown(set,
+				typeOfCollection, typeOfElements);
 
 		// Then
-		// Exception Thrown
+		assertEquals("collectionOfMocksFieldSet must not be null", exception.getMessage());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldFailToGetMockCollectionGivenNullTypeOfCollection() {
 		// Given
@@ -153,24 +155,36 @@ public class DefaultMockSelectionStrategyTest {
 		Class<EventListener> typeOfElements = EventListener.class;
 
 		// When
-		strategy.getCollectionOfMocksField(set, typeOfCollection, typeOfElements);
+		IllegalArgumentException exception = getCollectionOfMocksFieldAndIllegalArgumentExceptionThrown(set,
+				typeOfCollection, typeOfElements);
 
 		// Then
-		// Exception Thrown
+		assertEquals("typeOfCollection must not be null", exception.getMessage());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldFailToGetMockCollectionGivenNullTypeOfElements() {
 		// Given
-		CollectionOfMocksFieldSet set = null;
+		CollectionOfMocksFieldSet set = mock(CollectionOfMocksFieldSet.class);
 		Class<Collection> typeOfCollection = Collection.class;
 		Class<EventListener> typeOfElements = null;
 
 		// When
-		strategy.getCollectionOfMocksField(set, typeOfCollection, typeOfElements);
+		IllegalArgumentException exception = getCollectionOfMocksFieldAndIllegalArgumentExceptionThrown(set,
+				typeOfCollection, typeOfElements);
 
 		// Then
-		// Exception Thrown
+		assertEquals("typeOfElements must not be null", exception.getMessage());
+	}
+
+	private <C extends Collection<E>, E> IllegalArgumentException getCollectionOfMocksFieldAndIllegalArgumentExceptionThrown(
+			CollectionOfMocksFieldSet set, Class<C> typeOfCollection, Class<E> typeOfElements) {
+		try {
+			strategy.getCollectionOfMocksField(set, typeOfCollection, typeOfElements);
+		} catch (IllegalArgumentException e) {
+			return e;
+		}
+		return null;
 	}
 }

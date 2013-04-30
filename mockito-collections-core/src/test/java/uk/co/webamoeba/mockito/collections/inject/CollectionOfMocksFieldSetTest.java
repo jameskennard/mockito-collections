@@ -1,6 +1,7 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -44,7 +45,7 @@ public class CollectionOfMocksFieldSetTest {
 		assertTrue(set.asSet().contains(mocksField1));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	@SuppressWarnings("rawtypes")
 	public void shouldFailToConstructGivenMatchingMockCollections() {
 		// Given
@@ -54,11 +55,15 @@ public class CollectionOfMocksFieldSetTest {
 		given(mocksField2.matches(mocksField1)).willReturn(true);
 		Collection<CollectionOfMocksField> collection = Arrays.asList(mocksField1, mocksField2);
 
-		// When
-		new CollectionOfMocksFieldSet(collection);
+		try {
+			// When
+			new CollectionOfMocksFieldSet(collection);
 
-		// Then
-		// Exception thrown
+			// Then
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertTrue(e.getMessage().contains("more than one"));
+		}
 	}
 
 	@Test
@@ -99,7 +104,7 @@ public class CollectionOfMocksFieldSetTest {
 		assertTrue(set.asSet().contains(mocksField2));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	@SuppressWarnings("rawtypes")
 	public void shouldFailToAddMatchingMockCollection() {
 		// Given
@@ -109,10 +114,14 @@ public class CollectionOfMocksFieldSetTest {
 		given(mocksField2.matches(mocksField1)).willReturn(true);
 		CollectionOfMocksFieldSet set = new CollectionOfMocksFieldSet(mocksField1);
 
-		// When
-		set.add(mocksField2);
+		try {
+			// When
+			set.add(mocksField2);
 
-		// Then
-		// Exception Thrown
+			// Then
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertTrue(e.getMessage().contains("more than one"));
+		}
 	}
 }

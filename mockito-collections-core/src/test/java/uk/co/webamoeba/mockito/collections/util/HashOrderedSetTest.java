@@ -3,6 +3,7 @@ package uk.co.webamoeba.mockito.collections.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -118,22 +119,25 @@ public class HashOrderedSetTest {
 		assertEquals(set.size(), elements.size() + 1);
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void shouldNextGivenIteratorHasNoElements() {
 		// Given
 		HashOrderedSet<Long> set = new HashOrderedSet<Long>();
 		Iterator<Long> iterator = set.iterator();
-		iterator.next();
 
 		// When
 		assert iterator.hasNext() == false;
-		iterator.next();
+		try {
+			iterator.next();
 
-		// Then
-		// Exception Expected
+			// Then
+			fail();
+		} catch (NoSuchElementException e) {
+			assertEquals("No more elements", e.getMessage());
+		}
 	}
 
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void shouldNextGivenIteratorHasNoMoreElements() {
 		// Given
 		HashOrderedSet<Boolean> set = new HashOrderedSet<Boolean>();
@@ -143,10 +147,14 @@ public class HashOrderedSetTest {
 
 		// When
 		assert iterator.hasNext() == false;
-		iterator.next();
+		try {
+			iterator.next();
 
-		// Then
-		// Exception Expected
+			// Then
+			fail();
+		} catch (NoSuchElementException e) {
+			assertEquals("No more elements", e.getMessage());
+		}
 	}
 
 	@Test

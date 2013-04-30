@@ -1,6 +1,7 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -89,7 +90,7 @@ public class CollectionOfMocksInitialiserTest {
 		assertSame(collection, object.collectionWithZeroMocks);
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldFailToInitialiseGivenAnnotationWithNegativeNumberOfMocks() {
 		// Given
@@ -102,13 +103,13 @@ public class CollectionOfMocksInitialiserTest {
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
 
 		// When
-		initialiser.initialise(object);
+		MockitoCollectionsException exception = initialiseAndMockitoCollectionsExceptionThrown(object);
 
 		// Then
-		// Exception Thrown
+		assertTrue(exception.getMessage().contains("Unexpected numberOfMocks"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldFailToInitialiseGivenAnnotatedFieldNotCollection() {
 		// Given
@@ -121,13 +122,13 @@ public class CollectionOfMocksInitialiserTest {
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
 
 		// When
-		initialiser.initialise(object);
+		MockitoCollectionsException exception = initialiseAndMockitoCollectionsExceptionThrown(object);
 
 		// Then
-		// Exception Thrown
+		assertTrue(exception.getMessage().contains("must be a Collection"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldFailToInitialiseGivenAnnotatedFieldNotCollectionButIsParameterizedType() {
 		// Given
@@ -140,13 +141,13 @@ public class CollectionOfMocksInitialiserTest {
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(collectionType);
 
 		// When
-		initialiser.initialise(object);
+		MockitoCollectionsException exception = initialiseAndMockitoCollectionsExceptionThrown(object);
 
 		// Then
-		// Exception Thrown
+		assertTrue(exception.getMessage().contains("must be a Collection"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
 	public void shouldFailToInitialiseGivenAnnotatedFieldIsCollectionButHasNoGenerics() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
@@ -157,10 +158,19 @@ public class CollectionOfMocksInitialiserTest {
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn(null);
 
 		// When
-		initialiser.initialise(object);
+		MockitoCollectionsException exception = initialiseAndMockitoCollectionsExceptionThrown(object);
 
 		// Then
-		// Exception Thrown
+		assertTrue(exception.getMessage().contains("must be a Collection with Generics"));
+	}
+
+	private MockitoCollectionsException initialiseAndMockitoCollectionsExceptionThrown(Object object) {
+		try {
+			initialiser.initialise(object);
+		} catch (MockitoCollectionsException e) {
+			return e;
+		}
+		return null;
 	}
 
 	private Field getField(Class<?> clazz, String name) {

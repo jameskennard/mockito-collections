@@ -3,6 +3,7 @@ package uk.co.webamoeba.mockito.collections.inject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +21,6 @@ import org.junit.Test;
 import org.mockito.internal.creation.MockSettingsImpl;
 import org.mockito.internal.util.MockUtil;
 
-import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
@@ -134,34 +134,75 @@ public class CollectionFactoryTest {
 		shouldCreateCollectionGivenContents(ArrayBlockingQueue.class);
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
-	public void shouldCreateCollectionGivenAbstractImplementationOfCollection() {
-		shouldCreateCollectionGivenContents(AbstractCollection.class);
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void shouldFailToCreateCollectionGivenAbstractImplementationOfCollection() {
+		// Given
+		Class<AbstractCollection> collectionClass = AbstractCollection.class;
+		OrderedSet<Object> contents = null;
+
+		// When
+		Exception exception = createCollectionAndCatchException(collectionClass, contents);
+
+		// Then
+		assertTrue(exception.getMessage().contains("abstract"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
+	@SuppressWarnings("rawtypes")
 	public void shouldFailToCreateCollectionGivenCannotInstantiateSpecificType() {
-		shouldCreateCollection(ArrayListWithNoDefaultOrInitialCapacityConstructor.class);
+		// Given
+		Class<ArrayListWithNoDefaultOrInitialCapacityConstructor> collectionClass = ArrayListWithNoDefaultOrInitialCapacityConstructor.class;
+		OrderedSet<Object> contents = null;
+
+		// When
+		Exception exception = createCollectionAndCatchException(collectionClass, contents);
+
+		// Then
+		assertTrue(exception.getMessage().contains("default constructor"));
+		assertTrue(exception.getMessage().contains("initial capacity"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
-	public void shouldFailToCreateCollectionGivenCannotInstantiateSpecificTypeAndContents() {
-		shouldCreateCollectionGivenContents(ArrayListWithNoDefaultOrInitialCapacityConstructor.class);
-	}
-
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
+	@SuppressWarnings("rawtypes")
 	public void shouldFailToCreateCollectionGivenNonStaticNestedClassOrInnerClass() {
-		shouldCreateCollectionGivenContents(InnerArrayList.class);
+		// Given
+		Class<InnerArrayList> collectionClass = InnerArrayList.class;
+		OrderedSet<Object> contents = null;
+
+		// When
+		Exception exception = createCollectionAndCatchException(collectionClass, contents);
+
+		// Then
+		assertTrue(exception.getMessage().contains("constructors are not visible"));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
+	@SuppressWarnings("rawtypes")
 	public void shouldFailToCreateCollectionGivenExceptionThrownByConstructor() {
-		shouldCreateCollectionGivenContents(ExplosiveCollection.class);
+		// Given
+		Class<ExplosiveCollection> collectionClass = ExplosiveCollection.class;
+		OrderedSet<Object> contents = null;
+
+		// When
+		Exception exception = createCollectionAndCatchException(collectionClass, contents);
+
+		// Then
+		assertTrue(exception.getCause().getClass().equals(InvocationTargetException.class));
 	}
 
-	@Test(expected = MockitoCollectionsException.class)
+	@Test
+	@SuppressWarnings("rawtypes")
 	public void shouldFailToCreateCollectionGivenConstructorIsPrivate() {
-		shouldCreateCollectionGivenContents(PrivateCollection.class);
+		// Given
+		Class<PrivateCollection> collectionClass = PrivateCollection.class;
+		OrderedSet<Object> contents = null;
+
+		// When
+		Exception exception = createCollectionAndCatchException(collectionClass, contents);
+
+		// Then
+		assertTrue(exception.getCause().getClass().equals(IllegalAccessException.class));
 	}
 
 	private <T extends Collection<Object>> Collection<Object> shouldCreateCollection(Class<T> clazz) {
@@ -195,6 +236,16 @@ public class CollectionFactoryTest {
 			assertTrue(collection.isEmpty());
 		}
 		return collection;
+	}
+
+	private <T extends Collection<Object>> Exception createCollectionAndCatchException(Class<T> collectionClass,
+			OrderedSet<Object> contents) {
+		try {
+			factory.createCollection(collectionClass, contents);
+		} catch (Exception e) {
+			return e;
+		}
+		return null;
 	}
 
 	@SuppressWarnings("rawtypes")
