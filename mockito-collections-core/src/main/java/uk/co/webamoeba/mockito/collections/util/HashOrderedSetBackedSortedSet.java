@@ -80,9 +80,9 @@ public class HashOrderedSetBackedSortedSet<T> implements SortedSet<T> {
 			return false;
 		}
 		if (orderedSet.equals(obj)) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public Comparator<? super T> comparator() {
