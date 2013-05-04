@@ -30,7 +30,7 @@ public class FieldValueMutator {
 			field.set(object, value);
 		} catch (IllegalAccessException e) {
 			throw new MockitoCollectionsException("Could not set field '" + field + "' on object '" + object
-					+ "' with value: '" + value + "'", e);
+					+ "' with value: '" + value + "' because field is not accessible", e);
 		} catch (IllegalArgumentException e) {
 			throw new MockitoCollectionsException("Could not set field '" + field + "' on object '" + object
 					+ "' with value '" + value + "' because value was of an incompatible type", e);
@@ -40,7 +40,7 @@ public class FieldValueMutator {
 			try {
 				field.setAccessible(false);
 			} catch (Throwable t) {
-				// Swallow it, we've down what we need to do
+				// Swallow it, we've done what we need to do
 			}
 		}
 	}
