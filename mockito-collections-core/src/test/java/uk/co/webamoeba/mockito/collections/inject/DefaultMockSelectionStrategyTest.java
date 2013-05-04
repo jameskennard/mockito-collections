@@ -178,6 +178,28 @@ public class DefaultMockSelectionStrategyTest {
 		assertEquals("typeOfElements must not be null", exception.getMessage());
 	}
 
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void shouldFailToGetMockCollectionGivenMoreThanOneMatchingField() {
+		Class<Set> typeOfCollection = Set.class;
+		Class<InputStream> typeOfElements = InputStream.class;
+		CollectionOfMocksField mockCollection1 = new CollectionOfMocksField(Collections.emptySet(), typeOfCollection,
+				typeOfElements);
+		CollectionOfMocksField mockCollection2 = new CollectionOfMocksField(Collections.emptySet(), typeOfCollection,
+				typeOfElements);
+		Set<CollectionOfMocksField<Collection<Object>, Object>> mockCollections = new HashSet<CollectionOfMocksField<Collection<Object>, Object>>(
+				Arrays.<CollectionOfMocksField<Collection<Object>, Object>> asList(mockCollection1, mockCollection2));
+		CollectionOfMocksFieldSet set = mock(CollectionOfMocksFieldSet.class);
+		given(set.iterator()).willReturn(mockCollections.iterator());
+
+		// When
+		IllegalArgumentException exception = getCollectionOfMocksFieldAndIllegalArgumentExceptionThrown(set,
+				typeOfCollection, typeOfElements);
+
+		// Then
+		assertTrue(exception.getMessage().contains("There is more than one"));
+	}
+
 	private <C extends Collection<E>, E> IllegalArgumentException getCollectionOfMocksFieldAndIllegalArgumentExceptionThrown(
 			CollectionOfMocksFieldSet set, Class<C> typeOfCollection, Class<E> typeOfElements) {
 		try {
