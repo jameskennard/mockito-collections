@@ -103,9 +103,7 @@ public class HashOrderedSet<E> extends AbstractSet<E> implements OrderedSet<E> {
 		}
 
 		public Bucket addNext(E nextContents) {
-			if (this.next != null) {
-				throw new IllegalStateException("Attempted to add next bucket, but the next bucket is already defined");
-			}
+			assert this.next == null;
 			this.next = new Bucket(nextContents);
 			this.next.previous = this;
 			return this.next;
