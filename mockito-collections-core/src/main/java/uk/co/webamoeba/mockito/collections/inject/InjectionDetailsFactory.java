@@ -16,7 +16,7 @@ import uk.co.webamoeba.mockito.collections.annotation.IgnoreMockForCollections;
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -98,7 +98,7 @@ public class InjectionDetailsFactory {
 	private OrderedSet<Object> getFieldValues(Object object, Set<Field> fields) {
 		TreeSet<Field> sortedFields = new TreeSet<Field>(new FieldComparator());
 		sortedFields.addAll(fields);
-		OrderedSet<Object> values = new HashOrderedSet<Object>();
+		OrderedSet<Object> values = new OrderedSet<Object>();
 		for (Field field : sortedFields) {
 			Object fieldValue = new FieldReader(object, field).read();
 			if (fieldValue == null) {

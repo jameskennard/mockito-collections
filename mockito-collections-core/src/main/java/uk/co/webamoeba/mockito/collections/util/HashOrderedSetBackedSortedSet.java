@@ -3,6 +3,7 @@ package uk.co.webamoeba.mockito.collections.util;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.SortedSet;
 
 /**
@@ -12,7 +13,7 @@ import java.util.SortedSet;
 // TODO consider renaming to SortedSetBackedByHashOrderedSet
 public class HashOrderedSetBackedSortedSet<T> implements SortedSet<T> {
 
-	private OrderedSet<T> orderedSet = new HashOrderedSet<T>();
+	private LinkedHashSet<T> orderedSet = new LinkedHashSet<T>();
 
 	public int size() {
 		return orderedSet.size();

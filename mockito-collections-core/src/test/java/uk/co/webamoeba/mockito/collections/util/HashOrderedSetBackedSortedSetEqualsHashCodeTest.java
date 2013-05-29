@@ -8,7 +8,6 @@ import static org.mockito.Mockito.mock;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class HashOrderedSetBackedSortedSetEqualsHashCodeTest {
@@ -69,20 +68,6 @@ public class HashOrderedSetBackedSortedSetEqualsHashCodeTest {
 		HashOrderedSetBackedSortedSet<String> otherSet = new HashOrderedSetBackedSortedSet<String>();
 		set.addAll(Arrays.asList("One", "Two"));
 		otherSet.addAll(Arrays.asList("Three", "Four"));
-
-		boolean equals = set.equals(otherSet);
-
-		assertFalse(equals);
-	}
-
-	@Test
-	@Ignore
-	// FIXME requires fixing of the HashOrderedSet equals method
-	public void shouldNotEqualGivenContentsInDifferentOrder() {
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
-		HashOrderedSetBackedSortedSet<String> otherSet = new HashOrderedSetBackedSortedSet<String>();
-		set.addAll(Arrays.asList("One", "Two"));
-		otherSet.addAll(Arrays.asList("Two", "One"));
 
 		boolean equals = set.equals(otherSet);
 

@@ -22,7 +22,7 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -38,13 +38,13 @@ public class DefaultMockSelectionStrategyTest {
 		InputStream mock1 = mock(InputStream.class);
 		OutputStream mock2 = mock(OutputStream.class);
 		InputStream mock3 = mock(FileInputStream.class);
-		OrderedSet<Object> mocks = new HashOrderedSet<Object>(Arrays.<Object> asList(mock1, mock2, mock3));
+		OrderedSet<Object> mocks = new OrderedSet<Object>(Arrays.<Object> asList(mock1, mock2, mock3));
 
 		// When
 		OrderedSet<InputStream> actualMocks = strategy.selectMocks(mocks, InputStream.class);
 
 		// Then
-		assertTrue(actualMocks.equals(new HashOrderedSet<InputStream>(Arrays.<InputStream> asList(mock1, mock3))));
+		assertTrue(actualMocks.equals(new OrderedSet<InputStream>(Arrays.<InputStream> asList(mock1, mock3))));
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class DefaultMockSelectionStrategyTest {
 		// Given
 		Object mock1 = mock(InputStream.class);
 		Object mock2 = mock(OutputStream.class);
-		OrderedSet<Object> mocks = new HashOrderedSet<Object>(Arrays.asList(mock1, mock2));
+		OrderedSet<Object> mocks = new OrderedSet<Object>(Arrays.asList(mock1, mock2));
 
 		// When
 		OrderedSet<FileOutputStream> actualMocks = strategy.selectMocks(mocks, FileOutputStream.class);

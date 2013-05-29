@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.mockito.internal.creation.MockSettingsImpl;
 import org.mockito.internal.util.MockUtil;
 
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -51,7 +50,7 @@ public class CollectionFactoryTest {
 
 	@Test
 	public void shouldCreateCollectionGivenSortedSetAndContents() {
-		shouldCreateCollection(SortedSet.class, new HashOrderedSet<Object>(Arrays.<Object> asList("ABC", "DEF", "GHI")));
+		shouldCreateCollection(SortedSet.class, new OrderedSet<Object>(Arrays.<Object> asList("ABC", "DEF", "GHI")));
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class CollectionFactoryTest {
 
 	@Test
 	public void shouldCreateCollectionGivenSubInterfaceOfSet() {
-		Collection<Object> collection = shouldCreateCollectionGivenContents(OrderedSet.class);
+		Collection<Object> collection = shouldCreateCollectionGivenContents(ExtendedSetInterface.class);
 		assertIsMockWithSpiedIntanceOf(collection, OrderedSet.class);
 	}
 
@@ -210,8 +209,7 @@ public class CollectionFactoryTest {
 	}
 
 	private <T extends Collection<Object>> Collection<Object> shouldCreateCollectionGivenContents(Class<T> clazz) {
-		OrderedSet<Object> contents = new HashOrderedSet<Object>(
-				Arrays.<Object> asList("Some Contents", 'A', 12L, 3.0f));
+		OrderedSet<Object> contents = new OrderedSet<Object>(Arrays.<Object> asList("Some Contents", 'A', 12L, 3.0f));
 		return shouldCreateCollection(clazz, contents);
 	}
 
@@ -252,6 +250,9 @@ public class CollectionFactoryTest {
 	private void assertIsMockWithSpiedIntanceOf(Collection<?> collection, Class<? extends Collection> spiedInstanceClass) {
 		MockSettingsImpl mockSettings = mockUtil.getMockHandler(collection).getMockSettings();
 		assertTrue(spiedInstanceClass.isInstance(mockSettings.getSpiedInstance()));
+	}
+
+	public interface ExtendedSetInterface<T> extends Set<T> {
 	}
 
 	public interface ExtendedListInterface<T> extends List<T> {

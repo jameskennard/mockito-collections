@@ -13,7 +13,7 @@ import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -110,7 +110,7 @@ public class CollectionOfMocksInitialiser {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private OrderedSet<?> createMocks(Class collectionType, int numberOfMocks) {
-		OrderedSet mocks = new HashOrderedSet();
+		OrderedSet mocks = new OrderedSet();
 		for (int i = 0; i < numberOfMocks; i++) {
 			Object mock = mockStrategy.createMock(collectionType);
 			mocks.add(mock);

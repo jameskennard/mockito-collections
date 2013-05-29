@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.mockito.Mock;
 
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -44,7 +44,7 @@ public class InjectionDetails {
 		}
 
 		this.injectCollections = Collections.unmodifiableSet(injectCollections);
-		this.mocks = new HashOrderedSet<Object>(mocks);
+		this.mocks = new OrderedSet<Object>(mocks);
 		this.collectionOfMocksFieldSet = collectionOfMocksFieldSet;
 	}
 

@@ -10,7 +10,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -24,7 +24,7 @@ public class InjectionDetailsTest {
 		// Given
 		Object injectCollections = "Some InjectCollections";
 		Set<Object> setOfInjectCollections = Collections.singleton(injectCollections);
-		OrderedSet<Object> mocks = new HashOrderedSet<Object>();
+		OrderedSet<Object> mocks = new OrderedSet<Object>();
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 		InjectionDetails details = new InjectionDetails(setOfInjectCollections, mocks, collectionOfMocksFieldSet);
 
@@ -40,7 +40,7 @@ public class InjectionDetailsTest {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
 		Object mock = mock(Object.class);
-		OrderedSet<Object> mocks = new HashOrderedSet<Object>(Collections.singleton(mock));
+		OrderedSet<Object> mocks = new OrderedSet<Object>(Collections.singleton(mock));
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 		InjectionDetails details = new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 
@@ -56,7 +56,7 @@ public class InjectionDetailsTest {
 	public void shouldGetCollectionOfMocksFieldSet() {
 		// Given
 		Set<Object> injectCollections = mock(Set.class);
-		OrderedSet<Object> mocks = new HashOrderedSet<Object>();
+		OrderedSet<Object> mocks = new OrderedSet<Object>();
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = mock(CollectionOfMocksFieldSet.class);
 		InjectionDetails details = new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 

@@ -2,6 +2,7 @@ package uk.co.webamoeba.mockito.collections.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -16,14 +17,14 @@ import org.junit.Test;
 /**
  * @author James Kennard
  */
-public class HashOrderedSetTest {
+public class OrderedSetTest {
 
 	@Test
 	public void shouldConstruct() {
 		// Given
 
 		// When
-		HashOrderedSet<String> set = new HashOrderedSet<String>();
+		OrderedSet<String> set = new OrderedSet<String>();
 
 		// Then
 		assertTrue(set.isEmpty());
@@ -35,7 +36,7 @@ public class HashOrderedSetTest {
 		Collection<String> orginalCollection = Arrays.asList("ABC", "GHI", "DEF", "JKL");
 
 		// When
-		HashOrderedSet<String> set = new HashOrderedSet<String>(orginalCollection);
+		OrderedSet<String> set = new OrderedSet<String>(orginalCollection);
 
 		// Then
 		assertTrue(orginalCollection.equals(Arrays.asList(set.toArray())));
@@ -44,7 +45,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldAddGivenGivenElementAlreadyInSet() {
 		// Given
-		HashOrderedSet<Float> set = new HashOrderedSet<Float>();
+		OrderedSet<Float> set = new OrderedSet<Float>();
 		Float duplicate = 3.2f;
 		List<Float> elements = Arrays.asList(0.0f, duplicate, 1.2f);
 		set.addAll(elements);
@@ -60,7 +61,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldAddGivenElementsInOrder() {
 		// Given
-		HashOrderedSet<Integer> set = new HashOrderedSet<Integer>();
+		OrderedSet<Integer> set = new OrderedSet<Integer>();
 		Integer[] elements = new Integer[] { 100, 23, 50, 48, 12, 66, 47, 59, 98 };
 		Boolean[] changed = new Boolean[elements.length];
 
@@ -83,7 +84,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldAddAllGivenElementsInOrder() {
 		// Given
-		HashOrderedSet<Character> set = new HashOrderedSet<Character>();
+		OrderedSet<Character> set = new OrderedSet<Character>();
 		List<Character> elements = Arrays.asList('A', 'F', 'E', 'Z', 'S', 'P', 'T');
 
 		// When
@@ -101,7 +102,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldAddGivenSetAlreadyContainsSomeElements() {
 		// Given
-		HashOrderedSet<String> set = new HashOrderedSet<String>();
+		OrderedSet<String> set = new OrderedSet<String>();
 		List<String> elements = Arrays.asList("One", "Two", "Three", "Four");
 		set.addAll(elements);
 		String element = "Five";
@@ -122,7 +123,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldNextGivenIteratorHasNoElements() {
 		// Given
-		HashOrderedSet<Long> set = new HashOrderedSet<Long>();
+		OrderedSet<Long> set = new OrderedSet<Long>();
 		Iterator<Long> iterator = set.iterator();
 
 		// When
@@ -133,14 +134,14 @@ public class HashOrderedSetTest {
 			// Then
 			fail();
 		} catch (NoSuchElementException e) {
-			assertEquals("No more elements", e.getMessage());
+			assertNull(e.getMessage());
 		}
 	}
 
 	@Test
 	public void shouldNextGivenIteratorHasNoMoreElements() {
 		// Given
-		HashOrderedSet<Boolean> set = new HashOrderedSet<Boolean>();
+		OrderedSet<Boolean> set = new OrderedSet<Boolean>();
 		set.add(Boolean.TRUE);
 		Iterator<Boolean> iterator = set.iterator();
 		iterator.next();
@@ -153,14 +154,14 @@ public class HashOrderedSetTest {
 			// Then
 			fail();
 		} catch (NoSuchElementException e) {
-			assertEquals("No more elements", e.getMessage());
+			assertNull(e.getMessage());
 		}
 	}
 
 	@Test
 	public void shouldRemove() {
 		// Given
-		HashOrderedSet<Integer> set = new HashOrderedSet<Integer>();
+		OrderedSet<Integer> set = new OrderedSet<Integer>();
 		Integer elementOne = 16;
 		Integer elementTwo = 12;
 		Integer elementThree = 10;
@@ -183,7 +184,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldRemoveGivenIsFirstElement() {
 		// Given
-		HashOrderedSet<Integer> set = new HashOrderedSet<Integer>();
+		OrderedSet<Integer> set = new OrderedSet<Integer>();
 		Integer elementOne = 16;
 		Integer elementTwo = 12;
 		set.addAll(Arrays.asList(elementOne, elementTwo));
@@ -203,7 +204,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldRemoveGivenIsLastElement() {
 		// Given
-		HashOrderedSet<Long> set = new HashOrderedSet<Long>();
+		OrderedSet<Long> set = new OrderedSet<Long>();
 		Long elementOne = 3454L;
 		Long elementTwo = 2311L;
 		set.addAll(Arrays.asList(elementOne, elementTwo));
@@ -224,7 +225,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldRemoveGivenIsOnlyElement() {
 		// Given
-		HashOrderedSet<Boolean> set = new HashOrderedSet<Boolean>();
+		OrderedSet<Boolean> set = new OrderedSet<Boolean>();
 		Boolean element = false;
 		set.add(element);
 		Iterator<Boolean> iterator = set.iterator();
@@ -241,7 +242,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldClear() {
 		// Given
-		HashOrderedSet<Character> set = new HashOrderedSet<Character>();
+		OrderedSet<Character> set = new OrderedSet<Character>();
 		set.addAll(Arrays.asList('X', 'Y', 'Z'));
 
 		// When
@@ -256,7 +257,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldContainsGivenDoesContainElement() {
 		// Given
-		HashOrderedSet<Double> set = new HashOrderedSet<Double>();
+		OrderedSet<Double> set = new OrderedSet<Double>();
 		Double element = 12.2d;
 		set.addAll(Arrays.asList(0.1d, element, 0.01d));
 
@@ -270,7 +271,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldContainsGivenDoesNotContainElement() {
 		// Given
-		HashOrderedSet<Character> set = new HashOrderedSet<Character>();
+		OrderedSet<Character> set = new OrderedSet<Character>();
 		set.addAll(Arrays.asList('X', 'Y', 'Z'));
 
 		// When
@@ -283,7 +284,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldContainsAllGivenDoesContainAll() {
 		// Given
-		HashOrderedSet<Double> set = new HashOrderedSet<Double>();
+		OrderedSet<Double> set = new OrderedSet<Double>();
 		Double elementOne = 0.1d;
 		Double elementTwo = 12.2d;
 		set.addAll(Arrays.asList(elementOne, elementTwo, 0.01d));
@@ -298,7 +299,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldContainsAllGivenDoesNotContainAll() {
 		// Given
-		HashOrderedSet<Double> set = new HashOrderedSet<Double>();
+		OrderedSet<Double> set = new OrderedSet<Double>();
 		Double elementOne = 0.1d;
 		Double elementTwo = 12.2d;
 		set.addAll(Arrays.asList(elementOne, elementTwo, 0.01d));
@@ -313,7 +314,7 @@ public class HashOrderedSetTest {
 	@Test
 	public void shouldContainsAllGivenDoesNotContainAny() {
 		// Given
-		HashOrderedSet<Double> set = new HashOrderedSet<Double>();
+		OrderedSet<Double> set = new OrderedSet<Double>();
 		set.addAll(Arrays.asList(3.2d, 1.2d, 0.01d));
 
 		// When

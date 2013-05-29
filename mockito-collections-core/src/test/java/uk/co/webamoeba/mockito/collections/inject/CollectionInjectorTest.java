@@ -28,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -92,7 +92,7 @@ public class CollectionInjectorTest {
 		Field field = getField("listeners", injectCollections);
 		given(genericCollectionTypeResolver.getCollectionFieldType(field)).willReturn((Class) EventListener.class);
 
-		given(strategy.selectMocks(any(OrderedSet.class), any(Class.class))).willReturn(new HashOrderedSet());
+		given(strategy.selectMocks(any(OrderedSet.class), any(Class.class))).willReturn(new OrderedSet());
 
 		// When
 		injector.inject(injectionDetails);
@@ -432,7 +432,7 @@ public class CollectionInjectorTest {
 		return new Answer<OrderedSet<Object>>() {
 
 			public OrderedSet<Object> answer(InvocationOnMock invocation) throws Throwable {
-				return new HashOrderedSet<Object>();
+				return new OrderedSet<Object>();
 			}
 		};
 	}

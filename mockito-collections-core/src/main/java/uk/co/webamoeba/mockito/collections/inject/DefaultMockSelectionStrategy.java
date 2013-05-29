@@ -2,7 +2,7 @@ package uk.co.webamoeba.mockito.collections.inject;
 
 import java.util.Collection;
 
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
+import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -14,7 +14,7 @@ public class DefaultMockSelectionStrategy implements MockSelectionStrategy {
 
 	@SuppressWarnings("unchecked")
 	public <T> OrderedSet<T> selectMocks(OrderedSet<Object> mocks, Class<T> mockClass) {
-		HashOrderedSet<T> matchingMocks = new HashOrderedSet<T>();
+		OrderedSet<T> matchingMocks = new OrderedSet<T>();
 		for (Object object : mocks) {
 			if (mockClass.isAssignableFrom(object.getClass())) {
 				matchingMocks.add((T) object);

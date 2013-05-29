@@ -16,7 +16,6 @@ import java.util.SortedSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSet;
 import uk.co.webamoeba.mockito.collections.util.HashOrderedSetBackedSortedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
@@ -46,7 +45,7 @@ public class CollectionFactory {
 		if (collectionClass.equals(SortedSet.class)) {
 			collection = (T) new HashOrderedSetBackedSortedSet();
 		} else if (collectionClass.equals(Set.class) || collectionClass.equals(Collection.class)) {
-			collection = (T) new HashOrderedSet(getInitialCapacity(contents));
+			collection = (T) new OrderedSet(getInitialCapacity(contents));
 		} else if (collectionClass.equals(List.class)) {
 			collection = (T) new ArrayList(getInitialCapacity(contents));
 		} else if (collectionClass.equals(Queue.class)) {
@@ -75,7 +74,7 @@ public class CollectionFactory {
 		} else if (Queue.class.isAssignableFrom(collectionClass)) {
 			spiedCollection = new ConcurrentLinkedQueue();
 		} else {
-			spiedCollection = new HashOrderedSet(getInitialCapacity(contents));
+			spiedCollection = new OrderedSet(getInitialCapacity(contents));
 		}
 		return (T) mock(
 				spiedCollection.getClass(),
