@@ -300,6 +300,4 @@ public class CollectionFactoryTest {
 
 	public static interface ExtendedQueue<E extends Object> extends Queue<E> {
 	}
-
-	// TODO add test for non static inner class
 }
