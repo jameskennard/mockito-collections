@@ -1,5 +1,7 @@
 package uk.co.webamoeba.mockito.collections.internal;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.io.Closeable;
@@ -100,13 +102,15 @@ public class VerifierTest {
 		Collection<InputStream> collection = Arrays.<InputStream> asList(aMock);
 		verification.collectiveVerify(InputStream.class, collection).read();
 
-		thrown.expect(NoInteractionsWanted.class);
-
 		// When
-		verification.collectiveVerifyNoMoreInteractions(collection);
+		try {
+			verification.collectiveVerifyNoMoreInteractions(collection);
 
-		// Then
-		// Exception thrown
+			// Then
+			fail("expected exception to be thrown");
+		} catch (NoInteractionsWanted e) {
+			assertTrue(e.getMessage().contains("No interactions wanted"));
+		}
 	}
 
 	@Test
@@ -130,12 +134,14 @@ public class VerifierTest {
 		aMock.close();
 		Collection<OutputStream> collection = Arrays.<OutputStream> asList(aMock);
 
-		thrown.expect(NoInteractionsWanted.class);
-
 		// When
-		verification.collectiveVerifyZeroInteractions(collection);
+		try {
+			verification.collectiveVerifyZeroInteractions(collection);
 
-		// Then
-		// Exception thrown
+			// Then
+			fail("expected exception to be thrown");
+		} catch (NoInteractionsWanted e) {
+			assertTrue(e.getMessage().contains("No interactions wanted"));
+		}
 	}
 }

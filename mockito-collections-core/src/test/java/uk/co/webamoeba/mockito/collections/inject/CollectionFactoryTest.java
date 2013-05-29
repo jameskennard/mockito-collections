@@ -18,8 +18,8 @@ import java.util.SortedSet;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.junit.Test;
-import org.mockito.internal.creation.MockSettingsImpl;
 import org.mockito.internal.util.MockUtil;
+import org.mockito.mock.MockCreationSettings;
 
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
@@ -248,7 +248,7 @@ public class CollectionFactoryTest {
 
 	@SuppressWarnings("rawtypes")
 	private void assertIsMockWithSpiedIntanceOf(Collection<?> collection, Class<? extends Collection> spiedInstanceClass) {
-		MockSettingsImpl mockSettings = mockUtil.getMockHandler(collection).getMockSettings();
+		MockCreationSettings mockSettings = mockUtil.getMockHandler(collection).getMockSettings();
 		assertTrue(spiedInstanceClass.isInstance(mockSettings.getSpiedInstance()));
 	}
 
