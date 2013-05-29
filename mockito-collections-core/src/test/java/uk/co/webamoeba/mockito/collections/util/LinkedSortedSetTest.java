@@ -18,12 +18,12 @@ import org.junit.Test;
 /**
  * @author James Kennard
  */
-public class HashOrderedSetBackedSortedSetTest {
+public class LinkedSortedSetTest {
 
 	@Test
 	public void shouldAddGivenGivenElementAlreadyInSet() {
 		// Given
-		SortedSet<Float> set = new HashOrderedSetBackedSortedSet<Float>();
+		SortedSet<Float> set = new LinkedSortedSet<Float>();
 		Float duplicate = 3.2f;
 		List<Float> elements = Arrays.asList(0.0f, duplicate, 1.2f);
 		set.addAll(elements);
@@ -39,7 +39,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldAddGivenElementsInOrder() {
 		// Given
-		SortedSet<Integer> set = new HashOrderedSetBackedSortedSet<Integer>();
+		SortedSet<Integer> set = new LinkedSortedSet<Integer>();
 		Integer[] elements = new Integer[] { 100, 23, 50, 48, 12, 66, 47, 59, 98 };
 		Boolean[] changed = new Boolean[elements.length];
 
@@ -62,7 +62,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldAddAllGivenElementsInOrder() {
 		// Given
-		SortedSet<Character> set = new HashOrderedSetBackedSortedSet<Character>();
+		SortedSet<Character> set = new LinkedSortedSet<Character>();
 		List<Character> elements = Arrays.asList('A', 'F', 'E', 'Z', 'S', 'P', 'T');
 
 		// When
@@ -80,7 +80,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldAddGivenSetAlreadyContainsSomeElements() {
 		// Given
-		SortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		SortedSet<String> set = new LinkedSortedSet<String>();
 		List<String> elements = Arrays.asList("One", "Two", "Three", "Four");
 		set.addAll(elements);
 		String element = "Five";
@@ -101,7 +101,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldNextGivenIteratorHasNoElements() {
 		// Given
-		SortedSet<Long> set = new HashOrderedSetBackedSortedSet<Long>();
+		SortedSet<Long> set = new LinkedSortedSet<Long>();
 		Iterator<Long> iterator = set.iterator();
 
 		// When
@@ -119,7 +119,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldNextGivenIteratorHasNoMoreElements() {
 		// Given
-		SortedSet<Boolean> set = new HashOrderedSetBackedSortedSet<Boolean>();
+		SortedSet<Boolean> set = new LinkedSortedSet<Boolean>();
 		set.add(Boolean.TRUE);
 		Iterator<Boolean> iterator = set.iterator();
 		iterator.next();
@@ -139,7 +139,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldRemoveGivenIterator() {
 		// Given
-		SortedSet<Integer> set = new HashOrderedSetBackedSortedSet<Integer>();
+		SortedSet<Integer> set = new LinkedSortedSet<Integer>();
 		Integer elementOne = 16;
 		Integer elementTwo = 12;
 		Integer elementThree = 10;
@@ -162,7 +162,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldRemoveGivenIteratorAndIsFirstElement() {
 		// Given
-		SortedSet<Integer> set = new HashOrderedSetBackedSortedSet<Integer>();
+		SortedSet<Integer> set = new LinkedSortedSet<Integer>();
 		Integer elementOne = 16;
 		Integer elementTwo = 12;
 		set.addAll(Arrays.asList(elementOne, elementTwo));
@@ -182,7 +182,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldRemoveGivenIteratorAndIsLastElement() {
 		// Given
-		SortedSet<Long> set = new HashOrderedSetBackedSortedSet<Long>();
+		SortedSet<Long> set = new LinkedSortedSet<Long>();
 		Long elementOne = 3454L;
 		Long elementTwo = 2311L;
 		set.addAll(Arrays.asList(elementOne, elementTwo));
@@ -203,7 +203,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldRemoveGivenIteratorAndIsOnlyElement() {
 		// Given
-		SortedSet<Boolean> set = new HashOrderedSetBackedSortedSet<Boolean>();
+		SortedSet<Boolean> set = new LinkedSortedSet<Boolean>();
 		Boolean element = false;
 		set.add(element);
 		Iterator<Boolean> iterator = set.iterator();
@@ -220,7 +220,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldClear() {
 		// Given
-		SortedSet<Character> set = new HashOrderedSetBackedSortedSet<Character>();
+		SortedSet<Character> set = new LinkedSortedSet<Character>();
 		set.addAll(Arrays.asList('X', 'Y', 'Z'));
 
 		// When
@@ -235,7 +235,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldContainsGivenDoesContainElement() {
 		// Given
-		SortedSet<Double> set = new HashOrderedSetBackedSortedSet<Double>();
+		SortedSet<Double> set = new LinkedSortedSet<Double>();
 		Double element = 12.2d;
 		set.addAll(Arrays.asList(0.1d, element, 0.01d));
 
@@ -249,7 +249,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldContainsGivenDoesNotContainElement() {
 		// Given
-		SortedSet<Character> set = new HashOrderedSetBackedSortedSet<Character>();
+		SortedSet<Character> set = new LinkedSortedSet<Character>();
 		set.addAll(Arrays.asList('X', 'Y', 'Z'));
 
 		// When
@@ -262,7 +262,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldContainsAllGivenDoesContainAll() {
 		// Given
-		SortedSet<Double> set = new HashOrderedSetBackedSortedSet<Double>();
+		SortedSet<Double> set = new LinkedSortedSet<Double>();
 		Double elementOne = 0.1d;
 		Double elementTwo = 12.2d;
 		set.addAll(Arrays.asList(elementOne, elementTwo, 0.01d));
@@ -277,7 +277,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldContainsAllGivenDoesNotContainAll() {
 		// Given
-		SortedSet<Double> set = new HashOrderedSetBackedSortedSet<Double>();
+		SortedSet<Double> set = new LinkedSortedSet<Double>();
 		Double elementOne = 0.1d;
 		Double elementTwo = 12.2d;
 		set.addAll(Arrays.asList(elementOne, elementTwo, 0.01d));
@@ -292,7 +292,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldContainsAllGivenDoesNotContainAny() {
 		// Given
-		SortedSet<Double> set = new HashOrderedSetBackedSortedSet<Double>();
+		SortedSet<Double> set = new LinkedSortedSet<Double>();
 		set.addAll(Arrays.asList(3.2d, 1.2d, 0.01d));
 
 		// When
@@ -305,7 +305,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldComparator() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 
 		// When
 		try {
@@ -321,7 +321,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldSubSet() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 
 		// When
 		try {
@@ -337,7 +337,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldHeadSet() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 
 		// When
 		try {
@@ -353,7 +353,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldTailSet() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 
 		// When
 		try {
@@ -369,7 +369,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldGetFirst() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 		String expectedFirst = "A";
 		set.addAll(Arrays.<Object> asList(expectedFirst, 'b', 1, 0.0, 3L));
 
@@ -383,7 +383,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldGetLast() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 		String expectedLast = "Z";
 		set.addAll(Arrays.<Object> asList('F', 0, null, -2L, expectedLast));
 
@@ -397,7 +397,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldGetAsArray() {
 		// Given
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 		Object[] expectedObjects = new Object[] { 'E', 9, null, -1L, "W" };
 		set.addAll(Arrays.<Object> asList(expectedObjects));
 
@@ -411,7 +411,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldGetAsArrayGivenExistingArray() {
 		// Given
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		LinkedSortedSet<String> set = new LinkedSortedSet<String>();
 		String[] expectedObjects = new String[] { "M", "O", "C", "K" };
 		set.addAll(Arrays.<String> asList(expectedObjects));
 
@@ -425,7 +425,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldRemove() {
 		// Given
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		LinkedSortedSet<String> set = new LinkedSortedSet<String>();
 		String[] expectedObjects = new String[] { "A", "B", "C", "D" };
 		set.addAll(Arrays.<String> asList(expectedObjects));
 
@@ -440,7 +440,7 @@ public class HashOrderedSetBackedSortedSetTest {
 	@Test
 	public void shouldRemoveGivenNotPresent() {
 		// Given
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
+		LinkedSortedSet<String> set = new LinkedSortedSet<String>();
 		String[] expectedObjects = new String[] { "A", "B", "C", "D" };
 		set.addAll(Arrays.<String> asList(expectedObjects));
 

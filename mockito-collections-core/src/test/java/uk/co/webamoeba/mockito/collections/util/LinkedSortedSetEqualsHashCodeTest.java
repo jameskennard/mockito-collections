@@ -10,26 +10,26 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class HashOrderedSetBackedSortedSetEqualsHashCodeTest {
+public class LinkedSortedSetEqualsHashCodeTest {
 
 	@Test
 	public void shouldEqualGivenReflexive() {
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 		boolean equals = set.equals(set);
 		assertTrue(equals);
 	}
 
 	@Test
 	public void shouldNotEqualGivenNull() {
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
 		boolean equals = set.equals(null);
 		assertFalse(equals);
 	}
 
 	@Test
 	public void shouldNotEqualGivenSubClass() {
-		HashOrderedSetBackedSortedSet<Object> set = new HashOrderedSetBackedSortedSet<Object>();
-		HashOrderedSetBackedSortedSet<?> subClassedSet = mock(HashOrderedSetBackedSortedSet.class);
+		LinkedSortedSet<Object> set = new LinkedSortedSet<Object>();
+		LinkedSortedSet<?> subClassedSet = mock(LinkedSortedSet.class);
 
 		boolean equals = set.equals(subClassedSet);
 
@@ -39,8 +39,8 @@ public class HashOrderedSetBackedSortedSetEqualsHashCodeTest {
 	@Test
 	public void shouldEqualGivenSameContents() {
 		List<String> values = Arrays.asList("One", "Two");
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
-		HashOrderedSetBackedSortedSet<String> otherSet = new HashOrderedSetBackedSortedSet<String>();
+		LinkedSortedSet<String> set = new LinkedSortedSet<String>();
+		LinkedSortedSet<String> otherSet = new LinkedSortedSet<String>();
 		set.addAll(values);
 		otherSet.addAll(values);
 
@@ -52,8 +52,8 @@ public class HashOrderedSetBackedSortedSetEqualsHashCodeTest {
 	@Test
 	public void shouldHaveSameHashcodeGivenSameContents() {
 		List<String> values = Arrays.asList("One", "Two");
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
-		HashOrderedSetBackedSortedSet<String> otherSet = new HashOrderedSetBackedSortedSet<String>();
+		LinkedSortedSet<String> set = new LinkedSortedSet<String>();
+		LinkedSortedSet<String> otherSet = new LinkedSortedSet<String>();
 		set.addAll(values);
 		otherSet.addAll(values);
 
@@ -64,8 +64,8 @@ public class HashOrderedSetBackedSortedSetEqualsHashCodeTest {
 
 	@Test
 	public void shouldNotEqualGivenDifferentContents() {
-		HashOrderedSetBackedSortedSet<String> set = new HashOrderedSetBackedSortedSet<String>();
-		HashOrderedSetBackedSortedSet<String> otherSet = new HashOrderedSetBackedSortedSet<String>();
+		LinkedSortedSet<String> set = new LinkedSortedSet<String>();
+		LinkedSortedSet<String> otherSet = new LinkedSortedSet<String>();
 		set.addAll(Arrays.asList("One", "Two"));
 		otherSet.addAll(Arrays.asList("Three", "Four"));
 

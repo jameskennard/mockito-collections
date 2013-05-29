@@ -16,7 +16,7 @@ import java.util.SortedSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException;
-import uk.co.webamoeba.mockito.collections.util.HashOrderedSetBackedSortedSet;
+import uk.co.webamoeba.mockito.collections.util.LinkedSortedSet;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
@@ -43,7 +43,7 @@ public class CollectionFactory {
 	public <T extends Collection<Object>> T createCollection(Class<T> collectionClass, OrderedSet<?> contents) {
 		final T collection;
 		if (collectionClass.equals(SortedSet.class)) {
-			collection = (T) new HashOrderedSetBackedSortedSet();
+			collection = (T) new LinkedSortedSet();
 		} else if (collectionClass.equals(Set.class) || collectionClass.equals(Collection.class)) {
 			collection = (T) new OrderedSet(getInitialCapacity(contents));
 		} else if (collectionClass.equals(List.class)) {
@@ -68,7 +68,7 @@ public class CollectionFactory {
 	private <T> T createCollectionFromUnknownInterface(Class<T> collectionClass, Collection<?> contents) {
 		final Collection<Object> spiedCollection;
 		if (SortedSet.class.isAssignableFrom(collectionClass)) {
-			spiedCollection = new HashOrderedSetBackedSortedSet();
+			spiedCollection = new LinkedSortedSet();
 		} else if (List.class.isAssignableFrom(collectionClass)) {
 			spiedCollection = new ArrayList(getInitialCapacity(contents));
 		} else if (Queue.class.isAssignableFrom(collectionClass)) {
