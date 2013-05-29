@@ -17,7 +17,6 @@ import uk.co.webamoeba.mockito.collections.exception.MockitoCollectionsException
 import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
-import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * Factory that creates {@link InjectionDetails} from an {@link Object} based on {@link ElementType#FIELD field}

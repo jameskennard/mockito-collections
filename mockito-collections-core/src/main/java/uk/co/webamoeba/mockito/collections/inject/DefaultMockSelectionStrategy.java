@@ -3,7 +3,6 @@ package uk.co.webamoeba.mockito.collections.inject;
 import java.util.Collection;
 
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
-import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * The default implementation of {@link MockSelectionStrategy}.

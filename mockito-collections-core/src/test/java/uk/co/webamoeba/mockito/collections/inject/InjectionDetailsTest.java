@@ -11,7 +11,6 @@ import java.util.Set;
 import org.junit.Test;
 
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
-import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * @author James Kennard

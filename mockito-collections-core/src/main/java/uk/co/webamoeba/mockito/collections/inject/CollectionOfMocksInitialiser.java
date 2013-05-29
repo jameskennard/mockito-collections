@@ -14,7 +14,6 @@ import uk.co.webamoeba.mockito.collections.util.AnnotatedFieldRetriever;
 import uk.co.webamoeba.mockito.collections.util.FieldValueMutator;
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
-import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * The {@link CollectionOfMocksInitialiser} is responsible for handling the instantiation of {@link Collection

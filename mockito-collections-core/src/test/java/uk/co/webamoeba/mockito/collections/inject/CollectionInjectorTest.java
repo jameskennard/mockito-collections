@@ -29,7 +29,6 @@ import org.mockito.stubbing.Answer;
 
 import uk.co.webamoeba.mockito.collections.util.GenericCollectionTypeResolver;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
-import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * @author James Kennard

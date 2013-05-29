@@ -7,7 +7,6 @@ import java.util.Set;
 import org.mockito.Mock;
 
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
-import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
  * Describes {@link Object}s that we want to inject into and be injected with {@link Collection}s of {@link Mock Mocks}.
