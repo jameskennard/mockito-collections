@@ -22,8 +22,9 @@
 	<url>https://github.com/jameskennard/mockito-collections</url>
 	
 	<scm>
-		<url>https://github.com/jameskennard/mockito-collections</url>
-		<connection>git://github.com/jameskennard/mockito-collections.git</connection>
+	    <url>scm:git:git://github.com/jameskennard/mockito-collections.git</url>
+		<developerConnection>scm:git:get@github.com:jameskennard/mockito-collections</developerConnection>		
+		<connection>https://github.com/jameskennard/mockito-collections</connection>
 	</scm>
 	
 	<licenses>
