@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * This test shows a typical test where there is a {@link Set} of delegates that return values. Comments are included
- * throughout the file to hellp clarify what's going on.
+ * throughout the file to help clarify what's going on.
  * 
  * @author James Kennard
  */
