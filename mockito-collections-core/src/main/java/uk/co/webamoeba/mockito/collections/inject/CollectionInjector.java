@@ -84,13 +84,14 @@ public class CollectionInjector {
 		Collection collection = null;
 		CollectionOfMocksField collectionOfMocksField = strategy.getCollectionOfMocksField(collectionOfMocksFieldSet,
 				rawType, (Class) collectionType);
+		final OrderedSet strategyInjectables;
 		if (collectionOfMocksField != null) {
-			collection = collectionOfMocksField.getValue();
+			strategyInjectables = new OrderedSet(collectionOfMocksField.getValue());
 		} else {
-			OrderedSet strategyInjectables = strategy.selectMocks(mocks, (Class) collectionType);
-			if (!strategyInjectables.isEmpty()) {
-				collection = collectionFactory.createCollection(rawType, strategyInjectables);
-			}
+			strategyInjectables = strategy.selectMocks(mocks, (Class) collectionType);
+		}
+		if (!strategyInjectables.isEmpty()) {
+			collection = collectionFactory.createCollection(rawType, strategyInjectables);
 		}
 		return collection;
 	}

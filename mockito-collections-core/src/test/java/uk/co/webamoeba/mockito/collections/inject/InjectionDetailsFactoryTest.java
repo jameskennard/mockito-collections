@@ -125,7 +125,7 @@ public class InjectionDetailsFactoryTest {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void shouldCreateInjectionDetailsGivenInjectableCollection() {
+	public void shouldCreateInjectionDetailsGivenCollectionOfMocks() {
 		// Given
 		ClassWithAnnnotations object = new ClassWithAnnnotations();
 		Field collectionOfMocksField = getField(object.getClass(), "mocksField1");

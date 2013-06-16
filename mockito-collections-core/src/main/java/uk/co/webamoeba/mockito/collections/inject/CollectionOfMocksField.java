@@ -8,7 +8,7 @@ import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 
 /**
  * An {@link CollectionOfMocksField} describes a field annotated with {@link CollectionOfMocks}. The {@link #value} of
- * the field is a {@link Collection} that can be injected verbatim into a a field in an object annotated with
+ * the field is a {@link Collection} that can be injected verbatim into a field in an object annotated with
  * {@link InjectMocks}.
  * 
  * @author James Kennard

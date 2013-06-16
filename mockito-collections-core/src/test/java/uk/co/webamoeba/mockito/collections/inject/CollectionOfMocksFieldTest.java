@@ -1,6 +1,8 @@
 package uk.co.webamoeba.mockito.collections.inject;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
@@ -16,12 +18,31 @@ public class CollectionOfMocksFieldTest {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void shouldInstantiate() {
+		// Given
+		Set<Object> value = Collections.emptySet();
+		Class<Set> typeOfCollection = Set.class;
+		Class<Number> typeOfElements = Number.class;
+
+		// When
+		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, typeOfCollection,
+				typeOfElements);
+
+		// Then
+		assertSame(value, collectionOfMocksField.getValue());
+		assertEquals(typeOfCollection, collectionOfMocksField.getTypeOfCollection());
+		assertEquals(typeOfElements, collectionOfMocksField.getTypeOfElements());
+	}
+
+	@Test
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void shouldMatchesGivenSelf() {
 		// Given
 		Set<Object> value = Collections.emptySet();
 		Class<Set> typeOfCollection = Set.class;
 		Class<Object> typeOfElements = Object.class;
-		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, typeOfCollection, typeOfElements);
+		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(value, typeOfCollection,
+				typeOfElements);
 
 		// When
 		boolean matches = collectionOfMocksField.matches(collectionOfMocksField);
@@ -51,8 +72,8 @@ public class CollectionOfMocksFieldTest {
 		// Given
 		CollectionOfMocksField collectionOfMocksField = new CollectionOfMocksField(Collections.emptySet(), Set.class,
 				Number.class);
-		CollectionOfMocksField otherInjectableCollection = new CollectionOfMocksField(Collections.emptyList(), List.class,
-				Number.class);
+		CollectionOfMocksField otherInjectableCollection = new CollectionOfMocksField(Collections.emptyList(),
+				List.class, Number.class);
 
 		// When
 		boolean matches = collectionOfMocksField.matches(otherInjectableCollection);
