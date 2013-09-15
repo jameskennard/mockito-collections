@@ -1,7 +1,6 @@
 package uk.co.webamoeba.mockito.collections.core.integrationtests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -45,7 +44,6 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNotNull(exampleTest.cut.getCollaborators());
 		assertEquals(4, exampleTest.cut.getCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
@@ -64,7 +62,6 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNotNull(exampleTest.cut.getCollaborators());
 		assertEquals(4, exampleTest.cut.getCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
@@ -83,7 +80,6 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNotNull(exampleTest.cut.getCollaborators());
 		assertEquals(4, exampleTest.cut.getCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
@@ -102,7 +98,6 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNotNull(exampleTest.cut.getCollaborators());
 		assertEquals(4, exampleTest.cut.getCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
@@ -121,7 +116,6 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNotNull(exampleTest.cut.getSomeCollaborators());
 		assertEquals(4, exampleTest.cut.getSomeCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.cut.getSomeCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
@@ -129,7 +123,6 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
 		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 
-		assertNotNull(exampleTest.cut.getSomeOtherCollaborators());
 		assertEquals(4, exampleTest.cut.getSomeOtherCollaborators().size());
 		Iterator<EventListener> otherIterator = exampleTest.cut.getSomeOtherCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, otherIterator.next());

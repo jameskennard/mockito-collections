@@ -19,11 +19,8 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWi
 /**
  * <b>Narrative:</b> Inject {@link Collection Collections} (interfaces) of mocks into an {@link Object} under test
  * <p>
- * <b>As a</b> developer<br />
- * <b>I want</b> to inject {@link Collection Collections} of mocks (denoted by the {@link Mock} annotation) into an
- * {@link Object} under test (denoted by an {@link InjectMocks} annotation)<br />
- * <b>So that</b> I can mock the behaviour of the collaborators<br />
- * <b>And</b> validate the behaviour of the {@link Object} under test
+ * <b>In order to</b> test the behaviour of an {@link Object} containing a {@link Collection} of collaborators <br />
+ * <b>We will</b> inject mock {@link Object Objects} (denoted by the {@link Mock} annotation)
  * 
  * @see InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTestStory
  * @author James Kennard
@@ -133,16 +130,4 @@ public interface InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
 	 * @see ClassWithCollectionOfCollaboratorsWithNoGenerics
 	 */
 	public void classOfObjectUnderTestHasCollectionsOfCollaboratorsWithNoGenerics();
-
-	// @formatter:off
-
-	/* TODO Consider these scenarios:
-	 * Abstract Collection
-	 * <b>Scenario:</b> Class of object under test declares an abstract {@link Collection} of collaborators
-	 *
-	 * Extended Collection interface that is not with the plain java library
-	 * <b>Scenario:</b> Class of object under test declares an extended {@link Collection} interface of collaborators
-	 */
-
-	// @formatter:on
 }
