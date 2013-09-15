@@ -11,12 +11,9 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWi
  * <b>Narrative:</b> Inject {@link Collection Collections} of mocks into an {@link Object} under test where there is
  * inheritance in the class under test
  * <p>
- * <b>As a</b> developer<br />
- * <b>I want</b> to inject {@link Collection Collections} of mocks (denoted by the {@link Mock} annotation) into an
- * {@link Object} under test (denoted by an {@link InjectMocks} annotation) where there is inheritance in the class
- * under test<br />
- * <b>So that</b> I can mock the behaviour of all the collaborators<br />
- * <b>And</b> validate the behaviour of the {@link Object} under test
+ * <b>In order to</b> test the behaviour of an {@link Object} containing a {@link Collection} of collaborators in a
+ * super type<br />
+ * <b>We will</b> inject mock {@link Object Objects} (denoted by the {@link Mock} annotation)
  * 
  * @author James Kennard
  */
@@ -31,7 +28,7 @@ public interface InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceIn
 	 * <b>And</b> the test Class defines a number of mocks suitable for the {@link Collection}<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Collection} into the object under test<br />
-	 * <b>And</b> the mocks in the {@link Collection} are in the order they are defined
+	 * <b>And</b> the mocks in the {@link Collection} are in alphabetical order
 	 * 
 	 * @see ClassWithInheritedCollectionOfCollaborators
 	 */
