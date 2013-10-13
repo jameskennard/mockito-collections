@@ -15,19 +15,19 @@ import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithInheritedCollectionOfCollaborators;
 
 public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheClassUnderTestStoryTest implements
-		InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheClassUnderTestStory {
+		InjectCollectionsOfMocksIntoInheritedCollectionsStory {
 
 	@Test
-	public void classOfObjectUnderTestInheritsCollectionOfCollaboratorsFromParentClass() {
+	public void objectUnderTestInheritsCollectionOfCollaborators() {
 		// Given
-		final ClassWithInheritedCollectionOfCollaborators outerCUT = new ClassWithInheritedCollectionOfCollaborators();
+		final ClassWithInheritedCollectionOfCollaborators outerObjectUnderTest = new ClassWithInheritedCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
 		final EventListener outerCollaborator2 = mock(EventListener.class);
 		@SuppressWarnings("unused")
 		Object exampleTest = new Object() {
 
 			@InjectMocks
-			private ClassWithInheritedCollectionOfCollaborators cut = outerCUT;
+			private ClassWithInheritedCollectionOfCollaborators objectUnderTest = outerObjectUnderTest;
 
 			@Mock
 			private EventListener collaborator1 = outerCollaborator1;
@@ -41,8 +41,8 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheC
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertEquals(2, outerCUT.getCollaborators().size());
-		Iterator<EventListener> iterator = outerCUT.getCollaborators().iterator();
+		assertEquals(2, outerObjectUnderTest.getCollaborators().size());
+		Iterator<EventListener> iterator = outerObjectUnderTest.getCollaborators().iterator();
 		assertSame(outerCollaborator1, iterator.next());
 		assertSame(outerCollaborator2, iterator.next());
 	}

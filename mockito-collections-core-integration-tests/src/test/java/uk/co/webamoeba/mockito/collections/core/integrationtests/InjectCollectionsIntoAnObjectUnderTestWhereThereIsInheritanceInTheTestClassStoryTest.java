@@ -16,7 +16,7 @@ import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
 
 public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheTestClassStoryTest implements
-		InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheTestClassStory {
+		InjectCollectionOfInheritedMocksStory {
 
 	@Test
 	public void testClassInheritsSomeMocksFromAParentTestClass() {
@@ -52,7 +52,7 @@ public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheT
 	}
 
 	@Test
-	public void testClassInheritsSomeMocksFromAParentTestClassWithTheSameNames() {
+	public void testClassInheritsSomeMocksWithTheSameNamesFromAParentTestClass() {
 		// Given
 		final ClassWithCollectionOfCollaborators outerCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
