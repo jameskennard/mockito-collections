@@ -17,89 +17,65 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaboratorsWithNoGenerics;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithListOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithMoreThanOneCollectionOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithQueueOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSetOfCollaborators;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSortedSetOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.HasCollaborators;
 
 /**
- * Integration test intended to exercise the scenarios set out in the story <b>
- * {@link InjectCollectionsOfMocksIntoAnObjectUnderTestStory Inject Collections (interfaces) of mocks into an Object
- * under test}</b>.
+ * Integration test intended to exercise the scenarios set out in the story <b> {@link InjectCollectionsOfMocksStory
+ * Inject Collections (interfaces) of mocks into an Object under test}</b>.
  * 
  * @author James Kennard
  */
-public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest implements
-		InjectCollectionsOfMocksIntoAnObjectUnderTestStory {
+public class InjectCollectionsOfMocksStoryIntegrationTest implements InjectCollectionsOfMocksStory {
 
 	@Test
-	public void classOfObjectUnderTestHasListOfCollaborators() {
-		// Given
+	public void objectUnderTestHasCollectionOfCollaborators() {
+		ExampleTest<ClassWithCollectionOfCollaborators> exampleTest = new ExampleTest<ClassWithCollectionOfCollaborators>();
+		exampleTest.objectUnderTest = new ClassWithCollectionOfCollaborators();
+		assertInjectsCollectionsOfMocks(exampleTest);
+	}
+
+	@Test
+	public void objectUnderTestHasListOfCollaborators() {
 		ExampleTest<ClassWithListOfCollaborators> exampleTest = new ExampleTest<ClassWithListOfCollaborators>();
-		exampleTest.cut = new ClassWithListOfCollaborators();
-
-		// When
-		MockitoCollections.initialise(exampleTest);
-
-		// Then
-		assertEquals(4, exampleTest.cut.getCollaborators().size());
-		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
-		assertSame(exampleTest.collaborator1, iterator.next());
-		assertSame(exampleTest.collaborator2, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
+		exampleTest.objectUnderTest = new ClassWithListOfCollaborators();
+		assertInjectsCollectionsOfMocks(exampleTest);
 	}
 
 	@Test
-	public void classOfObjectUnderTestHasSetOfCollaborators() {
-		// Given
+	public void objectUnderTestHasSetOfCollaborators() {
 		ExampleTest<ClassWithSetOfCollaborators> exampleTest = new ExampleTest<ClassWithSetOfCollaborators>();
-		exampleTest.cut = new ClassWithSetOfCollaborators();
-
-		// When
-		MockitoCollections.initialise(exampleTest);
-
-		// Then
-		assertEquals(4, exampleTest.cut.getCollaborators().size());
-		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
-		assertSame(exampleTest.collaborator1, iterator.next());
-		assertSame(exampleTest.collaborator2, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
+		exampleTest.objectUnderTest = new ClassWithSetOfCollaborators();
+		assertInjectsCollectionsOfMocks(exampleTest);
 	}
 
 	@Test
-	public void classOfObjectUnderTestHasSortedSetOfCollaborators() {
-		// Given
+	public void objectUnderTestHasSortedSetOfCollaborators() {
 		ExampleTest<ClassWithSortedSetOfCollaborators> exampleTest = new ExampleTest<ClassWithSortedSetOfCollaborators>();
-		exampleTest.cut = new ClassWithSortedSetOfCollaborators();
-
-		// When
-		MockitoCollections.initialise(exampleTest);
-
-		// Then
-		assertEquals(4, exampleTest.cut.getCollaborators().size());
-		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
-		assertSame(exampleTest.collaborator1, iterator.next());
-		assertSame(exampleTest.collaborator2, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
+		exampleTest.objectUnderTest = new ClassWithSortedSetOfCollaborators();
+		assertInjectsCollectionsOfMocks(exampleTest);
 	}
 
 	@Test
-	public void classOfObjectUnderTestHasQueueOfCollaborators() {
-		// Given
+	public void objectUnderTestHasQueueOfCollaborators() {
 		ExampleTest<ClassWithQueueOfCollaborators> exampleTest = new ExampleTest<ClassWithQueueOfCollaborators>();
-		exampleTest.cut = new ClassWithQueueOfCollaborators();
+		exampleTest.objectUnderTest = new ClassWithQueueOfCollaborators();
+		assertInjectsCollectionsOfMocks(exampleTest);
+	}
 
+	public <T extends HasCollaborators<EventListener>> void assertInjectsCollectionsOfMocks(ExampleTest<T> exampleTest) {
 		// When
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertEquals(4, exampleTest.cut.getCollaborators().size());
-		Iterator<EventListener> iterator = exampleTest.cut.getCollaborators().iterator();
+		assertEquals(4, exampleTest.objectUnderTest.getCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.objectUnderTest.getCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
 		assertSame(exampleTest.collaborator2, iterator.next());
 		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
@@ -107,37 +83,38 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 	}
 
 	@Test
-	public void classOfObjectUnderTestHasMoreThanOneCollectionOfCollaborators() {
+	public void objectUnderTestHasMoreThanOneCollectionOfCollaborators() {
 		// Given
 		ExampleTest<ClassWithMoreThanOneCollectionOfCollaborators> exampleTest = new ExampleTest<ClassWithMoreThanOneCollectionOfCollaborators>();
-		exampleTest.cut = new ClassWithMoreThanOneCollectionOfCollaborators();
+		exampleTest.objectUnderTest = new ClassWithMoreThanOneCollectionOfCollaborators();
 
 		// When
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertEquals(4, exampleTest.cut.getSomeCollaborators().size());
-		Iterator<EventListener> iterator = exampleTest.cut.getSomeCollaborators().iterator();
+		assertEquals(4, exampleTest.objectUnderTest.getSomeCollaborators().size());
+		Iterator<EventListener> iterator = exampleTest.objectUnderTest.getSomeCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
 		assertSame(exampleTest.collaborator2, iterator.next());
 		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
 		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 
-		assertEquals(4, exampleTest.cut.getSomeOtherCollaborators().size());
-		Iterator<EventListener> otherIterator = exampleTest.cut.getSomeOtherCollaborators().iterator();
+		assertEquals(4, exampleTest.objectUnderTest.getSomeOtherCollaborators().size());
+		Iterator<EventListener> otherIterator = exampleTest.objectUnderTest.getSomeOtherCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, otherIterator.next());
 		assertSame(exampleTest.collaborator2, otherIterator.next());
 		assertSame(exampleTest.subTypeCollaborator1, otherIterator.next());
 		assertSame(exampleTest.subTypeCollaborator2, otherIterator.next());
 
-		assertNotSame(exampleTest.cut.getSomeCollaborators(), exampleTest.cut.getSomeOtherCollaborators());
+		assertNotSame(exampleTest.objectUnderTest.getSomeCollaborators(),
+				exampleTest.objectUnderTest.getSomeOtherCollaborators());
 	}
 
 	@Test
-	public void classOfObjectUnderTestHasNoCollectionsOfCollaborators() {
+	public void objectUnderTestHasNoCollectionsOfCollaborators() {
 		// Given
 		ExampleTest<Object> exampleTest = new ExampleTest<Object>();
-		exampleTest.cut = new Object();
+		exampleTest.objectUnderTest = new Object();
 
 		// When
 		MockitoCollections.initialise(exampleTest);
@@ -150,19 +127,19 @@ public class InjectCollectionsOfMocksIntoAnObjectUnderTestStoryIntegrationTest i
 	public void classOfObjectUnderTestHasCollectionsOfCollaboratorsWithNoGenerics() {
 		// Given
 		ExampleTest<ClassWithCollectionOfCollaboratorsWithNoGenerics> exampleTest = new ExampleTest<ClassWithCollectionOfCollaboratorsWithNoGenerics>();
-		exampleTest.cut = new ClassWithCollectionOfCollaboratorsWithNoGenerics();
+		exampleTest.objectUnderTest = new ClassWithCollectionOfCollaboratorsWithNoGenerics();
 
 		// When
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNull(exampleTest.cut.getCollaborators());
+		assertNull(exampleTest.objectUnderTest.getCollaborators());
 	}
 
-	private class ExampleTest<CUT> {
+	private class ExampleTest<T> {
 
 		@InjectMocks
-		private CUT cut;
+		private T objectUnderTest;
 
 		@Mock
 		private EventListener collaborator1 = mock(EventListener.class);
