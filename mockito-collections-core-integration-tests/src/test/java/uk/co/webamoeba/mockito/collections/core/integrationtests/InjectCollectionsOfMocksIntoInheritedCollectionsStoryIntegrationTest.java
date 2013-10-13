@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithInheritedCollectionOfCollaborators;
 
-public class InjectCollectionsIntoAnObjectUnderTestWhereThereIsInheritanceInTheClassUnderTestStoryTest implements
+public class InjectCollectionsOfMocksIntoInheritedCollectionsStoryIntegrationTest implements
 		InjectCollectionsOfMocksIntoInheritedCollectionsStory {
 
 	@Test

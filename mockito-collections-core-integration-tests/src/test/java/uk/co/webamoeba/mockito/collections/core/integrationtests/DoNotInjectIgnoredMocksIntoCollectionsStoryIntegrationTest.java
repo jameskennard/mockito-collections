@@ -13,30 +13,30 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
-import uk.co.webamoeba.mockito.collections.annotation.IgnoreMockForCollections;
+import uk.co.webamoeba.mockito.collections.annotation.IgnoreForCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
 
-public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTest implements
-		InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStory {
+public class DoNotInjectIgnoredMocksIntoCollectionsStoryIntegrationTest implements
+		DoNotInjectIgnoredMocksIntoCollectionsStory {
 
 	@Test
-	public void allMocksHaveTheIgnoreMockForCollectionsAnnotation() {
+	public void allMocksHaveTheIgnoreForCollectionsAnnotation() {
 		// Given
-		final ClassWithCollectionOfCollaborators outterCUT = new ClassWithCollectionOfCollaborators();
+		final ClassWithCollectionOfCollaborators outerObjectUnderTest = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
 		final EventListener outerCollaborator2 = mock(EventListener.class);
 		@SuppressWarnings("unused")
 		Object exampleTest = new Object() {
 
 			@InjectMocks
-			ClassWithCollectionOfCollaborators cut = outterCUT;
+			ClassWithCollectionOfCollaborators objectUnderTest = outerObjectUnderTest;
 
 			@Mock
-			@IgnoreMockForCollections
+			@IgnoreForCollections
 			private EventListener collaborator1 = outerCollaborator1;
 
 			@Mock
-			@IgnoreMockForCollections
+			@IgnoreForCollections
 			private EventListener collaborator2 = outerCollaborator2;
 
 		};
@@ -45,25 +45,25 @@ public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTe
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNull(outterCUT.getCollaborators());
+		assertNull(outerObjectUnderTest.getCollaborators());
 	}
 
 	public void someMocksHaveTheIgnoreMockForCollectionsAnnotation() {
 		// Given
-		final ClassWithCollectionOfCollaborators outterCUT = new ClassWithCollectionOfCollaborators();
+		final ClassWithCollectionOfCollaborators outerObjectUnderTest = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
 		final EventListener outerCollaborator2 = mock(EventListener.class);
 		@SuppressWarnings("unused")
 		Object exampleTest = new Object() {
 
 			@InjectMocks
-			ClassWithCollectionOfCollaborators cut = outterCUT;
+			ClassWithCollectionOfCollaborators objectUnderTest = outerObjectUnderTest;
 
 			@Mock
 			private EventListener collaborator1 = outerCollaborator1;
 
 			@Mock
-			@IgnoreMockForCollections
+			@IgnoreForCollections
 			private EventListener collaborator2 = outerCollaborator2;
 
 		};
@@ -72,9 +72,9 @@ public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTe
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertNotNull(outterCUT.getCollaborators());
-		assertEquals(1, outterCUT.getCollaborators().size());
-		assertSame(outerCollaborator1, outterCUT.getCollaborators().iterator().next());
+		assertNotNull(outerObjectUnderTest.getCollaborators());
+		assertEquals(1, outerObjectUnderTest.getCollaborators().size());
+		assertSame(outerCollaborator1, outerObjectUnderTest.getCollaborators().iterator().next());
 	}
 
 }
