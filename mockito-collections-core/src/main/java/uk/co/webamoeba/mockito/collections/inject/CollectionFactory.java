@@ -4,8 +4,6 @@ import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,9 +54,10 @@ public class CollectionFactory {
 			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass
 					+ ", the type is abstract");
 		} else {
-			collection = createCollectionUsingReflection(collectionClass, contents);
+			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass
+					+ ", do not know how to instantiate");
 		}
-		if (contents != null && collection != null) {
+		if (contents != null) {
 			collection.addAll(contents);
 		}
 		return collection;
@@ -80,76 +79,6 @@ public class CollectionFactory {
 				spiedCollection.getClass(),
 				withSettings().spiedInstance(spiedCollection).defaultAnswer(CALLS_REAL_METHODS)
 						.extraInterfaces(collectionClass));
-	}
-
-	private <T extends Collection<Object>> T createCollectionUsingReflection(Class<T> collectionClass,
-			Collection<?> contents) {
-		final T collection;
-		try {
-			Constructor<T> constructor = getDefaultConstructor(collectionClass);
-			if (constructor != null) {
-				collection = constructor.newInstance();
-			} else {
-				constructor = getInitialCapacityConstructor(collectionClass);
-				if (constructor != null) {
-					collection = constructor.newInstance(getInitialCapacity(contents));
-				} else {
-					throw new MockitoCollectionsException(
-							"Could not create collection of type "
-									+ collectionClass
-									+ " could not find a default constructor"
-									+ " or a constructor with an integer initial capacity"
-									+ " (this can happen if there are available constructors but the class is a non-static nested class/inner class"
-									+ " or if the available constructors are not visible)");
-				}
-			}
-		} catch (InvocationTargetException e) {
-			// Occurs if the invoked constructor throws an exception
-			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass + "\n"
-					+ e.getMessage(), e);
-		} catch (InstantiationException e) {
-			// Should never happen (we have protection against abstract classes)
-			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass + "\n"
-					+ e.getMessage(), e);
-		} catch (IllegalAccessException e) {
-			throw new MockitoCollectionsException("Could not create collection of type " + collectionClass + "\n"
-					+ e.getMessage(), e);
-		}
-		if (Set.class.isAssignableFrom(collectionClass)) {
-			System.out
-					.println("[WARN] Mockito-Collections cannot gaurantee order of elements in injected collection of type "
-							+ collectionClass);
-		}
-		return collection;
-	}
-
-	private <T extends Collection<Object>> Constructor<T> getDefaultConstructor(Class<T> collectionClass) {
-		Constructor<T> constructor = null;
-		try {
-			constructor = collectionClass.getDeclaredConstructor();
-		} catch (SecurityException e) {
-			System.out
-					.println("[WARN] Mockito-Collections SecurityManager prevented access to default constructor for "
-							+ collectionClass);
-		} catch (NoSuchMethodException e) {
-			System.out.println("[WARN] Mockito-Collections there is no default constructor for " + collectionClass);
-		}
-		return constructor;
-	}
-
-	private <T extends Collection<Object>> Constructor<T> getInitialCapacityConstructor(Class<T> collectionClass) {
-		Constructor<T> constructor = null;
-		try {
-			constructor = collectionClass.getDeclaredConstructor(Integer.TYPE);
-		} catch (SecurityException e) {
-			System.out
-					.println("[WARN] Mockito-Collections SecurityManager prevented access to default constructor for "
-							+ collectionClass);
-		} catch (NoSuchMethodException e) {
-			System.out.println("[WARN] Mockito-Collections there is no initial capacity constructor for "
-					+ collectionClass);
-		}
-		return constructor;
 	}
 
 	/**

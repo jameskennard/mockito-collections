@@ -3,19 +3,15 @@ package uk.co.webamoeba.mockito.collections.inject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import org.junit.Test;
 import org.mockito.internal.util.MockUtil;
@@ -84,21 +80,6 @@ public class CollectionFactoryTest {
 	}
 
 	@Test
-	public void shouldCreateCollectionGivenSpecificTypeWithDefaultConstructor() {
-		shouldCreateCollection(HashSet.class);
-	}
-
-	@Test
-	public void shouldCreateCollectionGivenSpecificTypeAndContentsAndTypeHasDefaultConstructor() {
-		shouldCreateCollectionGivenContents(LinkedList.class);
-	}
-
-	@Test
-	public void shouldCreateCollectionGivenSpecificTypeWithInitialCapcityConstructor() {
-		shouldCreateCollection(InitialCapacityArrayList.class);
-	}
-
-	@Test
 	public void shouldCreateCollectionGivenSubInterfaceOfSet() {
 		Collection<Object> collection = shouldCreateCollectionGivenContents(ExtendedSetInterface.class);
 		assertIsMockWithSpiedIntanceOf(collection, OrderedSet.class);
@@ -129,11 +110,6 @@ public class CollectionFactoryTest {
 	}
 
 	@Test
-	public void shouldCreateCollectionGivenHasInitialCapacityConstructor() {
-		shouldCreateCollectionGivenContents(ArrayBlockingQueue.class);
-	}
-
-	@Test
 	@SuppressWarnings("rawtypes")
 	public void shouldFailToCreateCollectionGivenAbstractImplementationOfCollection() {
 		// Given
@@ -158,50 +134,8 @@ public class CollectionFactoryTest {
 		Exception exception = createCollectionAndCatchException(collectionClass, contents);
 
 		// Then
-		assertTrue(exception.getMessage().contains("default constructor"));
-		assertTrue(exception.getMessage().contains("initial capacity"));
-	}
-
-	@Test
-	@SuppressWarnings("rawtypes")
-	public void shouldFailToCreateCollectionGivenNonStaticNestedClassOrInnerClass() {
-		// Given
-		Class<InnerArrayList> collectionClass = InnerArrayList.class;
-		OrderedSet<Object> contents = null;
-
-		// When
-		Exception exception = createCollectionAndCatchException(collectionClass, contents);
-
-		// Then
-		assertTrue(exception.getMessage().contains("constructors are not visible"));
-	}
-
-	@Test
-	@SuppressWarnings("rawtypes")
-	public void shouldFailToCreateCollectionGivenExceptionThrownByConstructor() {
-		// Given
-		Class<ExplosiveCollection> collectionClass = ExplosiveCollection.class;
-		OrderedSet<Object> contents = null;
-
-		// When
-		Exception exception = createCollectionAndCatchException(collectionClass, contents);
-
-		// Then
-		assertTrue(exception.getCause().getClass().equals(InvocationTargetException.class));
-	}
-
-	@Test
-	@SuppressWarnings("rawtypes")
-	public void shouldFailToCreateCollectionGivenConstructorIsPrivate() {
-		// Given
-		Class<PrivateCollection> collectionClass = PrivateCollection.class;
-		OrderedSet<Object> contents = null;
-
-		// When
-		Exception exception = createCollectionAndCatchException(collectionClass, contents);
-
-		// Then
-		assertTrue(exception.getCause().getClass().equals(IllegalAccessException.class));
+		assertTrue(exception.getMessage().contains("Could not create collection"));
+		assertTrue(exception.getMessage().contains("do not know how to instantiate"));
 	}
 
 	private <T extends Collection<Object>> Collection<Object> shouldCreateCollection(Class<T> clazz) {
@@ -261,37 +195,11 @@ public class CollectionFactoryTest {
 	public interface ExtendedCollectionInterface<T> extends Collection<T> {
 	}
 
-	public static class InitialCapacityArrayList<E extends Object> extends ArrayList<E> {
-
-		private static final long serialVersionUID = 1L;
-
-		public InitialCapacityArrayList(int initialCapacity) {
-			super(initialCapacity);
-		}
-	}
-
 	public static class ArrayListWithNoDefaultOrInitialCapacityConstructor<E extends Object> extends ArrayList<E> {
 
 		private static final long serialVersionUID = 1L;
 
 		public ArrayListWithNoDefaultOrInitialCapacityConstructor(String someMarvellouseConstructor) {
-		}
-	}
-
-	public class InnerArrayList<E extends Object> extends ArrayList<E> {
-
-		private static final long serialVersionUID = 1L;
-
-		public InnerArrayList() {
-		}
-	}
-
-	public static class ExplosiveCollection<E extends Object> extends ArrayList<E> {
-
-		private static final long serialVersionUID = 1L;
-
-		public ExplosiveCollection() {
-			throw new RuntimeException("Explode!");
 		}
 	}
 
