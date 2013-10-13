@@ -6,11 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 
-import java.text.DateFormat;
 import java.util.EventListener;
-import java.util.EventListenerProxy;
 import java.util.Iterator;
-import java.util.Observer;
 
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -74,12 +71,10 @@ public class InjectCollectionsOfMocksStoryIntegrationTest implements InjectColle
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertEquals(4, exampleTest.objectUnderTest.getCollaborators().size());
+		assertEquals(2, exampleTest.objectUnderTest.getCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.objectUnderTest.getCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
 		assertSame(exampleTest.collaborator2, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 	}
 
 	@Test
@@ -92,19 +87,15 @@ public class InjectCollectionsOfMocksStoryIntegrationTest implements InjectColle
 		MockitoCollections.initialise(exampleTest);
 
 		// Then
-		assertEquals(4, exampleTest.objectUnderTest.getSomeCollaborators().size());
+		assertEquals(2, exampleTest.objectUnderTest.getSomeCollaborators().size());
 		Iterator<EventListener> iterator = exampleTest.objectUnderTest.getSomeCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, iterator.next());
 		assertSame(exampleTest.collaborator2, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator1, iterator.next());
-		assertSame(exampleTest.subTypeCollaborator2, iterator.next());
 
-		assertEquals(4, exampleTest.objectUnderTest.getSomeOtherCollaborators().size());
+		assertEquals(2, exampleTest.objectUnderTest.getSomeOtherCollaborators().size());
 		Iterator<EventListener> otherIterator = exampleTest.objectUnderTest.getSomeOtherCollaborators().iterator();
 		assertSame(exampleTest.collaborator1, otherIterator.next());
 		assertSame(exampleTest.collaborator2, otherIterator.next());
-		assertSame(exampleTest.subTypeCollaborator1, otherIterator.next());
-		assertSame(exampleTest.subTypeCollaborator2, otherIterator.next());
 
 		assertNotSame(exampleTest.objectUnderTest.getSomeCollaborators(),
 				exampleTest.objectUnderTest.getSomeOtherCollaborators());
@@ -146,20 +137,6 @@ public class InjectCollectionsOfMocksStoryIntegrationTest implements InjectColle
 
 		@Mock
 		private EventListener collaborator2 = mock(EventListener.class);
-
-		@Mock
-		private EventListenerProxy subTypeCollaborator1 = mock(EventListenerProxy.class);
-
-		@Mock
-		private EventListenerProxy subTypeCollaborator2 = mock(EventListenerProxy.class);
-
-		@Mock
-		@SuppressWarnings("unused")
-		private Observer uninterestingMock = mock(Observer.class);
-
-		@Mock
-		@SuppressWarnings("unused")
-		private DateFormat anotherUninterestingMock = mock(DateFormat.class);
 
 	};
 

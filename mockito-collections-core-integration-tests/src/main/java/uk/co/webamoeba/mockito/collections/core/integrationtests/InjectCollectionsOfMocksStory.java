@@ -32,12 +32,10 @@ public interface InjectCollectionsOfMocksStory {
 	 * <p>
 	 * <b>Given</b> an {@link Object} under test (denoted by an {@link InjectMocks} annotation)<br />
 	 * <b>And</b> the {@link Object} under test has a {@link List} of collaborators with generics<br />
-	 * <b>And</b> the test Class defines mocks of the exact generic type<br />
-	 * <b>And</b> the test Class defines mocks of a subtype of the generic type<br />
-	 * <b>And</b> the test Class defines mocks of a different type to the generic type<br />
+	 * <b>And</b> the test Class defines mocks suitable types<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Collection} into the {@link Object} under test<br />
-	 * <b>And</b> the mocks in the {@link List} are in alphabetical order
+	 * <b>And</b> the mocks in the {@link Collection} are in alphabetical order
 	 * 
 	 * @see ClassWithListOfCollaborators
 	 */
@@ -48,9 +46,7 @@ public interface InjectCollectionsOfMocksStory {
 	 * <p>
 	 * <b>Given</b> an {@link Object} under test (denoted by an {@link InjectMocks} annotation)<br />
 	 * <b>And</b> the {@link Object} under test has a {@link List} of collaborators with generics<br />
-	 * <b>And</b> the test Class defines mocks of the exact generic type<br />
-	 * <b>And</b> the test Class defines mocks of a subtype of the generic type<br />
-	 * <b>And</b> the test Class defines mocks of a different type to the generic type<br />
+	 * <b>And</b> the test Class defines mocks suitable types<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link List} into the {@link Object} under test<br />
 	 * <b>And</b> the mocks in the {@link List} are in alphabetical order
@@ -64,9 +60,7 @@ public interface InjectCollectionsOfMocksStory {
 	 * <p>
 	 * <b>Given</b> an object under test (denoted by an {@link InjectMocks} annotation)<br />
 	 * <b>And</b> the {@link Object} under test has a {@link Set} of collaborators with generics<br />
-	 * <b>And</b> the test Class defines mocks of the exact generic type<br />
-	 * <b>And</b> the test Class defines mocks of a subtype of the generic type<br />
-	 * <b>And</b> the test Class defines mocks of a different type to the generic type<br />
+	 * <b>And</b> the test Class defines mocks suitable types<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Set} into the {@link Object} under test<br />
 	 * <b>And</b> the mocks in the {@link Set} are in alphabetical order
@@ -80,9 +74,7 @@ public interface InjectCollectionsOfMocksStory {
 	 * <p>
 	 * <b>Given</b> an {@link Object} under test (denoted by an {@link InjectMocks} annotation)<br />
 	 * <b>And</b> the {@link Object} under test has a {@link SortedSet} of collaborators with generics<br />
-	 * <b>And</b> the test Class defines mocks of the exact generic type<br />
-	 * <b>And</b> the test Class defines mocks of a subtype of the generic type<br />
-	 * <b>And</b> the test Class defines mocks of a different type to the generic type<br />
+	 * <b>And</b> the test Class defines mocks suitable types<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link SortedSet} into the {@link Object} under test<br />
 	 * <b>And</b> the mocks in the {@link SortedSet} are in alphabetical order<br />
@@ -96,9 +88,7 @@ public interface InjectCollectionsOfMocksStory {
 	 * <p>
 	 * <b>Given</b> an {@link Object} under test (denoted by an {@link InjectMocks} annotation)<br />
 	 * <b>And</b> the {@link Object} under test has one {@link Queue} of collaborators with generics<br />
-	 * <b>And</b> the test Class defines mocks of the exact generic type<br />
-	 * <b>And</b> the test Class defines mocks of a subtype of the generic type<br />
-	 * <b>And</b> the test Class defines mocks of a different type to the generic type<br />
+	 * <b>And</b> the test Class defines mocks suitable types<br />
 	 * <b>When</b> I setup the test<br />
 	 * <b>Then</b> the mocks are injected as a {@link Queue} into the object under test<br />
 	 * <b>And</b> the mocks in the {@link Queue} are in alphabetical order
