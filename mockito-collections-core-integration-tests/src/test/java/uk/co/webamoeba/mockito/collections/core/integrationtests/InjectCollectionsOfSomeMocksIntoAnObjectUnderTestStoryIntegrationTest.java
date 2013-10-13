@@ -20,7 +20,7 @@ public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTe
 		InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStory {
 
 	@Test
-	public void allMocksHaveTheIgnoreInjectableAnnotation() {
+	public void allMocksHaveTheIgnoreMockForCollectionsAnnotation() {
 		// Given
 		final ClassWithCollectionOfCollaborators outterCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
@@ -48,7 +48,7 @@ public class InjectCollectionsOfSomeMocksIntoAnObjectUnderTestStoryIntegrationTe
 		assertNull(outterCUT.getCollaborators());
 	}
 
-	public void someMocksHaveTheIgnoreInjectableAnnotation() {
+	public void someMocksHaveTheIgnoreMockForCollectionsAnnotation() {
 		// Given
 		final ClassWithCollectionOfCollaborators outterCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
