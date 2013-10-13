@@ -53,10 +53,10 @@ In an ideal scenario, we would be able to rely on the MockitoJUnitRunner to deal
 Ignoring a Mock when injecting into a Collection
 ------------------------------------------------
 
-Fields annotated with the @Mock annotation are considered for injection into Collection fields. It is possible to prevent a field annotated with @Mock being considered for this purpose using the @IgnoreMockForCollections annotation. 
+Fields annotated with the @Mock annotation are considered for injection into Collection fields. It is possible to prevent a field annotated with @Mock being considered for this purpose using the @IgnoreForCollections annotation. 
 
     @Mock
-    @IgnoreMockForCollections
+    @IgnoreForCollections
     private MyListener listener1;
 
 Verbatim Collections
