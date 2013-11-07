@@ -13,7 +13,7 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
  * 
  * @author James Kennard
  */
-public interface MockSelectionStrategy {
+public interface SelectionStrategy {
 
 	/**
 	 * Selects the {@link Mock Mocks} from the provided {@link Set} of {@link Mock Mocks} that can be injected into a
@@ -22,10 +22,10 @@ public interface MockSelectionStrategy {
 	 * <code>null</code></b>.
 	 * 
 	 * @param mocks
-	 * @param mockClass
+	 * @param clazz
 	 * @return The {@link Mock Mocks} that are of the specified type.
 	 */
-	public <T> OrderedSet<T> selectMocks(OrderedSet<Object> mocks, Class<T> mockClass);
+	public <T> OrderedSet<T> select(OrderedSet<Object> mocks, OrderedSet<Object> spies, Class<T> clazz);
 
 	/**
 	 * Gets the {@link CollectionOfMocksField} from the provided {@link CollectionOfMocksFieldSet} that matches the

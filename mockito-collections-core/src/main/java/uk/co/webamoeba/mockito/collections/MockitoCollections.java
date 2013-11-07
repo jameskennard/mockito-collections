@@ -55,12 +55,26 @@ public class MockitoCollections {
 	/**
 	 * {@link Initialiser#initialise(Object)}
 	 * 
-	 * @param object
+	 * @param object - The object (containing JUnit tests) to initialize
+	 * @param inclusive - Include MockitoAnnotations.initMocks
+	 */
+	public static void initialise(Object object, boolean inclusive) {
+		if (inclusive){
+			MockitoAnnotations.initMocks(object);
+		}
+		INITIALISER.initialise(object);
+	}
+
+	/**
+	 * {@link Initialiser#initialise(Object)}
+	 * 
+	 * @param object - The object (containing JUnit tests) to initialize
 	 */
 	public static void initialise(Object object) {
 		INITIALISER.initialise(object);
 	}
 
+	
 	/**
 	 * {@link Verifier#collectiveVerify(Class, Collection)}
 	 * 

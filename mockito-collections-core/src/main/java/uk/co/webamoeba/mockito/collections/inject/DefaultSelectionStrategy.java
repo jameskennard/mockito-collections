@@ -5,16 +5,21 @@ import java.util.Collection;
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
- * The default implementation of {@link MockSelectionStrategy}.
+ * The default implementation of {@link SelectionStrategy}.
  * 
  * @author James Kennard
  */
-public class DefaultMockSelectionStrategy implements MockSelectionStrategy {
+public class DefaultSelectionStrategy implements SelectionStrategy {
 
 	@SuppressWarnings("unchecked")
-	public <T> OrderedSet<T> selectMocks(OrderedSet<Object> mocks, Class<T> mockClass) {
+	public <T> OrderedSet<T> select(OrderedSet<Object> mocks, OrderedSet<Object> spies, Class<T> mockClass) {
 		OrderedSet<T> matchingMocks = new OrderedSet<T>();
 		for (Object object : mocks) {
+			if (mockClass.isAssignableFrom(object.getClass())) {
+				matchingMocks.add((T) object);
+			}
+		}
+		for (Object object : spies) {
 			if (mockClass.isAssignableFrom(object.getClass())) {
 				matchingMocks.add((T) object);
 			}
