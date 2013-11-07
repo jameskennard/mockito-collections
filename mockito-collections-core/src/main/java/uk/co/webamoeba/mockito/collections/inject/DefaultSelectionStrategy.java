@@ -12,14 +12,9 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 public class DefaultSelectionStrategy implements SelectionStrategy {
 
 	@SuppressWarnings("unchecked")
-	public <T> OrderedSet<T> select(OrderedSet<Object> mocks, OrderedSet<Object> spies, Class<T> mockClass) {
+	public <T> OrderedSet<T> select(OrderedSet<Object> mocksAndSpies, Class<T> mockClass) {
 		OrderedSet<T> matchingMocks = new OrderedSet<T>();
-		for (Object object : mocks) {
-			if (mockClass.isAssignableFrom(object.getClass())) {
-				matchingMocks.add((T) object);
-			}
-		}
-		for (Object object : spies) {
+		for (Object object : mocksAndSpies) {
 			if (mockClass.isAssignableFrom(object.getClass())) {
 				matchingMocks.add((T) object);
 			}

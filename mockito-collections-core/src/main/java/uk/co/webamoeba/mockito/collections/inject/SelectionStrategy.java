@@ -21,11 +21,11 @@ public interface SelectionStrategy {
 	 * {@link Mock Mocks}, this method will return an empty {@link Set}. <b>This method must never return
 	 * <code>null</code></b>.
 	 * 
-	 * @param mocks
+	 * @param mocksAndSpies
 	 * @param clazz
 	 * @return The {@link Mock Mocks} that are of the specified type.
 	 */
-	public <T> OrderedSet<T> select(OrderedSet<Object> mocks, OrderedSet<Object> spies, Class<T> clazz);
+	public <T> OrderedSet<T> select(OrderedSet<Object> mocksAndSpies, Class<T> clazz);
 
 	/**
 	 * Gets the {@link CollectionOfMocksField} from the provided {@link CollectionOfMocksFieldSet} that matches the

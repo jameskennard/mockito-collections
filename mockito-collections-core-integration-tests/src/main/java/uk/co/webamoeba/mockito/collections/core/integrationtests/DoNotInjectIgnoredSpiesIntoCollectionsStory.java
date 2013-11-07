@@ -18,9 +18,9 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWi
  * <b>And</b> Spy the behaviour of the collaborator<br />
  * <b>And</b> validate the behaviour of the {@link Object} under test
  * 
- * @author James Kennard
+ * @author Matt Reines
  */
-public interface InjectCollectionsOfSomeSpiesIntoAnObjectUnderTestStory {
+public interface DoNotInjectIgnoredSpiesIntoCollectionsStory {
 
 	/**
 	 * <b>Scenario:</b> All {@link Spy Spys} have the {@link IgnoreForCollections} annotation

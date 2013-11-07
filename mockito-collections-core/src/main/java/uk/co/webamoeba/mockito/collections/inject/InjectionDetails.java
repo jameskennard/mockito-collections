@@ -19,40 +19,32 @@ public class InjectionDetails {
 	private Set<Object> injectCollections;
 
 	private OrderedSet<Object> mocks;
-	
-	private OrderedSet<Object> spies;
 
 	private CollectionOfMocksFieldSet collectionOfMocksFieldSet;
 
 	/**
 	 * @param injectCollections
 	 *            {@link Object}s into which we want to inject {@link Collection}s of mocks.
-	 * @param mocks
-	 *            {@link Object}s that can be injected into {@link Collection}s in the injectCollections.
-	 * @param spies
+	 * @param mocksAndSpies
 	 *            {@link Object}s that can be injected into {@link Collection}s in the injectCollections.
 	 * @param collectionOfMocksFieldSet
 	 *            {@link CollectionOfMocksFieldSet} containing {@link CollectionOfMocksField InjectableCollections} can
 	 *            be injected into the injectCollections.
 	 */
-	public InjectionDetails(Set<Object> injectCollections, OrderedSet<Object> mocks, OrderedSet<Object> spies,
-			CollectionOfMocksFieldSet collectionOfMocksFieldSet) {
+	public InjectionDetails(Set<Object> injectCollections, OrderedSet<Object> mocksAndSpies, CollectionOfMocksFieldSet collectionOfMocksFieldSet) {
 		if (injectCollections == null) {
 			throw new IllegalArgumentException("injectCollections must not be null");
 		}
-		if (mocks == null) {
+		if (mocksAndSpies == null) {
 			throw new IllegalArgumentException("mocks must not be null");
 		}
-		if (spies == null) {
-			throw new IllegalArgumentException("spies must not be null");
-		}
+
 		if (collectionOfMocksFieldSet == null) {
 			throw new IllegalArgumentException("collectionOfMocksFieldSet must not be null");
 		}
 
 		this.injectCollections = Collections.unmodifiableSet(injectCollections);
-		this.mocks = new OrderedSet<Object>(mocks);
-		this.spies = new OrderedSet<Object>(spies);
+		this.mocks = new OrderedSet<Object>(mocksAndSpies);
 		this.collectionOfMocksFieldSet = collectionOfMocksFieldSet;
 	}
 
@@ -70,17 +62,8 @@ public class InjectionDetails {
 	 *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
 	 *         {@link Set} is unmodifiable.
 	 */
-	public OrderedSet<Object> getMocks() {
+	public OrderedSet<Object> getMocksAndSpies() {
 		return mocks;
-	}
-
-	/**
-	 * @return {@link Set} of {@link Object}s that can be injected into {@link Collection}s. If there are no spies, this
-	 *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
-	 *         {@link Set} is unmodifiable.
-	 */
-	public OrderedSet<Object> getSpies() {
-		return spies;
 	}
 
 	public CollectionOfMocksFieldSet getInjectableCollectionSet() {

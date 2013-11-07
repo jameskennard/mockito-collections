@@ -40,7 +40,7 @@ public class DefaultMockSelectionStrategyTest {
 		OrderedSet<Object> mocks = new OrderedSet<Object>(Arrays.<Object> asList(mock1, mock2, mock3));
 
 		// When
-		OrderedSet<InputStream> actualMocks = strategy.select(mocks, new OrderedSet<Object>(), InputStream.class);
+		OrderedSet<InputStream> actualMocks = strategy.select(mocks, InputStream.class);
 
 		// Then
 		assertTrue(actualMocks.equals(new OrderedSet<InputStream>(Arrays.<InputStream> asList(mock1, mock3))));
@@ -54,7 +54,7 @@ public class DefaultMockSelectionStrategyTest {
 		OrderedSet<Object> mocks = new OrderedSet<Object>(Arrays.asList(mock1, mock2));
 
 		// When
-		OrderedSet<FileOutputStream> actualMocks = strategy.select(mocks, new OrderedSet<Object>(), FileOutputStream.class);
+		OrderedSet<FileOutputStream> actualMocks = strategy.select(mocks, FileOutputStream.class);
 
 		// Then
 		assertTrue(actualMocks.isEmpty());

@@ -16,8 +16,8 @@ import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreForCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
 
-public class InjectCollectionsOfSomeSpiesIntoAnObjectUnderTestStoryIntegrationTest implements
-		InjectCollectionsOfSomeSpiesIntoAnObjectUnderTestStory {
+public class DoNotInjectIgnoredSpiesIntoCollectionsStoryIntegrationTest implements
+		DoNotInjectIgnoredSpiesIntoCollectionsStory {
 
 	@Test
 	public void allSpiesHaveTheIgnoreInjectableAnnotation() {

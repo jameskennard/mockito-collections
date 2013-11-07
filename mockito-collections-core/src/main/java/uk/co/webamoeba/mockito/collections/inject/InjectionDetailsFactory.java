@@ -49,10 +49,9 @@ public class InjectionDetailsFactory {
 	 */
 	public InjectionDetails createInjectionDetails(Object object) {
 		Set<Object> injectCollections = getInjectCollections(object);
-		OrderedSet<Object> mocks = getMocks(object);
-		OrderedSet<Object> spies = getSpies(object);
+		OrderedSet<Object> mocks = getMocksAndSpies(object);
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = getInjectableCollectionSet(object);
-		return new InjectionDetails(injectCollections, mocks, spies, collectionOfMocksFieldSet);
+		return new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 	}
 
 	private Set<Object> getInjectCollections(Object object) {
@@ -60,14 +59,9 @@ public class InjectionDetailsFactory {
 		return getFieldValues(object, fields);
 	}
 
-	private OrderedSet<Object> getMocks(Object object) {
+	private OrderedSet<Object> getMocksAndSpies(Object object) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class);
-		fields.removeAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreForCollections.class));
-		return getFieldValues(object, fields);
-	}
-
-	private OrderedSet<Object> getSpies(Object object) {
-		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Spy.class);
+		fields.addAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Spy.class));
 		fields.removeAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreForCollections.class));
 		return getFieldValues(object, fields);
 	}
