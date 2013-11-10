@@ -10,7 +10,7 @@
 
 	<groupId>uk.co.webamoeba.mockito.collections</groupId>
 	<artifactId>mockito-collections</artifactId>
-	<version>1.0.0-RC-01</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Mockito Collections (Build)</name>
 	<packaging>pom</packaging>
 	<description>
