@@ -183,7 +183,6 @@ public class CollectionOfMocksInitialiserTest {
 		return field;
 	}
 
-	@SuppressWarnings("unused")
 	private class ClassWithAnnnotations {
 
 		@CollectionOfMocks

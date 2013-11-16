@@ -2,3 +2,7 @@
 /.settings
 .classpath
 .project
+mockito-collections-core-integration-tests/.svn
+mockito-collections-core/.svn
+mockito-collections-samples/.svn
+.svn*

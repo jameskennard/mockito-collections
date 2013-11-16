@@ -20,11 +20,11 @@ public class CollectionInjector {
 
 	private CollectionFactory collectionFactory;
 
-	private MockSelectionStrategy strategy;
+	private SelectionStrategy strategy;
 
 	private GenericCollectionTypeResolver genericCollectionTypeResolver;
 
-	public CollectionInjector(CollectionFactory collectionFactory, MockSelectionStrategy strategy,
+	public CollectionInjector(CollectionFactory collectionFactory, SelectionStrategy strategy,
 			GenericCollectionTypeResolver genericCollectionTypeResolver) {
 		this.collectionFactory = collectionFactory;
 		this.strategy = strategy;
@@ -38,13 +38,13 @@ public class CollectionInjector {
 	 */
 	public void inject(InjectionDetails injectionDetails) {
 		for (Object injectCollections : injectionDetails.getInjectCollections()) {
-			inject(injectCollections, injectionDetails.getMocks(), injectionDetails.getInjectableCollectionSet(),
+			inject(injectCollections, injectionDetails.getMocksAndSpies(), injectionDetails.getInjectableCollectionSet(),
 					injectCollections.getClass());
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void inject(Object injectCollections, OrderedSet<Object> mocks,
+	private void inject(Object injectCollections, OrderedSet<Object> mocksAndSpies,
 			CollectionOfMocksFieldSet collectionOfMocksFieldSet, Class<? extends Object> fieldClazz) {
 		Field[] fields = fieldClazz.getDeclaredFields();
 		for (Field field : fields) {
@@ -56,7 +56,7 @@ public class CollectionInjector {
 				if (Collection.class.isAssignableFrom(rawType)) {
 					Type collectionType = genericCollectionTypeResolver.getCollectionFieldType(field);
 					if (collectionType != null) {
-						Collection collection = getCollection(mocks, collectionOfMocksFieldSet, rawType, collectionType);
+						Collection collection = getCollection(mocksAndSpies, collectionOfMocksFieldSet, rawType, collectionType);
 						if (collection != null) {
 							new FieldValueMutator(injectCollections, field).mutateTo(collection);
 						}
@@ -65,7 +65,7 @@ public class CollectionInjector {
 			} else if (type instanceof Class) {
 				Class clazz = (Class) type;
 				if (clazz.isArray()) {
-					Set strategyInjectables = strategy.selectMocks(mocks, clazz.getComponentType());
+					Set strategyInjectables = strategy.select(mocksAndSpies, clazz.getComponentType());
 					if (!strategyInjectables.isEmpty()) {
 						new FieldValueMutator(injectCollections, field).mutateTo(strategyInjectables.toArray());
 					}
@@ -74,12 +74,12 @@ public class CollectionInjector {
 		}
 		Class<?> superclass = fieldClazz.getSuperclass();
 		if (superclass != Object.class && superclass != null) {
-			inject(injectCollections, mocks, collectionOfMocksFieldSet, superclass);
+			inject(injectCollections, mocksAndSpies, collectionOfMocksFieldSet, superclass);
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Collection getCollection(OrderedSet<Object> mocks, CollectionOfMocksFieldSet collectionOfMocksFieldSet,
+	private Collection getCollection(OrderedSet<Object> mocksAndSpies, CollectionOfMocksFieldSet collectionOfMocksFieldSet,
 			Class rawType, Type collectionType) {
 		Collection collection = null;
 		CollectionOfMocksField collectionOfMocksField = strategy.getCollectionOfMocksField(collectionOfMocksFieldSet,
@@ -88,7 +88,7 @@ public class CollectionInjector {
 		if (collectionOfMocksField != null) {
 			strategyInjectables = new OrderedSet(collectionOfMocksField.getValue());
 		} else {
-			strategyInjectables = strategy.selectMocks(mocks, (Class) collectionType);
+			strategyInjectables = strategy.select(mocksAndSpies, (Class) collectionType);
 		}
 		if (!strategyInjectables.isEmpty()) {
 			collection = collectionFactory.createCollection(rawType, strategyInjectables);

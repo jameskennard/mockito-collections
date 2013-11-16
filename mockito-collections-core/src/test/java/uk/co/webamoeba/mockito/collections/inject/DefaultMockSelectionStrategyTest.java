@@ -29,7 +29,7 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
  */
 public class DefaultMockSelectionStrategyTest {
 
-	private DefaultMockSelectionStrategy strategy = new DefaultMockSelectionStrategy();
+	private DefaultSelectionStrategy strategy = new DefaultSelectionStrategy();
 
 	@Test
 	public void shouldGetMocks() {
@@ -40,7 +40,7 @@ public class DefaultMockSelectionStrategyTest {
 		OrderedSet<Object> mocks = new OrderedSet<Object>(Arrays.<Object> asList(mock1, mock2, mock3));
 
 		// When
-		OrderedSet<InputStream> actualMocks = strategy.selectMocks(mocks, InputStream.class);
+		OrderedSet<InputStream> actualMocks = strategy.select(mocks, InputStream.class);
 
 		// Then
 		assertTrue(actualMocks.equals(new OrderedSet<InputStream>(Arrays.<InputStream> asList(mock1, mock3))));
@@ -54,7 +54,7 @@ public class DefaultMockSelectionStrategyTest {
 		OrderedSet<Object> mocks = new OrderedSet<Object>(Arrays.asList(mock1, mock2));
 
 		// When
-		OrderedSet<FileOutputStream> actualMocks = strategy.selectMocks(mocks, FileOutputStream.class);
+		OrderedSet<FileOutputStream> actualMocks = strategy.select(mocks, FileOutputStream.class);
 
 		// Then
 		assertTrue(actualMocks.isEmpty());

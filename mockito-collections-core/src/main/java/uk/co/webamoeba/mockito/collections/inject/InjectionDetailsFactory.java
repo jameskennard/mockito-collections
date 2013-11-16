@@ -10,6 +10,7 @@ import java.util.TreeSet;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.internal.util.reflection.FieldReader;
 
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreForCollections;
@@ -23,11 +24,11 @@ import uk.co.webamoeba.mockito.collections.util.OrderedSet;
  * annotations. {@link Field Fields} with the {@link InjectMocks} annotation are considered for injection of
  * {@link Collection Collections}. {@link Field Fields} with the {@link Mock} annotation are considered {@link Mock
  * Mocks}. It is also possible to ignore fields that would otherwise be considered {@link Mock Mocks} using the
- * {@link IgnoreForCollections} annotation.
+ * {@link IgnoreMockForCollections} annotation.
  * 
  * @see Mock
  * @see InjectMocks
- * @see IgnoreForCollections
+ * @see IgnoreMockForCollections
  * @author James Kennard
  */
 public class InjectionDetailsFactory {
@@ -48,7 +49,7 @@ public class InjectionDetailsFactory {
 	 */
 	public InjectionDetails createInjectionDetails(Object object) {
 		Set<Object> injectCollections = getInjectCollections(object);
-		OrderedSet<Object> mocks = getMocks(object);
+		OrderedSet<Object> mocks = getMocksAndSpies(object);
 		CollectionOfMocksFieldSet collectionOfMocksFieldSet = getInjectableCollectionSet(object);
 		return new InjectionDetails(injectCollections, mocks, collectionOfMocksFieldSet);
 	}
@@ -58,8 +59,9 @@ public class InjectionDetailsFactory {
 		return getFieldValues(object, fields);
 	}
 
-	private OrderedSet<Object> getMocks(Object object) {
+	private OrderedSet<Object> getMocksAndSpies(Object object) {
 		Set<Field> fields = annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Mock.class);
+		fields.addAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), Spy.class));
 		fields.removeAll(annotatedFieldRetriever.getAnnotatedFields(object.getClass(), IgnoreForCollections.class));
 		return getFieldValues(object, fields);
 	}

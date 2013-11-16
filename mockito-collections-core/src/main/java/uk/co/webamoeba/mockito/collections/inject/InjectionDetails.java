@@ -5,11 +5,12 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.Spy;
 
 import uk.co.webamoeba.mockito.collections.util.OrderedSet;
 
 /**
- * Describes {@link Object}s that we want to inject into and be injected with {@link Collection}s of {@link Mock Mocks}.
+ * Describes {@link Object}s that we want to inject into and be injected with {@link Collection}s of {@link Mock Mocks} and {@link Spy Spies}.
  * 
  * @author James Kennard
  */
@@ -24,26 +25,26 @@ public class InjectionDetails {
 	/**
 	 * @param injectCollections
 	 *            {@link Object}s into which we want to inject {@link Collection}s of mocks.
-	 * @param mocks
+	 * @param mocksAndSpies
 	 *            {@link Object}s that can be injected into {@link Collection}s in the injectCollections.
 	 * @param collectionOfMocksFieldSet
 	 *            {@link CollectionOfMocksFieldSet} containing {@link CollectionOfMocksField InjectableCollections} can
 	 *            be injected into the injectCollections.
 	 */
-	public InjectionDetails(Set<Object> injectCollections, OrderedSet<Object> mocks,
-			CollectionOfMocksFieldSet collectionOfMocksFieldSet) {
+	public InjectionDetails(Set<Object> injectCollections, OrderedSet<Object> mocksAndSpies, CollectionOfMocksFieldSet collectionOfMocksFieldSet) {
 		if (injectCollections == null) {
 			throw new IllegalArgumentException("injectCollections must not be null");
 		}
-		if (mocks == null) {
+		if (mocksAndSpies == null) {
 			throw new IllegalArgumentException("mocks must not be null");
 		}
+
 		if (collectionOfMocksFieldSet == null) {
 			throw new IllegalArgumentException("collectionOfMocksFieldSet must not be null");
 		}
 
 		this.injectCollections = Collections.unmodifiableSet(injectCollections);
-		this.mocks = new OrderedSet<Object>(mocks);
+		this.mocks = new OrderedSet<Object>(mocksAndSpies);
 		this.collectionOfMocksFieldSet = collectionOfMocksFieldSet;
 	}
 
@@ -61,7 +62,7 @@ public class InjectionDetails {
 	 *         method will return an empty {@link Set}, this method will never return <code>null</code>. The returned
 	 *         {@link Set} is unmodifiable.
 	 */
-	public OrderedSet<Object> getMocks() {
+	public OrderedSet<Object> getMocksAndSpies() {
 		return mocks;
 	}
 
