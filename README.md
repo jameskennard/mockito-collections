@@ -66,3 +66,14 @@ The @CollectionOfMocks annotation can be used to create a Collection containing 
     
     @CollectionOfMocks(numberOfMocks = 2)
     private Set<MyListener> listeners;
+
+Collective Verification
+-----------------------
+
+To verify the same thing on a number of mocks we would typically make a call to the static Mockito.verify* methods for each mock. Mockito-Collections provides equivalent static methods allowing us to make verifications in a single step.
+
+Imagine we have a Collection of Listeners and we want to verify that eventOccured(someEvent) was invoked once for every Listener. We would use the static MockitoCollections.collectiveVerify(Class, Collection) method.
+
+    MockitoCollections.collectiveVerify(Listener.class, listeners).eventOccured(someEvent);
+    
+Other collective verifications we can make using Mockito-Collections include verifying with a specified VerificationMode (for example times(int) and atLeastOnce()), verifying zero interactions, and verifying no more interactions.
