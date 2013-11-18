@@ -54,7 +54,7 @@ public class InjectionDetailsFactoryTest {
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
 		// Then
-		assertEquals(0, injectionDetails.getMocks().size());
+		assertEquals(0, injectionDetails.getMocksAndSpies().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
 		assertEquals(1, injectionDetails.getInjectCollections().size());
 		assertTrue(injectionDetails.getInjectCollections().contains(object.injectCollections1));
@@ -74,8 +74,8 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(1, injectionDetails.getMocks().size());
-		assertTrue(injectionDetails.getMocks().contains(object.mock1));
+		assertEquals(1, injectionDetails.getMocksAndSpies().size());
+		assertTrue(injectionDetails.getMocksAndSpies().contains(object.mock1));
 	}
 
 	@Test
@@ -96,8 +96,8 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(4, injectionDetails.getMocks().size());
-		Iterator<Object> iterator = injectionDetails.getMocks().iterator();
+		assertEquals(4, injectionDetails.getMocksAndSpies().size());
+		Iterator<Object> iterator = injectionDetails.getMocksAndSpies().iterator();
 		assertSame(object.getInjectable1(), iterator.next());
 		assertSame(object.getInjectable2(), iterator.next());
 		assertSame(object.getExtendedInjectable1(), iterator.next());
@@ -120,7 +120,7 @@ public class InjectionDetailsFactoryTest {
 		// Then
 		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(0, injectionDetails.getInjectableCollectionSet().size());
-		assertEquals(0, injectionDetails.getMocks().size());
+		assertEquals(0, injectionDetails.getMocksAndSpies().size());
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class InjectionDetailsFactoryTest {
 		InjectionDetails injectionDetails = factory.createInjectionDetails(object);
 
 		// Then
-		assertEquals(0, injectionDetails.getMocks().size());
+		assertEquals(0, injectionDetails.getMocksAndSpies().size());
 		assertEquals(0, injectionDetails.getInjectCollections().size());
 		assertEquals(1, injectionDetails.getInjectableCollectionSet().size());
 		CollectionOfMocksField<Collection<Object>, Object> mocksField = injectionDetails.getInjectableCollectionSet()

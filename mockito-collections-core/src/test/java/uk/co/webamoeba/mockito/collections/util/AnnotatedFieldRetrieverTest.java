@@ -107,7 +107,6 @@ public class AnnotatedFieldRetrieverTest {
 	}
 
 	// suppressing unused warnings, in practice all fields are used via reflection
-	@SuppressWarnings("unused")
 	private class ClassWithAnnnotations {
 
 		@InjectMocks
@@ -124,7 +123,6 @@ public class AnnotatedFieldRetrieverTest {
 	}
 
 	// suppressing unused warnings, in practice all fields are used via reflection
-	@SuppressWarnings("unused")
 	private class ExtendedClassWithAnnnotations extends ClassWithAnnnotations {
 
 		@InjectMocks

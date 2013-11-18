@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import uk.co.webamoeba.mockito.collections.inject.CollectionFactory;
 import uk.co.webamoeba.mockito.collections.inject.CollectionInjector;
 import uk.co.webamoeba.mockito.collections.inject.CollectionOfMocksInitialiser;
-import uk.co.webamoeba.mockito.collections.inject.DefaultMockSelectionStrategy;
+import uk.co.webamoeba.mockito.collections.inject.DefaultSelectionStrategy;
 import uk.co.webamoeba.mockito.collections.inject.DefaultMockStrategy;
 import uk.co.webamoeba.mockito.collections.inject.InjectionDetailsFactory;
 import uk.co.webamoeba.mockito.collections.inject.MockStrategy;
@@ -51,7 +51,7 @@ public class Initialiser {
 
 	{
 		GenericCollectionTypeResolver genericCollectionTypeResolver = new GenericCollectionTypeResolver();
-		DefaultMockSelectionStrategy mockSelectionStrategy = new DefaultMockSelectionStrategy();
+		DefaultSelectionStrategy mockSelectionStrategy = new DefaultSelectionStrategy();
 		CollectionFactory collectionFactory = new CollectionFactory();
 		AnnotatedFieldRetriever annotatedFieldRetriever = new AnnotatedFieldRetriever();
 		MockStrategy mockStrategy = new DefaultMockStrategy();
