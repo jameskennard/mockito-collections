@@ -2,19 +2,11 @@ package uk.co.webamoeba.mockito.collections.core.integrationtests;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedSet;
 
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 
-import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaboratorsWithNoGenerics;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithListOfCollaborators;
-import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithMoreThanOneCollectionOfCollaborators;
-import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithQueueOfCollaborators;
-import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSetOfCollaborators;
-import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithSortedSetOfCollaborators;
 
 /**
  * <b>Story:</b> Inject {@link Collection Collections} of mocks that match the generics
@@ -28,6 +20,7 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWi
  * @author Matt Reines
  */
 public interface InjectCollectionsOfMatchingSpiesStory {
+
 	/**
 	 * <b>Scenario:</b> Test has spies of the same type as the generics
 	 * <p>
