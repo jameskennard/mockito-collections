@@ -18,6 +18,7 @@ import org.mockito.Spy;
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.annotation.IgnoreForCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
+import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ConcreteEventListener;
 
 public class DoNotInjectIgnoredMocksAndSpiesIntoCollectionsStoryIntegrationTest implements
 		DoNotInjectIgnoredMocksAndSpiesIntoCollectionsStory {
@@ -90,9 +91,6 @@ public class DoNotInjectIgnoredMocksAndSpiesIntoCollectionsStoryIntegrationTest 
 		Iterator<EventListener> iterator = outterCUT.getCollaborators().iterator();
 		assertSame(outerMock, iterator.next());
 		assertSame(outerSpy, iterator.next());
-	}
-
-	private class ConcreteEventListener implements EventListener {
 	}
 
 }
