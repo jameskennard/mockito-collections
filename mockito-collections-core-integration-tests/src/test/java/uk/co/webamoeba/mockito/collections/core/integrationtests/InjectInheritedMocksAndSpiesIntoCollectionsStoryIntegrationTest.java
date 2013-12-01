@@ -11,21 +11,22 @@ import java.util.Iterator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithCollectionOfCollaborators;
 
-public class InjectCollectionOfInheritedMocksStoryIntegrationTest implements
-		InjectCollectionOfInheritedMocksStory {
+public class InjectInheritedMocksAndSpiesIntoCollectionsStoryIntegrationTest implements
+		InjectInheritedMocksAndSpiesIntoCollectionsStory {
 
 	@Test
-	public void testClassInheritsSomeMocksFromAParentTestClass() {
+	public void testInheritsSomeMocksAndSpiesFromAParentClass() {
 		// Given
 		final ClassWithCollectionOfCollaborators outerCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator2 = mock(EventListener.class);
 		final EventListener outerCollaborator4 = mock(EventListener.class);
 		@SuppressWarnings("unused")
-		BaseExampleTest exampleTest = new BaseExampleTest() {
+		ParentTest exampleTest = new ParentTest() {
 
 			@InjectMocks
 			private ClassWithCollectionOfCollaborators cut = outerCUT;
@@ -33,7 +34,7 @@ public class InjectCollectionOfInheritedMocksStoryIntegrationTest implements
 			@Mock
 			private EventListener collaborator2 = outerCollaborator2;
 
-			@Mock
+			@Spy
 			private EventListener collaborator4 = outerCollaborator4;
 
 		};
@@ -52,13 +53,13 @@ public class InjectCollectionOfInheritedMocksStoryIntegrationTest implements
 	}
 
 	@Test
-	public void testClassInheritsSomeMocksWithTheSameNamesFromAParentTestClass() {
+	public void testInheritsSomeMocksAndSpiesWithTheSameNamesFromAParentTestClass() {
 		// Given
 		final ClassWithCollectionOfCollaborators outerCUT = new ClassWithCollectionOfCollaborators();
 		final EventListener outerCollaborator1 = mock(EventListener.class);
 		final EventListener outerCollaborator3 = mock(EventListener.class);
 		@SuppressWarnings("unused")
-		BaseExampleTest exampleTest = new BaseExampleTest() {
+		ParentTest exampleTest = new ParentTest() {
 
 			@InjectMocks
 			private ClassWithCollectionOfCollaborators cut = outerCUT;
@@ -66,7 +67,7 @@ public class InjectCollectionOfInheritedMocksStoryIntegrationTest implements
 			@Mock
 			private EventListener collaborator1 = outerCollaborator1;
 
-			@Mock
+			@Spy
 			private EventListener collaborator3 = outerCollaborator3;
 
 		};
@@ -84,12 +85,12 @@ public class InjectCollectionOfInheritedMocksStoryIntegrationTest implements
 		assertSame(outerCollaborator3, iterator.next());
 	}
 
-	private abstract class BaseExampleTest {
+	private abstract class ParentTest {
 
 		@Mock
 		private EventListener collaborator1 = mock(EventListener.class);
 
-		@Mock
+		@Spy
 		private EventListener collaborator3 = mock(EventListener.class);
 	}
 

@@ -13,7 +13,7 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWi
  * <p>
  * <b>In order to</b> test the behaviour of an {@link Object} containing a {@link Collection} of collaborators <br />
  * <b>We will</b> inject mock {@link Object Objects} (denoted by the {@link Mock} annotation) <b>And</b> inject spy
- * {@link Object Objects} (denoted by the {@link Spy} annotation)
+ * {@link Object Objects} (denoted by the {@link Spy} annotation) into {@link Collection Collections}.
  * 
  * @see InjectConcreteCollectionImplementationsOfMocksIntoAnObjectUnderTestStory
  * @author James Kennard
