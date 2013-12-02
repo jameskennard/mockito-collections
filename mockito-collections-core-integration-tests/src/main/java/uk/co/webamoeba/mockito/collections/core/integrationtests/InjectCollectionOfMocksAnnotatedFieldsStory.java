@@ -14,7 +14,7 @@ import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWi
  * <b>We will</b> provide an annotation for use in tests to identify {@link Collection} fields in the test we want to
  * initialise and inject into the Object under test.
  * 
- * @see InjectCollectionsOfMocksStory
+ * @see InjectMocksAndSpiesIntoCollectionSubTypesStory
  * @author James Kennard
  */
 public interface InjectCollectionOfMocksAnnotatedFieldsStory {
