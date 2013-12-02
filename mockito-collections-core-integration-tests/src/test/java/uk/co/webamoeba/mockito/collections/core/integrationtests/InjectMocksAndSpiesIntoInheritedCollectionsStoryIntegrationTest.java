@@ -10,12 +10,13 @@ import java.util.Iterator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.core.integrationtests.support.ClassWithInheritedCollectionOfCollaborators;
 
-public class InjectCollectionsOfMocksIntoInheritedCollectionsStoryIntegrationTest implements
-		InjectCollectionsOfMocksIntoInheritedCollectionsStory {
+public class InjectMocksAndSpiesIntoInheritedCollectionsStoryIntegrationTest implements
+		InjectMocksAndSpiesIntoInheritedCollectionsStory {
 
 	@Test
 	public void objectUnderTestInheritsCollectionOfCollaborators() {
@@ -32,7 +33,7 @@ public class InjectCollectionsOfMocksIntoInheritedCollectionsStoryIntegrationTes
 			@Mock
 			private EventListener collaborator1 = outerCollaborator1;
 
-			@Mock
+			@Spy
 			private EventListener collaborator2 = outerCollaborator2;
 
 		};

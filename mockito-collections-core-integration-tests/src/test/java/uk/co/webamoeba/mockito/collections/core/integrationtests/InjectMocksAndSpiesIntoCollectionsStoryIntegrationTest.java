@@ -68,7 +68,6 @@ public class InjectMocksAndSpiesIntoCollectionsStoryIntegrationTest implements I
 		assertSame(outerCollaborator2, iterator.next());
 		assertSame(outerCollaborator3, iterator.next());
 		assertSame(outerCollaborator4, iterator.next());
-
 	}
 
 	@Test
