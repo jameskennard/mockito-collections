@@ -1,5 +1,7 @@
 package uk.co.webamoeba.mockito.collections.sample;
 
+import static org.mockito.Mockito.verify;
+
 import java.util.Collection;
 
 import org.junit.Before;
@@ -8,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.mockito.Mockito.verify;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 
@@ -27,14 +28,14 @@ public class ListenerManagerAlternativeSpyTest {
 
 	@Spy
 	MockListener listener1;
-	
+
 	@Spy
-	MockListener listener2;	
+	MockListener listener2;
 
 	// Setup making use of Mockito Collections for injection of handlers
 	@Before
 	public void before() {
-		MockitoCollections.initialise(this, true);
+		MockitoCollections.initialiseAll(this);
 	}
 
 	@Test

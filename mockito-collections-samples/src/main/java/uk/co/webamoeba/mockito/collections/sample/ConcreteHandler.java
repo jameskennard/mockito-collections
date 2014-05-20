@@ -1,7 +1,9 @@
 package uk.co.webamoeba.mockito.collections.sample;
 
-public class MockHandler implements Handler {
+public class ConcreteHandler implements Handler {
+
 	public String handle(String thingToHandle) {
-		return "value1";
+		return "Some String";
 	}
+
 }

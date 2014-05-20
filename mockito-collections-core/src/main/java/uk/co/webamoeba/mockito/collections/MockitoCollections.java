@@ -5,18 +5,26 @@ import java.util.Collection;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.verification.VerificationMode;
 
-import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 import uk.co.webamoeba.mockito.collections.internal.Initialiser;
 import uk.co.webamoeba.mockito.collections.internal.Verifier;
 
 /**
  * Class for Mockito-Collections that is comparable to the {@link Mockito} and {@link MockitoAnnotations} classes.
  * <p>
- * The most important method is the {@link #initialise(Object)} method. This method acts in a similar way to
- * {@link MockitoAnnotations#initMocks(Object)}. Use this method to initialise the Mockito-Collections annotations, for
- * example:
+ * The most important methods are the {@link #initialise(Object)} and {@link #initialiseAll(Object)} methods. These
+ * methods initialise the test class, setting up mocks, spies, and injecting {@link Collection Collections}. The
+ * distinction between the two methods is that {@link #initialiseAll(Object)} will also execute the
+ * {@link MockitoAnnotations#initMocks(Object)} method. Using {@link #initialiseAll(Object)} allows you to initialise
+ * everything in a single line of code. The {@link #initialise(Object)} method is useful if you want to do any
+ * additional setup between these two steps or if you want to explicitly use the {@link MockitoJUnitRunner}.
+ * </p>
+ * <p>
+ * The following example uses {@link #initialiseAll(Object)} to setup the test:
+ * </p>
  * 
  * <pre class="code">
  * <code class="java">
@@ -28,19 +36,43 @@ import uk.co.webamoeba.mockito.collections.internal.Verifier;
  * 
  * &#064;Before
  * public void setup() {
+ * 	MockitoCollections.initialiseAll(this);
+ *  assert MockUtil.isMock(eventListener);
+ * 	assert objectUnderTest.getEventListeners().contains(eventListener);
+ * }
+ * </code>
+ * </pre>
+ * <p>
+ * The following alternative example explicitly calls {@link MockitoAnnotations#initMocks(Object)} and uses
+ * {@link #initialise(Object)} to setup the test. Notice the EventListener mock is initialised prior to the call to
+ * {@link MockitoCollections#initialise(Object)}:
+ * </p>
+ * 
+ * <pre class="code">
+ * <code class="java">
+ * &#064;InjectMocks
+ * private MyClassWithEventListeners objectUnderTest;
+ * 
+ * &#064;Mock
+ * private EventListener eventListener;
+ * 
+ * &#064;Before
+ * public void setup() {
+ *  MockitoAnnotations.initMocks(this);
+ *  assert MockUtil.isMock(eventListener);
  * 	MockitoCollections.initialise(this);
  * 	assert objectUnderTest.getEventListeners().contains(eventListener);
  * }
  * </code>
  * </pre>
  * <p>
- * You can use this class to verify the behaviour of a {@link Collection} of {@link Mock mocks}. The {@link Collection}
- * of mocks can be any {@link Collection} of {@link Mock mocks}, that is to say, it does not have to be from a
- * {@link CollectionOfMocks} field. For example:
+ * You can also use this class to verify the behaviour of a {@link Collection} of {@link Mock mocks} or {@link Spy
+ * Spies}.
+ * </p>
  * 
  * <pre class="code">
  * <code class="java">
- * 	MockitoCollections.verify(listeners).notify(event);
+ * 	MockitoCollections.collectiveVerify(listeners).notify(event);
  * </code>
  * </pre>
  * 
@@ -48,33 +80,33 @@ import uk.co.webamoeba.mockito.collections.internal.Verifier;
  */
 public class MockitoCollections {
 
-	private static Initialiser INITIALISER = new Initialiser();
+	private static final Initialiser INITIALISER = new Initialiser();
 
-	private static Verifier VERIFIER = new Verifier();
+	private static final Verifier VERIFIER = new Verifier();
 
 	/**
-	 * {@link Initialiser#initialise(Object)}
+	 * Initialises the {@link Object}
 	 * 
-	 * @param object - The object (containing JUnit tests) to initialize
-	 * @param inclusive - Include MockitoAnnotations.initMocks
+	 * @see #initialise(Object)
+	 * @param object
+	 *            The object containing relevant annotations to initialize
 	 */
-	public static void initialise(Object object, boolean inclusive) {
-		if (inclusive){
-			MockitoAnnotations.initMocks(object);
-		}
+	public static void initialiseAll(Object object) {
+		MockitoAnnotations.initMocks(object);
 		INITIALISER.initialise(object);
 	}
 
 	/**
 	 * {@link Initialiser#initialise(Object)}
 	 * 
-	 * @param object - The object (containing JUnit tests) to initialize
+	 * @see MockitoCollections#initialiseAll(Object)
+	 * @param object
+	 *            The object (containing JUnit tests) to initialize
 	 */
 	public static void initialise(Object object) {
 		INITIALISER.initialise(object);
 	}
 
-	
 	/**
 	 * {@link Verifier#collectiveVerify(Class, Collection)}
 	 * 

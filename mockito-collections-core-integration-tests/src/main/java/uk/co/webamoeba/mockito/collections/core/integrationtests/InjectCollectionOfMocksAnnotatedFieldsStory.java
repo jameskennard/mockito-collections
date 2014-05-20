@@ -26,8 +26,8 @@ public interface InjectCollectionOfMocksAnnotatedFieldsStory {
 	 * <b>And</a> the {@link Object} under test (denoted by an {@link InjectMocks} annotation) has a {@link Collection}
 	 * of collaborators of the same type<br />
 	 * <b>When</b> I setup the test<br />
-	 * <b>Then</b> the field in the test is initialised with a {@link Collection} of one mock <b>And</b> the mocks are
-	 * injected into the {@link Object} under test
+	 * <b>Then</b> the field in the test is initialised with a {@link Collection} of one mock<br />
+	 * <b>And</b> the mocks are injected into the {@link Object} under test
 	 * 
 	 * @see ClassWithListOfCollaborators
 	 */

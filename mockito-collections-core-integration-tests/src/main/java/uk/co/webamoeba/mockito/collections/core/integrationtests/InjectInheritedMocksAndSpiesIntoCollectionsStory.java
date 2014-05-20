@@ -12,8 +12,8 @@ import org.mockito.Spy;
  * <b>In order to</b> take advantage of inheritance within test classes when testing the behaviour of an {@link Object}
  * containing a {@link Collection} of collaborators<br />
  * <b>We will</b> inject {@link Collection Collections} populating them with inherited mock {@link Object Objects}
- * (denoted by the {@link Mock} annotation) <b>And</b> inject spy {@link Object Objects} (denoted by the {@link Spy}
- * annotation).
+ * (denoted by the {@link Mock} annotation)<br />
+ * <b>And</b> inject spy {@link Object Objects} (denoted by the {@link Spy} annotation).
  * <p>
  * <strong>Hierarchical and Alphabetical Order</strong><br />
  * In relation to the injected {@link Collection Collections}, hierarchical and alphabetical means the parent test
