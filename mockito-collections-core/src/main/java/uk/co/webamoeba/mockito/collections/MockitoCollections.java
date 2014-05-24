@@ -2,6 +2,7 @@ package uk.co.webamoeba.mockito.collections;
 
 import java.util.Collection;
 
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -85,26 +86,29 @@ public class MockitoCollections {
 	private static final Verifier VERIFIER = new Verifier();
 
 	/**
-	 * Initialises the {@link Object}
+	 * Initialises objects annotated with Mockito annotations and initialises any {@link Collection Collections}
+	 * annotated with Mockito-Collections annotations and injects Collections into the object under test (denoted by the
+	 * Mockito {@link InjectMocks} annotation).
 	 * 
 	 * @see #initialise(Object)
-	 * @param object
-	 *            The object containing relevant annotations to initialize
+	 * @param testObject
+	 *            The object we want to initialise, typically an object containing tests
 	 */
-	public static void initialiseAll(Object object) {
-		MockitoAnnotations.initMocks(object);
-		INITIALISER.initialise(object);
+	public static void initialiseAll(Object testObject) {
+		MockitoAnnotations.initMocks(testObject);
+		INITIALISER.initialise(testObject);
 	}
 
 	/**
-	 * {@link Initialiser#initialise(Object)}
+	 * Initialises any {@link Collection Collections} annotated with Mockito-Collections annotations and injects
+	 * Collections into the object under test (denoted by the Mockito {@link InjectMocks} annotation).
 	 * 
 	 * @see MockitoCollections#initialiseAll(Object)
-	 * @param object
-	 *            The object (containing JUnit tests) to initialize
+	 * @param testObject
+	 *            The object we want to initialise, typically an object containing tests
 	 */
-	public static void initialise(Object object) {
-		INITIALISER.initialise(object);
+	public static void initialise(Object testObject) {
+		INITIALISER.initialise(testObject);
 	}
 
 	/**
