@@ -6,20 +6,17 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 
 /**
- * This test shows how you can use Mockito Collections to test where there is a {@link Collection} of delegates that do
+ * This test shows how you can use Mockito-Collections to test where there is a {@link Collection} of delegates that do
  * not return values. Comments are included throughout the file to help clarify what's going on.
  * 
  * @author Matt Reines
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ListenerManagerAlternativeSpyTest {
 
 	// ListenerManager containing a Collection of SampleListeners
@@ -27,12 +24,12 @@ public class ListenerManagerAlternativeSpyTest {
 	private ListenerManager manager;
 
 	@Spy
-	MockListener listener1;
+	private ConcreteListener listener1;
 
 	@Spy
-	MockListener listener2;
+	private ConcreteListener listener2;
 
-	// Setup making use of Mockito Collections for injection of handlers
+	// Setup making use of Mockito-Collections for injection of handlers
 	@Before
 	public void before() {
 		MockitoCollections.initialiseAll(this);
@@ -47,7 +44,7 @@ public class ListenerManagerAlternativeSpyTest {
 		manager.eventOccurred(someEvent);
 
 		// Then
-		// collectively verify all the listeners were called
+		// verify all the listeners were called
 		verify(listener1).eventOccured("Something");
 		verify(listener2).eventOccured("Something");
 	}

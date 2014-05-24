@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ListenerManagerTest {
 
-	// ListenerManager containing a Collection of SampleListeners
+	// ListenerManager containing a Collection of Listeners
 	@InjectMocks
 	private ListenerManager manager;
 

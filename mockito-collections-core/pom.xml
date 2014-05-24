@@ -9,10 +9,10 @@
 	</parent>
 	
 	<artifactId>mockito-collections-core</artifactId>
-	<name>Mockito Collections - Core</name>
+	<name>Mockito-Collections : Core</name>
 	<packaging>jar</packaging>
 	<description>
-		Mockito Collections allows injection of Mockito mocks into Collection fields
+		Mockito-Collections allows injection of Mockito mocks into Collection fields
 	</description>
 	
 	<dependencies>

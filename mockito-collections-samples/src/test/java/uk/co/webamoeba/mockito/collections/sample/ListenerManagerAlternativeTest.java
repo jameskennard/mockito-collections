@@ -4,23 +4,20 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 import uk.co.webamoeba.mockito.collections.annotation.CollectionOfMocks;
 
 /**
- * This test shows how you can use Mockito Collections to test where there is a {@link Collection} of delegates that do
+ * This test shows how you can use Mockito-Collections to test where there is a {@link Collection} of delegates that do
  * not return values. Comments are included throughout the file to hellp clarify what's going on.
  * 
  * @author James Kennard
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ListenerManagerAlternativeTest {
 
-	// ListenerManager containing a Collection of SampleListeners
+	// ListenerManager containing a Collection of Listeners
 	@InjectMocks
 	private ListenerManager manager;
 
@@ -28,10 +25,10 @@ public class ListenerManagerAlternativeTest {
 	@CollectionOfMocks(numberOfMocks = 2)
 	private Collection<Listener> listeners;
 
-	// Setup making use of Mockito Collections for injection of handlers
+	// Setup making use of Mockito-Collections for injection of handlers
 	@Before
 	public void before() {
-		MockitoCollections.initialise(this);
+		MockitoCollections.initialiseAll(this);
 	}
 
 	@Test

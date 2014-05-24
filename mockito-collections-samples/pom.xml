@@ -9,10 +9,10 @@
 	</parent>
 	
 	<artifactId>mockito-collections-samples</artifactId>
-	<name>Mockito Collections - Samples</name>
+	<name>Mockito-Collections : Samples</name>
 	<packaging>jar</packaging>
 	<description>
-		Samples showing how to use Mockito Collections to inject Mockito mocks into Collection fields
+		Samples showing how to use Mockito-Collections to inject Mockito mocks into Collection fields
 	</description>
 	
 	<dependencies>

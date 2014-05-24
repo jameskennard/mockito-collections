@@ -9,7 +9,7 @@
 	</parent>
 	
 	<artifactId>mockito-collections-core-integration-tests</artifactId>
-	<name>Mockito Collections - Integration Tests</name>
+	<name>Mockito-Collections : Integration Tests</name>
 	<packaging>jar</packaging>
 	<description>
 		Integration tests for mockito-collections-core

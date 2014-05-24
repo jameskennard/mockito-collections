@@ -11,10 +11,10 @@
 	<groupId>uk.co.webamoeba.mockito.collections</groupId>
 	<artifactId>mockito-collections</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>Mockito Collections (Build)</name>
+	<name>Mockito-Collections (Build)</name>
 	<packaging>pom</packaging>
 	<description>
-		Mockito Collections (Build) is the parent POM in a multi-module (Maven reactor) project that allows injection of Mockito mocks into Collection fields
+		Mockito-Collections (Build) is the parent POM in a multi-module (Maven reactor) project that allows injection of Mockito mocks into Collection fields
 	</description>
 	<url>https://github.com/jameskennard/mockito-collections</url>
 	

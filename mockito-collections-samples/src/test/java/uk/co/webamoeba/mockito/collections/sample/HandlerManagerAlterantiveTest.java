@@ -7,20 +7,17 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.webamoeba.mockito.collections.MockitoCollections;
 
 /**
- * This test shows how you can use Mockito Collections to deal simply with a {@link Set} of delegates that return
+ * This test shows how you can use Mockito-Collections to deal simply with a {@link Set} of delegates that return
  * values. Comments are included throughout the file to hellp clarify what's going on.
  * 
  * @author James Kennard
  */
-@RunWith(MockitoJUnitRunner.class)
 public class HandlerManagerAlterantiveTest {
 
 	// HandlerManager containing a Set of Handlers
@@ -37,10 +34,10 @@ public class HandlerManagerAlterantiveTest {
 	@Mock
 	private Handler handler2;
 
-	// Setup making use of Mockito Collections for injection of handlers
+	// Setup making use of Mockito-Collections for injection of handlers
 	@Before
 	public void before() {
-		MockitoCollections.initialise(this);
+		MockitoCollections.initialiseAll(this);
 	}
 
 	@Test
@@ -56,7 +53,7 @@ public class HandlerManagerAlterantiveTest {
 
 		// Then
 		// Normal use of assert
-		// Is array (order is important) but we can guarantee order of Set of Handlers using Mockito Collections
+		// Is array (order is important) but we can guarantee order of Set of Handlers using Mockito-Collections
 		// No need to verify see http://monkeyisland.pl/2008/04/26/asking-and-telling/
 		assertArrayEquals(new String[] { "value1", "value2" }, strings);
 	}
